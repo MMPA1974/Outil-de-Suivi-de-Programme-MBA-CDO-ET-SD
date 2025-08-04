@@ -79,7 +79,7 @@
         </p>
         <p id="welcome-message" class="text-gray-300 text-lg mt-4 hidden">Bonjour !</p>
 
-        <!-- User Settings Section -->
+        <!-- User Settings Section (Always visible and editable) -->
         <section id="user-settings" class="mt-8 p-6 bg-gray-800 rounded-xl shadow-lg max-w-2xl mx-auto">
             <h2 class="text-xl font-semibold text-white mb-4">Vos informations et préférences</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -116,18 +116,17 @@
                     <label for="personal-start-date-input" class="block text-sm font-medium text-gray-400 mb-1">Ma date de début de formation :</label>
                     <input type="date" id="personal-start-date-input" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500">
                 </div>
+                <div>
+                    <label for="personal-end-date-input" class="block text-sm font-medium text-gray-400 mb-1">Ma date de fin de formation :</label>
+                    <input type="date" id="personal-end-date-input" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500">
+                </div>
             </div>
         </section>
     </header>
 
+    <!-- Countdown Section -->
     <section class="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
-        <div id="calendar-header" class="flex items-center cursor-pointer">
-            <span id="calendar-chevron" class="w-6 h-6 mr-2 text-white transition-transform duration-300 rotate-0">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
-            </span>
-            <h2 class="text-2xl font-semibold text-white">Calendrier des sessions 📅</h2>
-        </div>
-
+        <h2 class="text-2xl font-semibold text-white mb-2">Compte à rebours ⏳</h2>
         <div class="mt-8 mb-8 p-4 bg-gray-900 rounded-lg shadow-inner">
             <h3 class="text-lg font-bold mb-2 text-yellow-400" id="countdown-title">Compte à rebours de la session sélectionnée</h3>
             <div class="flex items-center space-x-4 mb-4">
@@ -155,20 +154,6 @@
             <p class="mt-4 text-sm text-gray-400 text-center">
                 Date limite de remise : <span id="deadline-date"></span>
             </p>
-        </div>
-
-        <div id="calendar-table-container" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-            <table class="min-w-full divide-y divide-gray-700">
-                <thead class="bg-gray-700">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Promo</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Session</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date de fin</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nature de la date de fin</th>
-                    </tr>
-                </thead>
-                <tbody id="calendar-table-body" class="divide-y divide-gray-700"></tbody>
-            </table>
         </div>
     </section>
 
@@ -771,7 +756,7 @@
                         "La méthodologie et les outils utilisés permettent de favoriser la génération d'idées et de garantir le maintien d'une bonne atmosphère.",
                         "Le candidat démontre l'apport de la méthodologie par rapport au projet à mener. Il explicite et argumente son choix. Il démontre une prise de hauteur nécessaire."
                     ],
-                    "C1.6 Évaluer l'adéquation des pistes créatives": [
+                    "C1.6 Évaluer l'adéquation des pistes créatives aux besoins des utilisateurs finaux": [
                         "Le candidat utilise des méthodologies de tests utilisateurs (quantitatifs ou qualitatifs) suivant des protocoles ad hoc adaptés.",
                         "Le candidat adopte une attitude d'apprentissage et ne cherche pas à défendre sa solution ou à influencer les réponses des utilisateurs.",
                         "Démontre sa capacité à prendre en compte des éléments issus de la communication non verbale.",
@@ -961,6 +946,7 @@
         let programEvaluations = {};
         let sessions = sessionsData; // Initial sessions data
         let customStartDates = {}; // Stores custom start dates by session index
+        let customEndDates = {}; // Stores custom end dates by session index
         let expandedBlocks = {};
         let expandedModules = {};
         let expandedEvaluations = {
@@ -976,11 +962,11 @@
 
         // DOM elements (declared globally with let, assigned in initialize)
         let btnCdo, btnSd, programContainer, evaluationsContainer, totalProgressBar, totalProgressText;
-        let userFirstnameInput, userLastnameInput, specializationChoiceRadios, sessionSelect, personalStartDateInput;
+        let userFirstnameInput, userLastnameInput, specializationChoiceRadios, sessionSelect, personalStartDateInput, personalEndDateInput;
         let displaySelectedSession, deadlineDate, countdownDays, countdownHours, countdownMinutes, countdownSeconds;
         let calendarHeader, calendarChevron, calendarTableContainer, calendarTableBody;
         let motivationalTitle, motivationalText, countdownTitle;
-        let customAlertModal, customAlertMessage, welcomeMessageDisplay; // welcomeMessageDisplay added here
+        let customAlertModal, customAlertMessage, welcomeMessageDisplay;
 
 
         // Functions
@@ -1000,7 +986,8 @@
             localStorage.setItem('selected_specialization', selectedSpecialization);
             localStorage.setItem('selected_session_index', selectedSessionIndex);
             localStorage.setItem('custom_start_dates', JSON.stringify(customStartDates)); // Save custom start dates
-            localStorage.setItem('sessions_data_modified', JSON.stringify(sessions)); // Save modified sessions data
+            localStorage.setItem('custom_end_dates', JSON.stringify(customEndDates)); // Save custom end dates
+            localStorage.setItem('sessions_data_modified', JSON.stringify(sessions)); // Save modified sessions data (for end dates in table)
         }
 
         function loadAllData() {
@@ -1031,10 +1018,7 @@
             const savedUserName = localStorage.getItem('user_name');
             if (savedUserName) {
                 const userName = JSON.parse(savedUserName);
-                // Assign values to inputs directly
-                userFirstnameInput.value = userName.firstName;
-                userLastnameInput.value = userName.lastName;
-                // updateWelcomeMessage() will be called after all DOM elements are assigned
+                // Assign values to inputs directly (will be done after DOM elements are assigned)
             }
 
             const savedSpecialization = localStorage.getItem('selected_specialization');
@@ -1052,6 +1036,11 @@
                 customStartDates = JSON.parse(savedCustomStartDates);
             }
 
+            const savedCustomEndDates = localStorage.getItem('custom_end_dates');
+            if (savedCustomEndDates) {
+                customEndDates = JSON.parse(savedCustomEndDates);
+            }
+
             const savedSessionsData = localStorage.getItem('sessions_data_modified');
             if (savedSessionsData) {
                 sessions = JSON.parse(savedSessionsData);
@@ -1059,8 +1048,7 @@
         }
 
         function updateWelcomeMessage() {
-            // Ensure welcomeMessageDisplay is not null before using it
-            if (welcomeMessageDisplay) {
+            if (welcomeMessageDisplay && userFirstnameInput) { // Ensure elements are defined
                 const firstName = userFirstnameInput.value;
                 if (firstName) {
                     welcomeMessageDisplay.textContent = `Bonjour, ${firstName} ! 👋`;
@@ -1549,38 +1537,8 @@
             return `${day}/${month}/${year}`;
         }
 
-        function renderCalendarTable() {
-            calendarTableBody.innerHTML = sessions.map((session, index) => `
-                <tr class="bg-gray-800 hover:bg-gray-700 transition-colors duration-200">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${session.promo}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${session.session}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                        <input
-                            type="date"
-                            value="${session.endDate}"
-                            data-index="${index}"
-                            class="bg-gray-900 border border-gray-600 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:border-blue-500 calendar-end-date-input"
-                        />
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex items-center space-x-2">
-                            ${session.isConfirmed ? `<span class="text-green-500 w-5 h-5">${CheckCircleIcon}</span>` : `<span class="text-yellow-500 w-5 h-5">${DangerousIcon}</span>`}
-                            <span class="text-gray-300">${session.status}</span>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-
-            // Add event listener for date inputs in the calendar table
-            document.querySelectorAll('#calendar-table-body .calendar-end-date-input').forEach(input => {
-                input.addEventListener('change', (e) => {
-                    const index = parseInt(e.target.dataset.index);
-                    sessions[index].endDate = e.target.value;
-                    saveAllData(); // Save modified sessions data
-                    startCountdown(); // Restart countdown if the end date of the selected session changed
-                });
-            });
-        }
+        // Removed renderCalendarTable as the table is removed from HTML
+        // The sessions data is still used for the dropdown, but not for a visual table.
 
         function updateDisplaySelectedSession() {
             const session = sessions[selectedSessionIndex];
@@ -1593,52 +1551,49 @@
 
         function startCountdown() {
             clearInterval(countdownInterval);
-            const session = sessions[selectedSessionIndex];
-            if (!session) {
+            const session = sessions[selectedSessionIndex]; // Get selected session for context (promo/session name)
+            
+            // Get user-defined start and end dates from inputs
+            const userDefinedStartDateStr = personalStartDateInput.value;
+            const userDefinedEndDateStr = personalEndDateInput.value;
+
+            if (!userDefinedStartDateStr || !userDefinedEndDateStr) {
                 countdownDays.textContent = '0';
                 countdownHours.textContent = '0';
                 countdownMinutes.textContent = '0';
                 countdownSeconds.textContent = '0';
                 deadlineDate.textContent = 'N/A';
-                countdownTitle.textContent = 'Compte à rebours de la session sélectionnée';
+                countdownTitle.textContent = 'Veuillez saisir vos dates de formation.';
                 return;
             }
 
-            const sessionEndDate = new Date(`${session.endDate}T23:59:59`).getTime();
-            deadlineDate.textContent = formatDate(session.endDate);
+            const userDefinedStartDate = new Date(`${userDefinedStartDateStr}T00:00:00`).getTime();
+            const userDefinedEndDate = new Date(`${userDefinedEndDateStr}T23:59:59`).getTime(); // End of day
 
-            const customStartDateStr = customStartDates[selectedSessionIndex];
-            let effectiveUserStartDate = null; 
-
-            if (customStartDateStr) {
-                effectiveUserStartDate = new Date(`${customStartDateStr}T00:00:00`).getTime();
-            } else {
-                // If no custom date is provided by the user, default to the session's official start date
-                effectiveUserStartDate = new Date(`${session.startDate}T00:00:00`).getTime();
-            }
+            deadlineDate.textContent = formatDate(userDefinedEndDateStr);
 
             let targetDateForCountdown;
             let countdownDisplayTitle;
 
             const now = new Date().getTime();
 
-            if (now < effectiveUserStartDate) {
-                // If current time is before the user's effective program start date
-                targetDateForCountdown = effectiveUserStartDate;
+            if (now < userDefinedStartDate) {
+                // If current time is before the user's defined program start date
+                targetDateForCountdown = userDefinedStartDate;
                 countdownDisplayTitle = 'Début de votre formation dans :';
-            } else if (now < sessionEndDate) {
-                // If current time is on or after the user's effective program start date,
-                // but before the session end date
-                targetDateForCountdown = sessionEndDate;
-                countdownDisplayTitle = 'Fin de la session dans :';
+            } else if (now < userDefinedEndDate) {
+                // If current time is on or after the user's defined program start date,
+                // but before the user's defined end date
+                targetDateForCountdown = userDefinedEndDate;
+                countdownDisplayTitle = 'Fin de la formation dans :';
             } else {
-                // If current time is on or after the session end date
+                // If current time is on or after the user's defined end date
                 clearInterval(countdownInterval);
                 countdownDays.textContent = '0';
                 countdownHours.textContent = '0';
                 countdownMinutes.textContent = '0';
                 countdownSeconds.textContent = '0';
-                countdownTitle.textContent = 'Session terminée !';
+                countdownTitle.textContent = 'Formation terminée !';
                 return;
             }
 
@@ -1650,42 +1605,35 @@
 
                 let distance = targetDateForCountdown - nowInLoop;
 
-                // Recalculate target if phase changes (e.g., custom start date is reached)
-                if (effectiveUserStartDate && nowInLoop >= effectiveUserStartDate && targetDateForCountdown === effectiveUserStartDate) {
-                    // If we just passed the effectiveUserStartDate, switch target to sessionEndDate
-                    targetDateForCountdown = sessionEndDate;
-                    countdownDisplayTitle = 'Fin de la session dans :';
+                // Check if phase changes (e.g., userDefinedStartDate is reached)
+                if (nowInLoop >= userDefinedStartDate && targetDateForCountdown === userDefinedStartDate) {
+                    // If we just passed the userDefinedStartDate, switch target to userDefinedEndDate
+                    targetDateForCountdown = userDefinedEndDate;
+                    countdownDisplayTitle = 'Fin de la formation dans :';
                     distance = targetDateForCountdown - nowInLoop; // Recalculate distance with new target
                 }
 
                 if (distance < 0) {
                     // Handle countdown finished for current target
-                    if (targetDateForCountdown === sessionEndDate) {
-                        // If session ended
+                    if (targetDateForCountdown === userDefinedEndDate) {
+                        // If formation ended
                         clearInterval(countdownInterval);
                         countdownDays.textContent = '0';
                         countdownHours.textContent = '0';
                         countdownMinutes.textContent = '0';
                         countdownSeconds.textContent = '0';
-                        countdownTitle.textContent = 'Session terminée !';
+                        countdownTitle.textContent = 'Formation terminée !';
                     } else {
-                        // If custom start date reached, immediately switch to session end countdown
-                        targetDateForCountdown = sessionEndDate;
-                        countdownDisplayTitle = 'Fin de la session dans :';
-                        distance = targetDateForCountdown - nowInLoop; // Recalculate for new target
-                        if (distance < 0) { // If session end is also in past
-                             clearInterval(countdownInterval);
-                             countdownDays.textContent = '0';
-                             countdownHours.textContent = '0';
-                             countdownMinutes.textContent = '0';
-                             countdownSeconds.textContent = '0';
-                             countdownTitle.textContent = 'Session terminée !';
-                        }
+                        // This case should ideally not be reached with the current logic,
+                        // but as a fallback, ensure it ends if somehow still negative.
+                        clearInterval(countdownInterval);
+                        countdownDays.textContent = '0';
+                        countdownHours.textContent = '0';
+                        countdownMinutes.textContent = '0';
+                        countdownSeconds.textContent = '0';
+                        countdownTitle.textContent = 'Formation terminée !';
                     }
-                    // If the distance is still negative after recalculating, it means the session has truly ended.
-                    if (distance < 0) {
-                        return;
-                    }
+                    return; // Exit interval function
                 }
 
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -1722,6 +1670,7 @@
             specializationChoiceRadios = document.querySelectorAll('input[name="specialization-choice"]');
             sessionSelect = document.getElementById('session-select');
             personalStartDateInput = document.getElementById('personal-start-date-input');
+            personalEndDateInput = document.getElementById('personal-end-date-input'); // New DOM element
 
             displaySelectedSession = document.getElementById('display-selected-session');
             deadlineDate = document.getElementById('deadline-date');
@@ -1729,10 +1678,7 @@
             countdownHours = document.getElementById('countdown-hours');
             countdownMinutes = document.getElementById('countdown-minutes');
             countdownSeconds = document.getElementById('countdown-seconds');
-            calendarHeader = document.getElementById('calendar-header');
-            calendarChevron = document.getElementById('calendar-chevron');
-            calendarTableContainer = document.getElementById('calendar-table-container');
-            calendarTableBody = document.getElementById('calendar-table-body');
+            // Removed calendarHeader, calendarChevron, calendarTableContainer, calendarTableBody as calendar table is removed
             motivationalTitle = document.getElementById('motivational-title');
             motivationalText = document.getElementById('motivational-text');
             countdownTitle = document.getElementById('countdown-title');
@@ -1755,11 +1701,19 @@
             sessionSelect.value = selectedSessionIndex; // Set the loaded session
 
             // Set initial values for user settings inputs
-            // userFirstnameInput and userLastnameInput are already set by loadAllData
+            const savedUserName = localStorage.getItem('user_name');
+            if (savedUserName) {
+                const userName = JSON.parse(savedUserName);
+                userFirstnameInput.value = userName.firstName;
+                userLastnameInput.value = userName.lastName;
+            }
             // Set specialization radio button
             document.querySelector(`input[name="specialization-choice"][value="${selectedSpecialization}"]`).checked = true;
             // Set personal start date input
             personalStartDateInput.value = customStartDates[selectedSessionIndex] || '';
+            // Set personal end date input
+            personalEndDateInput.value = customEndDates[selectedSessionIndex] || '';
+
 
             // Initial render and countdown
             updateWelcomeMessage();
@@ -1767,7 +1721,7 @@
             renderEvaluations();
             updateMotivationalPhrase();
             updateDisplaySelectedSession();
-            renderCalendarTable();
+            // Removed renderCalendarTable() as the table is removed
             startCountdown();
 
             // Add event listeners for user settings inputs
@@ -1806,7 +1760,9 @@
             sessionSelect.addEventListener('change', (e) => {
                 selectedSessionIndex = parseInt(e.target.value);
                 saveAllData();
-                personalStartDateInput.value = customStartDates[selectedSessionIndex] || ''; // Update personal start date input
+                // Update personal start/end date inputs based on the newly selected session
+                personalStartDateInput.value = customStartDates[selectedSessionIndex] || '';
+                personalEndDateInput.value = customEndDates[selectedSessionIndex] || '';
                 updateDisplaySelectedSession();
                 startCountdown();
             });
@@ -1817,21 +1773,13 @@
                 startCountdown();
             });
 
-            // Event listener for calendar header to toggle visibility
-            calendarHeader.addEventListener('click', () => {
-                isCalendarTableExpanded = !isCalendarTableExpanded;
-                if (isCalendarTableExpanded) {
-                    calendarTableContainer.style.maxHeight = calendarTableContainer.scrollHeight + 'px';
-                    calendarChevron.innerHTML = ChevronDownIcon;
-                    calendarChevron.classList.remove('rotate-0');
-                    calendarChevron.classList.add('rotate-90');
-                } else {
-                    calendarTableContainer.style.maxHeight = '0';
-                    calendarChevron.innerHTML = ChevronRightIcon;
-                    calendarChevron.classList.remove('rotate-90');
-                    calendarChevron.classList.add('rotate-0');
-                }
+            personalEndDateInput.addEventListener('change', (e) => {
+                customEndDates[selectedSessionIndex] = e.target.value;
+                saveAllData();
+                startCountdown();
             });
+
+            // Removed calendarHeader event listener as the table is removed
         }
 
         document.addEventListener('DOMContentLoaded', initialize);
