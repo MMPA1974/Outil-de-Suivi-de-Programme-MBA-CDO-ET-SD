@@ -1,0 +1,1188 @@
+import React, { useState, useEffect } from 'react';
+
+// Remplacé par des icônes SVG en ligne pour éviter l'erreur d'importation
+const CheckCircleIcon = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+  </svg>
+);
+
+const DangerousIcon = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2L1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z" />
+  </svg>
+);
+
+const ChevronRightIcon = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+  </svg>
+);
+
+
+const initialProgramData = [
+  {
+    code: 'B1',
+    title: "Animer un processus de problématisation et d’idéation à partir d'une analyse des besoins clients",
+    modules: [
+      {
+        code: 'B1_M1',
+        title: 'Analyser les besoins de clients internes/externes',
+        topics: [
+          'La place de la stratégie digitale dans la stratégie globale de l\'entreprise',
+          'L\'environnement technologique et son impact sur l\'entreprise',
+          'La culture et les valeurs de l\'entreprise',
+          'Les études de marché',
+          'La notion de concurrence et diversité concurrentielle',
+          'Le benchmark digital',
+          'Le recueil et l\'analyse des besoins',
+          'Identifier et comprendre le client et sa demande',
+          'Le brief digital',
+        ],
+      },
+      {
+        code: 'B1_M2',
+        title: 'Elaborer un dispositif de veille scientifique, technique, technologique, réglementaire, sectorielle et concurrentielle',
+        topics: [
+          'La démarche de veille',
+          'La veille technologique : sources, référents, outils et bonnes pratiques',
+          'La veille concurrentielle et sectorielle',
+          'Les autres types de veille',
+          'Les matrices de veille',
+          'L\'évaluation de la fiabilité du dispositif de veille',
+        ],
+      },
+      {
+        code: 'B1_M3',
+        title: 'Interpréter et articuler une problématique en matière de projet d’innovation et/ou de transformation à un commanditaire',
+        topics: [
+          'La problématique d\'innovation ou de transformation',
+          'Orienter le projet d\'innovation sur le client final',
+        ],
+      },
+      {
+        code: 'B1_M4',
+        title: 'Identifier et analyser l’ensemble des risques pour la réussite du projet',
+        topics: [
+          'Analyse des contraintes dans la mise en œuvre d\'un projet',
+          'Analyse des risques d\'un projet',
+          'Analyse de l\'impact d\'un projet',
+        ],
+      },
+      {
+        code: 'B1_M5',
+        title: 'Animer un processus créatif de production, développement et communication',
+        topics: [
+          'Apprendre à générer des idées',
+          'Design Thinking : Définir la problématique',
+          'Design Thinking : La phase d’idéation',
+          'Design Thinking : La phase de prototypage de la solution',
+          'Design Thinking : La phase de test de la solution',
+          'Design Thinking : La phase de d\'itération',
+          'Animer un atelier de brainstorming',
+          'Préparer et présenter un dossier de conception',
+        ],
+      },
+      {
+        code: 'B1_M6',
+        title: 'Evaluer l’adéquation des pistes créatives aux besoins des utilisateurs finaux',
+        topics: [
+          'La complémentarité études qualitatives / études quantitatives',
+          'Les études qualitatives',
+          'La mise en œuvre d\'études qualitatives',
+          'Les types d\'études quantitatives',
+          'La réalisation d\'une enquête',
+          'Les méthodes d\'échantillonnage',
+          'Les études à l\'épreuve du numérique',
+        ],
+      },
+    ],
+  },
+  {
+    code: 'B2',
+    title: 'Concevoir un projet de transformation et/ou d’innovation',
+    modules: [
+      {
+        code: 'B2_M1',
+        title: 'Elaborer la proposition de valeur d’un projet',
+        topics: [
+          'Les fondamentaux d\'une proposition de valeur',
+          'Les objectifs d\'une proposition de valeur',
+          'Construire et communiquer sa proposition de valeur',
+        ],
+      },
+      {
+        code: 'B2_M2',
+        title: 'Définir l’organisation, les étapes et les besoins en ressources d\'un projet',
+        topics: [
+          'La planification d\'un projet web',
+          'Le rôle de la note de cadrage',
+          'La rédaction d\'un cahier des charges',
+          'Les différents acteurs du projet',
+          'Identifier et sélectionner les prestataires et les fournisseurs adaptés aux besoins du projet',
+          'La construction d\'un tableau de bord opérationnel',
+        ],
+      },
+      {
+        code: 'B2_M3',
+        title: 'Définir le modèle économique',
+        topics: [
+          'Le budget digital et les décisions d’investissement',
+          'Calculer la rentabilité d’un projet digital',
+          'L\'Executive Summary d\'un projet d\'innovation',
+        ],
+      },
+      {
+        code: 'B2_M4',
+        title: 'Définir le business plan d\'un projet de transformation et/ou d’innovation',
+        topics: [
+          'La préparation et la structuration du business plan',
+          'La faisabilité économique et financière du business plan',
+          'Quels chiffres dans un business plan ?',
+        ],
+      },
+      {
+        code: 'B2_M5',
+        title: 'Défendre la solution sélectionnée/le projet de transformation',
+        topics: [
+          'Présenter son Business Plan',
+          'Soutenir son business plan',
+          'La présentation écrite d\'un projet',
+          'Des présentations de résultats impactantes',
+        ],
+      },
+    ],
+  },
+  {
+    code: 'B3',
+    title: 'Concevoir et mettre en œuvre une stratégie de communication interne/externe',
+    modules: [
+      {
+        code: 'B3_M1',
+        title: 'Identifier les cibles de communication internes / externes et les utilisateurs finaux',
+        topics: [
+          'Identifier ses cibles',
+          'Les objectifs de communication',
+          'Les cibles en fonction des différents réseaux sociaux',
+          'La création des personas',
+        ],
+      },
+      {
+        code: 'B3_M2',
+        title: 'Concevoir et déployer une stratégie de communication à destination de cibles internes',
+        topics: [
+          'La stratégie de communication : le positionnement',
+          'La stratégie de communication : Les objectifs',
+          'La stratégie de communication : Les cibles',
+          'La stratégie de communication : L\'axe créatif',
+          'Le projet de communication',
+          'Fixer des objectifs SMART',
+          'Les outils de mesure de l\'efficacité',
+          'La place de la conduite du changement',
+        ],
+      },
+      {
+        code: 'B3_M3',
+        title: 'Elaborer une stratégie de communication à destination de cibles externes',
+        topics: [
+          'Le positionnement de communication',
+          'Le rôle du plan de communication',
+          'Les composantes du plan de communication',
+          'La définition des médias cible',
+          'La budgétisation et le calendrier des actions',
+        ],
+      },
+      {
+        code: 'B3_M4',
+        title: 'Réaliser une campagne de communication créative',
+        topics: [
+          'Les messages clés dans le cadre d\'une communication efficace',
+          'Structurer son message',
+          'Production d\'un message',
+          'Le storytelling',
+          'Les moyens et supports de communication',
+        ],
+      },
+    ],
+  },
+  {
+    code: 'B4',
+    title: 'Piloter un projet d’innovation et/ou de transformation jusqu\'à la phase de rendu final',
+    modules: [
+      {
+        code: 'B4_M1',
+        title: 'Réaliser le prototypage des différentes pistes créatives',
+        topics: [
+          'La phase d’idéation',
+          'Le prototypage de la solution',
+          'La réalisation de maquettes avec des prototypes UX',
+          'Introduction au parcours interactif et au prototypage',
+        ],
+      },
+      {
+        code: 'B4_M2',
+        title: 'Observer les utilisateurs durant la phase test',
+        topics: [
+          'Test utilisateur',
+          'Evaluation quantitative de la solution proposée',
+          'Evaluation qualitative de la solution proposée',
+          'Recueillir des informations sur les comportements utilisateurs',
+          'Élaborer les fiches d\'observation',
+          'Construire les rapports de test',
+        ],
+      },
+      {
+        code: 'B4_M3',
+        title: 'Concevoir et réaliser une solution d\'un projet d’innovation et/ou de transformation',
+        topics: [
+          'La démarche qualité',
+          'La mesure de la qualité',
+          'Les tests qualité selon la nature des livrables',
+          'Normes et réglementations',
+          'Low tech',
+          'Présentation d\'une maquette de solution d\'innovation ou de transformation',
+        ],
+      },
+      {
+        code: 'B4_M4',
+        title: 'Piloter des revues de projet',
+        topics: [
+          'La revue de projet dans le cycle de vie d\'un projet',
+          'Les participants à la revue de projet',
+          'Animer des réunions structurées',
+          'Les outils d\'une revue de projet',
+        ],
+      },
+      {
+        code: 'B4_M5',
+        title: 'Évaluer l\'atteinte des objectifs du projet d’innovation et/ou de transformation',
+        topics: [
+          'Le cahier des charges des livrables',
+          'Éléments et critères de mesure de l\'expérience client',
+          'Le management de la qualité des projets',
+          'L\'évaluation d\'un projet : le bilan qualitatif',
+        ],
+      },
+      {
+        code: 'B4_M6',
+        title: 'Piloter une démarche d’amélioration continue',
+        topics: [
+          'Le suivi des indicateurs qualité et amélioration continue',
+          'Organiser une gouvernance dans le cadre d\'une démarche d\'amélioration continue',
+          'Méthodologie pour piloter un projet digital : une démarche itérative',
+          'Émettre des recommandations pour les futurs projets',
+        ],
+      },
+    ],
+  },
+  {
+    code: 'B5',
+    title: 'Manager une équipe projet, une direction technique et/ou une équipe transverse',
+    modules: [
+      {
+        code: 'B5_M1',
+        title: 'Sélectionner les membres de l’équipe projet (internes et externes)',
+        topics: [
+          'Recruter les compétences opérationnelles nécessaires à l\'équipe projet digital',
+          'Les compétences et talents',
+          'Typologie des organismes de prestataires',
+          'L\'utilité du suivi de la performance',
+          'La performance et l\'évaluation de de la prestation',
+        ],
+      },
+      {
+        code: 'B5_M2',
+        title: 'Évaluer l’adéquation entre les profils des collaborateurs de l’équipe projet et le besoin en compétences',
+        topics: [
+          'Cartographier les compétences nécessaires au projet',
+          'Les compétences comportementales ou soft skills',
+          'La maîtrise des processus',
+          'Les relations d\'équipes face aux tâches',
+          'L\'amélioration du travail en équipe',
+          'La communication avec l\'équipe projet',
+          'Traiter les dysfonctionnements du travail en équipe',
+        ],
+      },
+      {
+        code: 'B5_M3',
+        title: 'Diriger une équipe projet composée d\'intervenants internes et externes',
+        topics: [
+          'Communiquer sur son projet pour développer l’adhésion',
+          'Le business model canvas',
+          'La présentation écrite d\'un projet',
+          'La politique d\'inclusion en entreprise',
+          'La lutte contre la discrimination',
+        ],
+      },
+    ],
+  },
+  {
+    code: 'B6',
+    title: 'Garantir la performance d’un projet de transformation et/ou d’innovation en matière de technique et/ou technologie',
+    specialization: 'CDO',
+    modules: [
+      {
+        code: 'B6_M1',
+        title: 'Piloter un projet de transformation et/ou d’innovation en matière de technique et/ou technologie',
+        topics: [
+          'Les spécificités du projet digital',
+          'Le recueil de l\'analyse des besoins',
+          'Définir la solution et le projet cibles',
+          'Définir les objectifs et faire valider l’opportunité du projet',
+          'Le choix technologique de la solution',
+          'Le cahier des charges technique : détailler la mise en œuvre',
+          'Le cahier des charges technique : du besoin à la solution technique',
+          'La construction du planning',
+          'Les principaux acteurs d’un projet digital : la maîtrise d’œuvre',
+          'Les principaux acteurs d’un projet digital : la maîtrise d’ouvrage',
+          'Établir la gouvernance du projet, définir les rôles et les responsabilités',
+        ],
+      },
+      {
+        code: 'B6_M2',
+        title: 'Définir l’architecture technique adaptée au projet',
+        topics: [
+          'Introduction aux architectures multicouches',
+          'Les design patterns',
+          'Les frameworks et ORM',
+          'Les microservices et architecture distribuée',
+          'L\'éco-conception dans l\'architecture logicielle',
+          'L\'offre de service d\'un fournisseur de services Cloud',
+          'Les solutions SaaS et leurs implications architecturales',
+          'Les principes de sécurité en architecture',
+          'La réalisation de l\'étude de faisabilité',
+          'Le cahier des charges technique : description fonctionnelle et technique',
+          'Le cahier des charges techniques : budget, délais et suivi',
+          'Rédiger un dossier technique d\'architecture',
+        ],
+      },
+      {
+        code: 'B6_M3',
+        title: 'Tester sa solution digitale',
+        topics: [
+          'La démarche qualité en développement',
+          'La démarche DevOps',
+          'La mise en place de l\'intégration continue (CI)',
+          'La mise en place de la livraison ou déploiement continu (CD)',
+          'Les enjeux des plans de test',
+          'Élaborer un scénario de test',
+          'Mettre en place un environnement de test',
+          'Les outils et les stratégies des tests de sécurité',
+          'Planifier efficacement les tests',
+          'Valider les résultats des tests',
+          'Automatiser les tests en DevOps',
+        ],
+      },
+      {
+        code: 'B6_M4',
+        title: 'Émettre des préconisations quant à la résolution de problèmes techniques',
+        topics: [
+          'La résolution d\'une situation critique pour la survie du projet',
+          'Réaliser une analyse causale à l’aide d’entretiens et d’enquêtes terrain',
+          'La conception de la solution grâce au Design Thinking',
+        ],
+      },
+    ],
+  },
+  {
+    code: 'B7',
+    title: 'Concevoir et mettre en œuvre de la stratégie de communication',
+    specialization: 'SD',
+    modules: [
+      {
+        code: 'B7_M1',
+        title: 'Élaborer et déployer une stratégie de brand content',
+        topics: [
+          'Une introduction à la stratégie de contenu',
+          'Les étapes de la stratégie de contenu',
+          'Les KPI dans la stratégie de contenu',
+          'Le développement d\'une stratégie de contenu',
+          'Les étapes de la stratégie de création de contenu',
+          'Réussir sa stratégie de création de contenu',
+          'L\'orientation artistique et le brief créatif',
+          'Introduction à la production de contenus digitaux',
+          'La création de contenu digital en adéquation avec sa cible',
+          'Le brand content',
+          'Le brand content et le storytelling digital',
+          'Le contenu de marque',
+        ],
+      },
+      {
+        code: 'B7_M2',
+        title: 'Promouvoir un site internet, une application mobile ou une web app',
+        topics: [
+          'Les sites internet',
+          'Le référencement des sites Web',
+          'Les nouvelles techniques du SEO',
+          'UX/UI Design',
+          'Les coûts de promotion',
+          'Introduction aux social ads (publicité sur les réseaux sociaux)',
+          'Les différentes formes de communication',
+          'Les moyens et supports de communication',
+          'Les supports audio-visuels',
+          'Le multicanal et le mix marketing',
+          'Les outils de mesure de l\'efficacité',
+        ],
+      },
+      {
+        code: 'B7_M3',
+        title: 'Produire un contenu différenciant',
+        topics: [
+          'La rédaction de la charte et de la ligne éditoriale',
+          'Les outils du content marketing',
+          'Animation du plan d’action marketing',
+          'Produire du contenu avec l\'IA générative',
+        ],
+      },
+    ],
+  },
+];
+
+const sessionsData = [
+  {
+    promo: '2025',
+    session: 'Session 2',
+    startDate: '2025-01-01',
+    endDate: '2025-11-24',
+    status: '✅ Date confirmée par Studie',
+    isConfirmed: true
+  },
+  {
+    promo: '2026',
+    session: 'Session 1',
+    startDate: '2026-01-01',
+    endDate: '2026-05-28',
+    status: '⚠️ Date fictive – en attente de validation',
+    isConfirmed: false
+  },
+  {
+    promo: '2026',
+    session: 'Session 2',
+    startDate: '2026-01-01',
+    endDate: '2026-11-26',
+    status: '⚠️ Date fictive – en attente de validation',
+    isConfirmed: false
+  },
+  {
+    promo: '2027',
+    session: 'Session 1',
+    startDate: '2027-01-01',
+    endDate: '2027-05-27',
+    status: '⚠️ Date fictive – en attente de validation',
+    isConfirmed: false
+  },
+  {
+    promo: '2027',
+    session: 'Session 2',
+    startDate: '2027-01-01',
+    endDate: '2027-11-25',
+    status: '⚠️ Date fictive – en attente de validation',
+    isConfirmed: false
+  },
+  {
+    promo: '2028',
+    session: 'Session 1',
+    startDate: '2028-01-01',
+    endDate: '2028-05-25',
+    status: '⚠️ Date fictive – en attente de validation',
+    isConfirmed: false
+  },
+  {
+    promo: '2028',
+    session: 'Session 2',
+    startDate: '2028-01-01',
+    endDate: '2028-11-23',
+    status: '⚠️ Date fictive – en attente de validation',
+    isConfirmed: false
+  },
+];
+
+// Critères d'évaluation communs aux deux spécialisations (CDO et SD)
+const sharedEvaluationCriteria = {
+  B1: {
+    title: "Animer un processus de problématisation et d'idéation...",
+    criteria: {
+      "C1.1 Analyser les besoins de clients internes/externes": [
+        "Démontre la bonne utilisation de grilles de lecture issues de plusieurs disciplines (sciences humaines et sociales, sciences du design, marketing, management,...).",
+        "Identification des enjeux et des forces sous-jacents à la demande.",
+        "Démontre sa compréhension de la culture d'entreprise et du positionnement du commanditaire, et leur influence sur les enjeux rencontrés.",
+        "Démontre la maîtrise des méthodologies d'interviews, de questionnements et de reformulation."
+      ],
+      "C1.2 Élaborer un dispositif de veille": [
+        "Présentation d'une cartographie des principaux domaines de veille exposant la finalité générale, les objectifs précis et les moyens mobilisés.",
+        "Démontre la pertinence des outils de veille utilisés au regard des objectifs recherchés.",
+        "Démontre la pertinence et la fiabilité des sources utilisées.",
+        "Synthétise l'information et démontre sa capacité à la restituer.",
+        "Démontre l'intérêt des informations complémentaires recherchées."
+      ],
+      "C1.3 Interpréter et articuler une problématique": [
+        "Au travers de sa formulation, le cadre d'intervention et les enjeux doivent transparaître de manière claire et concise de façon à ce que le lecteur puisse déjà avoir une idée sur les portées et limites de l'étude.",
+        "La possibilité de travailler sur le sujet prédéfini se démontre dans l'énonciation de la problématique.",
+        "Le respect de l'équilibre entre l'exploration et la quête d'innovation est impératif.",
+        "Démontre l'intérêt de la problématique au regard de la culture d'entreprise, des besoins préalablement identifiés, de son positionnement, et des enjeux rencontrés."
+      ],
+      "C1.4 Identifier et analyser l'ensemble des risques": [
+        "Démontre sa connaissance des concepts et méthodes de management des risques.",
+        "Définit une politique de management des risques réaliste au regard du contexte.",
+        "Les événements susceptibles de représenter un risque pour le projet sont identifiés de façon exhaustive.",
+        "Démontre sa maîtrise des outils de gestion des risques (modèle de cotation de la gravité).",
+        "Les préconisations en matière de gestion des risques sont cohérentes et pertinentes."
+      ],
+      "C1.5 Animer un processus créatif": [
+        "Le candidat présente de façon ludique l'atelier et explicite les règles et la méthodologie de déploiement. L'explication est claire et compréhensible pour un public néophyte.",
+        "La méthodologie et les outils utilisés permettent de favoriser la génération d'idées et de garantir le maintien d'une bonne atmosphère.",
+        "Le candidat démontre l'apport de la méthodologie par rapport au projet à mener. Il explicite et argumente son choix. Il démontre une prise de hauteur nécessaire."
+      ],
+      "C1.6 Évaluer l'adéquation des pistes créatives": [
+        "Le candidat utilise des méthodologies de tests utilisateurs (quantitatifs ou qualitatifs) suivant des protocoles ad hoc adaptés.",
+        "Le candidat adopte une attitude d'apprentissage et ne cherche pas à défendre sa solution ou à influencer les réponses des utilisateurs.",
+        "Démontre sa capacité à prendre en compte des éléments issus de la communication non verbale.",
+        "Le candidat documente les résultats de manière à en faciliter l'analyse."
+      ]
+    }
+  },
+  B2: {
+    title: "Concevoir un projet de transformation et/ou d'innovation",
+    criteria: {
+      "C2.1 Élaborer la proposition de valeur": [
+        "La proposition de valeur est pertinente car elle répond à la problématique définie.",
+        "Le candidat présente les avantages de l'offre face à la concurrence de façon synthétique et réaliste.",
+        "Il démontre que la proposition de valeur est unique et claire."
+      ],
+      "C2.2 Définir l'organisation": [
+        "Le candidat choisit et détaille une méthodologie de projet adaptée à l'organisation.",
+        "Démontre sa maîtrise de la méthodologie de gestion de projet.",
+        "Il identifie correctement les parties intéressées et présente une gouvernance du projet efficiente.",
+        "Il propose un compte rendu et un document de suivi pertinents (visuel, reprenant les solutions sélectionnées, le rétroplanning et les livrables attendus)."
+      ],
+      "C2.3 et C2.4 Définir le modèle économique et le business plan": [
+        "L'executive summary est synthétique, percutant, pédagogique et didactique.",
+        "Démontre sa maîtrise de la structure d'un business plan complet (nom de l'entreprise, activité, valeurs, histoire, audience cible, typologie du marché).",
+        "Les moyens nécessaires à la mise en œuvre du projet sont listés et sont réalistes.",
+        "L'évaluation des investissements et des charges globales est cohérente au regard des capacités de financements."
+      ],
+      "C2.5 Défendre la solution sélectionnée": [
+        "Le candidat propose des préconisations pertinentes et démontre l'exploitation et la bonne interprétation des résultats des tests utilisateurs.",
+        "Le candidat respecte le cadre et le formalisme imposés.",
+        "La présentation est argumentée et convaincante."
+      ]
+    }
+  },
+  B3: {
+    title: "Conception et mise en œuvre d'une stratégie de communication interne/externe",
+    criteria: {
+      "C3.1 Identifier les cibles de communication": [
+        "Le candidat propose une identification de la cible complète (habitudes, persona, âge, besoins).",
+        "Il segmente la clientèle de manière pertinente.",
+        "La construction d'un personae synthétise de façon claire et concise les résultats de l'analyse de l'audience.",
+        "Les objectifs de la stratégie de communication sont définis et sont SMART."
+      ],
+      "C3.2 Concevoir et déployer une stratégie de communication interne": [
+        "Les actions de communication déployées permettent aux collaborateurs de s'approprier le projet.",
+        "Les indicateurs de résultats de la stratégie sont définis."
+      ],
+      "C3.3 Élaborer une stratégie de communication externe": [
+        "La stratégie de communication reflète une traduction créative de la proposition de valeur du projet.",
+        "Les objectifs de la stratégie sont définis et sont SMART.",
+        "Les axes de communication et les différents canaux sont définis et adaptés à la cible.",
+        "Le plan de communication est élaboré, avec des actions temporellement planifiées.",
+        "Le budget de la stratégie est défini et respecté."
+      ],
+      "C3.4 Réaliser une campagne de communication créative": [
+        "Les objectifs du dispositif de communication sont clairement définis.",
+        "Le message du dispositif est bref et percutant.",
+        "Les techniques de storytelling sont utilisées.",
+        "Les choix effectués respectent les codes de la marque et sont adaptés à son canal de diffusion (online, off-line) et au support."
+      ]
+    }
+  },
+  B4: {
+    title: "Pilotage du projet d'innovation et/ou de transformation...",
+    criteria: {
+      "C4.1 Réaliser le prototypage": [
+        "Prise en compte des informations qualitatives et quantitatives lors des recherches exploratoires pour la création des représentations de produits, de services, d'espace et d'identité.",
+        "Qualité et pertinence des représentations produites.",
+        "Pertinence des différents choix techniques, matériaux, données, ergonomie.",
+        "Créativité et choix esthétiques.",
+        "Pertinence des solutions proposées au regard du brief et de la démarche mise en œuvre."
+      ],
+      "C4.2 Observer les utilisateurs": [
+        "Le candidat utilise des méthodologies de tests utilisateurs quantitatifs ou qualitatifs.",
+        "Le candidat adopte une attitude d'apprentissage et ne cherche pas à défendre sa solution ou à influencer les réponses.",
+        "Démontre sa capacité à prendre en compte des éléments issus de la communication non verbale.",
+        "Le candidat documente les résultats de manière à en faciliter l'analyse."
+      ],
+      "C4.3 Concevoir et réaliser une solution": [
+        "Démontre la prise en compte de plusieurs critères lors de l'évaluation d'une maquette de principe (fonctionnalités, ergonomie, réactions des utilisateurs).",
+        "Pertinence de l'application de la solution (utilité, utilisabilité et plaisir à l'usage)."
+      ],
+      "C4.4 Piloter des revues de projet": [
+        "Le candidat démontre que la revue de projet a été menée de façon complète et systématique à l'aide de documents.",
+        "Il démontre que la revue de projet a permis d'évaluer le respect des exigences qualité, d'identifier les problèmes et de proposer des solutions.",
+        "Les documents utilisés retracent l'évolution du projet, rappellent les objectifs et prennent en compte les aspects légaux et réglementaires."
+      ],
+      "C4.5 Évaluer l'atteinte des objectifs": [
+        "Les indicateurs de suivi et de réussite du projet utilisés sont pertinents.",
+        "Le candidat démontre que le projet a été piloté avec le souci de respecter la problématique.",
+        "Il propose une évaluation globale du déroulé et de la réussite du projet."
+      ],
+      "C4.6 Piloter une démarche d'amélioration continue": [
+        "Le candidat explicite la façon dont il va mobiliser la direction générale et la gouvernance du projet.",
+        "La démarche itérative est explicitée et permet d'intégrer facilement des ajustements éventuels.",
+        "Le candidat identifie correctement les objectifs et freins potentiels à la réalisation du projet, et apporte des réponses permettant de lever ces résistances aux changements."
+      ]
+    }
+  },
+  B5: {
+    title: "Management d'une équipe projet, d'une direction technique et/ou d'une équipe transverse",
+    criteria: {
+      "C5.1 et C5.2 Sélectionner et évaluer l'équipe": [
+        "Le candidat traduit correctement les enjeux du projet et les compétences clés à maîtriser.",
+        "Il identifie des critères ayant permis de constituer une équipe (expérience, diplômes, aspirations).",
+        "Il évalue la performance de chaque membre et explicite les axes d'amélioration.",
+        "Le candidat évalue justement le besoin en compétence de l'équipe projet.",
+        "Explication claire du rôle de chacun et des ajustements mis en œuvre."
+      ],
+      "C5.3 Diriger une équipe projet": [
+        "Le document doit expliquer de façon claire et pédagogique aux différentes parties prenantes le mode de fonctionnement et les conséquences de l'approche de gestion choisie.",
+        "Le candidat rend évidentes les étapes de production de la solution et les ressources mobilisées.",
+        "Il décrit précisément le déroulement et la planification d'un cycle d'itération.",
+        "Il explicite les rôles des membres de l'équipe dans la mise en œuvre de l'approche."
+      ]
+    }
+  }
+};
+
+const cdoEvaluationCriteria = {
+  B6: {
+    title: "Garantir la performance d'un projet de transformation et/ou d'innovation en matière de technique et/ou technologie",
+    criteria: {
+      "C6B.1 Piloter un projet de transformation et/ou d'innovation...": [
+        "Il/elle démontre sa capacité à choisir une méthode et des outils de suivi de projet adapté à sa nature et aux objectifs stratégiques préalablement définis.",
+        "Il/elle définit de façon exhaustive les livrables attendus (livrables fonctionnels, éditoriaux, graphiques, et d'intégration...)",
+        "Il présente un calendrier de déploiement de projet réaliste au vu du projet.",
+        "Le candidat présente un plan de coordination des acteurs complet comprenant l'animation de réunion, les temps forts type campagnes de communication/sensibilisation... Le plan de coordination est réaliste."
+      ],
+      "C6B.2 Définir l'architecture technique adaptée...": [
+        "Les nomenclatures utilisées doivent être impérativement univoques et homogènes.",
+        "Le document de spécifications fonctionnelles doit être structuré, hiérarchisé, lisible et s'appuyer sur des représentations graphiques dans le respect des bonnes pratiques et des standards du secteur.",
+        "Les enjeux d'évolutivité de la solution doivent être la clé des choix architecturaux et de l'expression de leur motivation dans le document."
+      ],
+      "C6B.3 Emettre des préconisations quant à la résolution de problèmes techniques...": [
+        "Le candidat devra expliciter et valider au regard des connaissances et bonnes pratiques existantes: la méthode adéquate pour identifier la source des bogues, la manière de les pratiques de test et la validation des correctifs.",
+        "Les préconisations en matière de corrections de bogues sont réalistes et pertinentes au regard du problème technique identifié.",
+        "Le candidat utilise correctement le vocabulaire et les terminologies métiers."
+      ]
+    }
+  }
+};
+
+const sdEvaluationCriteria = {
+  B7: {
+    title: "Concevoir et mettre en œuvre de la stratégie de communication",
+    criteria: {
+      "C6A.1 Élaborer et déployer une stratégie de brand content": [
+        "Le candidat identifie correctement son audience (groupe de personnes susceptibles d'adhérer à la marque et/ou de réagir à son discours).",
+        "La stratégie de brand content est claire et intègre l'identité visuelle, la planification des publications, les types de contenus (écrits, visuels, sonores, audiovisuels, oeuvres... à publier et la teneur des messages à porter (style, vocabulaire, ton...)).",
+        "Le candidat choisit les médias pertinents sur lesquels diffuser sa stratégie de brand content au regard de la stratégie globale de l'organisation et de sa cible."
+      ],
+      "C6A 2 Promouvoir un site internet, une application mobile ou une web app": [
+        "Le candidat propose une stratégie de référencement (naturel et payant) cohérente par rapport à la stratégie globale de l'organisation, sa cible, son positionnement et son budget.",
+        "Le candidat présente une stratégie de cross-promotion réaliste et pertinente intégrant l'ensemble des médias sur lesquels communiquer en vue de la promotion du site interne/de l'application mobile/web mobile."
+      ],
+      "C6A.3 Produire un contenu différenciant et/ou innovant": [
+        "Le candidat détermine des objectifs chiffrés et mesurables d'acquisition et de transformation des cibles visées selon les canaux de communication retenus dans le cadre de la stratégie de brand content.",
+        "Le candidat propose une ligne éditoriale claire et différenciante. Cette ligne éditoriale est respectée dans le cadre de la production des différents contenus.",
+        "Le contenu proposé par le candidat est différenciant en ce sens qu'il aborde le sujet en profondeur, en s'appuyant sur l'existant (source) et en intégrant un point de vue novateur.",
+        "Le candidat démontre sa maîtrise du cycle de vie du content marketing pour gagner en visibilité. Lorsque cela est possible, il explicite les tâches automatisables.",
+        "Le candidat démontre sa capacité à mobiliser des connaissances théoriques (théories, actualité, méthodes de travail...) et à les adapter pour répondre à un contexte spécifique et complexe."
+      ]
+    }
+  }
+};
+
+const motivationalPhrases = [
+    { title: "N'abandonnez jamais", text: "Chaque pas, même le plus petit, vous rapproche de votre objectif. La persévérance est la clé du succès." },
+    { title: "Le succès est au bout de l'effort", text: "La seule limite à notre épanouissement de demain sera nos doutes d'aujourd'hui." },
+    { title: "Croyez en vos rêves", text: "La meilleure façon de prédire l'avenir est de le créer." },
+    { title: "Chaque jour est une nouvelle chance", text: "Ne laissez pas hier prendre trop de place aujourd'hui." },
+    { title: "Le travail d'équipe rend le rêve possible", text: "Seul on va plus vite, ensemble on va plus loin." },
+];
+
+const App = () => {
+  const [selectedSpecialization, setSelectedSpecialization] = useState('CDO');
+  const [programProgress, setProgramProgress] = useState(() => {
+    const savedData = localStorage.getItem('mba_tracker_progress');
+    if (savedData) {
+      return JSON.parse(savedData);
+    }
+    return initialProgramData.map((block) => ({
+      ...block,
+      modules: block.modules.map((module) => ({
+        ...module,
+        topics: module.topics.map((topic) => ({
+          text: topic,
+          isCompleted: false,
+        })),
+      })),
+    }));
+  });
+  const [sessions, setSessions] = useState(sessionsData);
+  const [expandedBlocks, setExpandedBlocks] = useState({});
+  const [expandedModules, setExpandedModules] = useState({});
+  const [isCalendarTableExpanded, setIsCalendarTableExpanded] = useState(false);
+  const [selectedSessionIndex, setSelectedSessionIndex] = useState(0);
+  const [countdown, setCountdown] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+  const [motivationalPhrase, setMotivationalPhrase] = useState({});
+
+  useEffect(() => {
+    localStorage.setItem('mba_tracker_progress', JSON.stringify(programProgress));
+  }, [programProgress]);
+
+  useEffect(() => {
+    const session = sessions[selectedSessionIndex];
+    if (!session) return;
+
+    const deadline = new Date(`${session.endDate}T23:59:59`);
+    
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = deadline - now;
+
+      if (distance < 0) {
+        clearInterval(interval);
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setCountdown({ days, hours, minutes, seconds });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [selectedSessionIndex, sessions]);
+
+  useEffect(() => {
+    const randomPhrase = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
+    setMotivationalPhrase(randomPhrase);
+  }, []);
+
+  const handleTopicChange = (blockIndex, moduleIndex, topicIndex) => {
+    const newProgress = [...programProgress];
+    const topic = newProgress[blockIndex].modules[moduleIndex].topics[topicIndex];
+    topic.isCompleted = !topic.isCompleted;
+    setProgramProgress(newProgress);
+  };
+
+  const toggleBlock = (blockCode) => {
+    setExpandedBlocks((prev) => ({
+      ...prev,
+      [blockCode]: !prev[blockCode],
+    }));
+  };
+
+  const toggleModule = (moduleCode) => {
+    setExpandedModules((prev) => ({
+      ...prev,
+      [moduleCode]: !prev[moduleCode],
+    }));
+  };
+  
+  const toggleCalendarTable = () => {
+    setIsCalendarTableExpanded(!isCalendarTableExpanded);
+  };
+
+  const calculateProgress = (items) => {
+    const total = items.length;
+    if (total === 0) return 0;
+    const completed = items.filter((item) => item.isCompleted).length;
+    return Math.round((completed / total) * 100);
+  };
+
+  const getModuleProgress = (blockIndex, moduleIndex) => {
+    const topics = programProgress[blockIndex].modules[moduleIndex].topics;
+    return calculateProgress(topics);
+  };
+
+  const getBlockProgress = (blockIndex) => {
+    const block = programProgress[blockIndex];
+    const topics = block.modules.flatMap((module) => module.topics);
+    return calculateProgress(topics);
+  };
+
+  const getTotalProgress = () => {
+    const allTopics = programProgress.flatMap((block) =>
+      block.modules.flatMap((module) => module.topics)
+    );
+    return calculateProgress(allTopics);
+  };
+
+  const handleDateChange = (index, newDate) => {
+    const newSessions = [...sessions];
+    newSessions[index].startDate = newDate;
+    setSessions(newSessions);
+  };
+
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+  const renderProgressBar = (progress) => (
+    <div className="w-full bg-gray-700 rounded-full h-2.5 mt-2 overflow-hidden">
+      <div
+        className="h-2.5 rounded-full transition-all duration-500 ease-in-out"
+        style={{
+          width: `${progress}%`,
+          background: `linear-gradient(90deg, #ffc107, #ff4081)`,
+        }}
+      ></div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-gray-100 p-8 font-sans">
+      <header className="mb-12 text-center">
+        <h1 className="text-4xl font-bold mb-2 text-white">
+          🚀 Programme <span className="text-yellow-400">MBA</span>
+        </h1>
+        <p className="text-gray-400">
+          Chief Digital Officer (CDO) et Stratégie Digitale (SD)
+        </p>
+
+        {/* Specialization Selection */}
+        <div className="mt-8 flex justify-center space-x-4">
+          <button
+            onClick={() => setSelectedSpecialization('CDO')}
+            className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
+              selectedSpecialization === 'CDO'
+                ? 'bg-orange-600 text-white shadow-lg'
+                : 'bg-gray-700 text-gray-300 hover:bg-orange-800'
+            }`}
+          >
+            CDO
+          </button>
+          <button
+            onClick={() => setSelectedSpecialization('SD')}
+            className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
+              selectedSpecialization === 'SD'
+                ? 'bg-fuchsia-600 text-white shadow-lg'
+                : 'bg-gray-700 text-gray-300 hover:bg-fuchsia-800'
+            }`}
+          >
+            SD
+          </button>
+        </div>
+      </header>
+
+      {/* Global Progress */}
+      <section className="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
+        <h2 className="text-2xl font-semibold text-white mb-2">Progression Globale 📈</h2>
+        <div className="flex items-center space-x-4">
+          <span className="text-3xl font-extrabold text-white">{getTotalProgress()}%</span>
+          <div className="flex-grow">{renderProgressBar(getTotalProgress())}</div>
+        </div>
+      </section>
+
+      <main className="grid gap-8">
+        {programProgress.map((block, blockIndex) => {
+          const isSpecializationBlock = block.specialization && block.specialization !== selectedSpecialization;
+          if (isSpecializationBlock) return null;
+
+          const blockProgress = getBlockProgress(blockIndex);
+          const accentColor = block.code === 'B6' && selectedSpecialization === 'CDO'
+            ? 'bg-orange-600'
+            : block.code === 'B7' && selectedSpecialization === 'SD'
+            ? 'bg-fuchsia-600'
+            : 'bg-blue-600';
+          const headerColor = block.code === 'B6' && selectedSpecialization === 'CDO'
+            ? 'text-orange-400'
+            : block.code === 'B7' && selectedSpecialization === 'SD'
+            ? 'text-fuchsia-400'
+            : 'text-blue-400';
+          const isBlockExpanded = !!expandedBlocks[block.code];
+          
+          const sharedData = sharedEvaluationCriteria[block.code] ? sharedEvaluationCriteria[block.code] : {};
+          const specificData = block.specialization === 'CDO' ? cdoEvaluationCriteria[block.code] : sdEvaluationCriteria[block.code];
+          
+          const criteriaTitleColor = block.specialization === 'SD' ? 'text-fuchsia-400' : 'text-orange-400';
+          const criteriaBulletColor = block.specialization === 'SD' ? 'text-pink-500' : 'text-yellow-400';
+          const specialTitleColor = block.specialization === 'SD' ? 'text-fuchsia-400' : 'text-orange-400';
+
+
+          return (
+            <div key={block.code} className="bg-gray-800 rounded-xl p-6 shadow-lg border-l-4 border-l-gray-700">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => toggleBlock(block.code)}
+              >
+                <div className="flex items-center">
+                  <ChevronRightIcon
+                    className={`w-6 h-6 mr-2 text-white transition-transform duration-300 ${isBlockExpanded ? 'rotate-90' : ''}`}
+                  />
+                  <h2 className={`text-xl font-bold ${headerColor}`}>{block.code} : {block.title}</h2>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-lg font-semibold text-white">{blockProgress}%</span>
+                  <div className="w-24 bg-gray-700 rounded-full h-2.5">
+                    <div
+                      className={`h-2.5 rounded-full transition-all duration-500 ease-in-out ${accentColor}`}
+                      style={{ width: `${blockProgress}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              {isBlockExpanded && (
+                <div className="grid gap-4 mt-4">
+                  {block.modules.map((module, moduleIndex) => {
+                    const moduleProgress = getModuleProgress(blockIndex, moduleIndex);
+                    const isModuleExpanded = !!expandedModules[module.code];
+                    return (
+                      <div key={module.code} className="p-4 bg-gray-700 rounded-lg">
+                        <div
+                          className="flex justify-between items-center cursor-pointer"
+                          onClick={() => toggleModule(module.code)}
+                        >
+                          <div className="flex items-center">
+                            <ChevronRightIcon
+                              className={`w-5 h-5 mr-2 text-gray-300 transition-transform duration-300 ${isModuleExpanded ? 'rotate-90' : ''}`}
+                            />
+                            <h3 className="text-md font-semibold text-gray-200">
+                              {module.code} : {module.title}
+                            </h3>
+                          </div>
+                          <span className="text-sm font-medium text-gray-300">{moduleProgress}%</span>
+                        </div>
+
+                        {isModuleExpanded && (
+                          <div className="grid gap-2 mt-2">
+                            {module.topics.map((topic, topicIndex) => (
+                              <div key={topicIndex} className="flex items-center text-gray-300">
+                                <input
+                                  type="checkbox"
+                                  checked={topic.isCompleted}
+                                  onChange={() => handleTopicChange(blockIndex, moduleIndex, topicIndex)}
+                                  className="form-checkbox h-4 w-4 text-pink-500 rounded border-gray-600 focus:ring-pink-500 bg-gray-800 transition-colors duration-200 cursor-pointer"
+                                />
+                                <span className="ml-3 text-sm">{topic.text}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  
+                  {/* Critères d'évaluation */}
+                  <div className="mt-4 p-4 bg-gray-900 rounded-xl shadow-inner">
+                    <h4 className={`text-lg font-bold ${criteriaTitleColor} mb-4`}>Critères d'évaluation du bloc 📝</h4>
+                    
+                    {/* Critères communs */}
+                    {sharedData?.criteria && (
+                      <>
+                        {Object.entries(sharedData.criteria).map(([compCode, criteriaList]) => (
+                          <div key={compCode} className="mb-4">
+                            <h5 className="text-md font-semibold text-gray-300 mb-2">{compCode}</h5>
+                            <ul className="list-none pl-0 space-y-1 text-gray-400">
+                              {criteriaList.map((crit, index) => (
+                                <li key={index} className="flex items-start">
+                                  <span className={`${criteriaBulletColor} mr-2 flex-shrink-0 mt-1`}>⭐</span>
+                                  <p className="text-sm text-gray-400 text-justify">{crit}</p>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </>
+                    )}
+
+                    {/* Critères spécifiques si disponibles */}
+                    {specificData?.criteria && (
+                      <>
+                        <h5 className={`text-md font-semibold ${specialTitleColor} mb-2 mt-4`}>
+                          Critères spécifiques au {selectedSpecialization} :
+                        </h5>
+                        {Object.entries(specificData.criteria).map(([compCode, criteriaList]) => (
+                          <div key={compCode} className="mb-4">
+                            <h5 className="text-md font-semibold text-gray-300 mb-2">{compCode}</h5>
+                            <ul className="list-none pl-0 space-y-1 text-gray-400">
+                              {criteriaList.map((crit, index) => (
+                                <li key={index} className="flex items-start">
+                                  <span className={`${criteriaBulletColor} mr-2 flex-shrink-0 mt-1`}>⭐</span>
+                                  <p className="text-sm text-gray-400 text-justify">{crit}</p>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </main>
+
+      {/* Sessions Table with Countdown */}
+      <section className="mt-12 p-6 bg-gray-800 rounded-xl shadow-lg">
+        <div className="flex items-center cursor-pointer" onClick={() => setIsCalendarTableExpanded(!isCalendarTableExpanded)}>
+          <ChevronRightIcon
+            className={`w-6 h-6 mr-2 text-white transition-transform duration-300 ${isCalendarTableExpanded ? 'rotate-90' : ''}`}
+          />
+          <h2 className="text-2xl font-semibold text-white">Calendrier des sessions 📅</h2>
+        </div>
+        
+        {/* Countdown always visible */}
+        <div className="mt-8 mb-8 p-4 bg-gray-900 rounded-lg shadow-inner">
+          <h3 className="text-lg font-bold mb-2 text-yellow-400">Compte à rebours de la session sélectionnée</h3>
+          <div className="flex items-center space-x-4 mb-4">
+            <span className="text-gray-300 font-medium">Sélectionner une session :</span>
+            <select
+              value={selectedSessionIndex}
+              onChange={(e) => setSelectedSessionIndex(parseInt(e.target.value))}
+              className="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
+            >
+              {sessions.map((session, index) => (
+                <option key={index} value={index}>
+                  {session.promo} - {session.session}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="grid grid-cols-4 gap-4 text-center">
+            <div className="p-4 bg-gray-700 rounded-lg">
+              <span className="block text-2xl font-bold text-pink-500">{countdown.days}</span>
+              <span className="block text-sm text-gray-400">Jours</span>
+            </div>
+            <div className="p-4 bg-gray-700 rounded-lg">
+              <span className="block text-2xl font-bold text-pink-500">{countdown.hours}</span>
+              <span className="block text-sm text-gray-400">Heures</span>
+            </div>
+            <div className="p-4 bg-gray-700 rounded-lg">
+              <span className="block text-2xl font-bold text-pink-500">{countdown.minutes}</span>
+              <span className="block text-sm text-gray-400">Minutes</span>
+            </div>
+            <div className="p-4 bg-gray-700 rounded-lg">
+              <span className="block text-2xl font-bold text-pink-500">{countdown.seconds}</span>
+              <span className="block text-sm text-gray-400">Secondes</span>
+            </div>
+          </div>
+          <p className="mt-4 text-sm text-gray-400 text-center">
+            Date limite de remise : le {formatDate(sessions[selectedSessionIndex].endDate)} à 23h59
+          </p>
+        </div>
+        
+        {isCalendarTableExpanded && (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-700">
+              <thead className="bg-gray-700">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    Promo
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    Session
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    Date de début (modifiable)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    Date de fin
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    Nature de la date de fin
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-700">
+                {sessions.map((session, index) => (
+                  <tr key={index} className="bg-gray-800 hover:bg-gray-700 transition-colors duration-200">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{session.promo}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{session.session}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                      <input
+                        type="date"
+                        value={session.startDate}
+                        onChange={(e) => handleDateChange(index, e.target.value)}
+                        className="bg-gray-900 border border-gray-600 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:border-blue-500"
+                      />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                      {formatDate(session.endDate)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <div className="flex items-center space-x-2">
+                        {session.isConfirmed ? (
+                          <CheckCircleIcon className="text-green-500 w-5 h-5" />
+                        ) : (
+                          <DangerousIcon className="text-yellow-500 w-5 h-5" />
+                        )}
+                        <span className="text-gray-300">{session.status}</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      {/* Motivational Phrase & Credits */}
+      <section className="mt-12 text-center">
+        <div className="p-6 bg-gray-800 rounded-xl shadow-lg">
+          <h3 className="text-xl font-bold mb-2 text-yellow-400">{motivationalPhrase.title}</h3>
+          <p className="text-gray-300 text-lg">{motivationalPhrase.text}</p>
+        </div>
+      </section>
+
+      {/* Social Links */}
+      <footer className="mt-12 text-center text-gray-400">
+        <h3 className="text-lg font-semibold mb-4 text-white">Rejoignez-nous !</h3>
+        <div className="flex justify-center space-x-6">
+          <a
+            href="https://chat.whatsapp.com/LHiRDN32feFCEko7VxH5oz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-2 p-3 rounded-full bg-green-600 text-white hover:bg-green-700 transition-colors duration-200"
+          >
+            <span>💬 WhatsApp</span>
+          </a>
+          <a
+            href="https://discord.gg/DmKDG5FruF"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-2 p-3 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-200"
+          >
+            <span>👾 Discord</span>
+          </a>
+          <a
+            href="https://www.notion.so/team/208c2c02-df37-8146-b883-004268501963/join"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-2 p-3 rounded-full bg-pink-600 text-white hover:bg-pink-700 transition-colors duration-200"
+          >
+            <span>✨ Notion</span>
+          </a>
+        </div>
+        <p className="mt-8 text-sm text-gray-500">
+          Créatrice de ce document : Mathilde de Martine PAISLEY "L'Enervante Enervante 🤪"
+        </p>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
