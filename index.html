@@ -36,9 +36,75 @@
           font-size: 10px;
           color: white;
         }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #1f2937;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            color: #f3f4f6;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-900 text-gray-100 p-8">
+
+    <!-- Welcome Modal -->
+    <div id="welcome-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="text-3xl font-bold mb-4 text-yellow-400">Bienvenue sur MBA Tracker ! 👋</h2>
+            <p class="mb-6 text-gray-300">Pour commencer, dites-nous qui vous êtes et configurez votre parcours :</p>
+            
+            <div class="mb-4">
+                <label for="user-firstname" class="block text-sm font-medium text-gray-400 mb-1">Prénom :</label>
+                <input type="text" id="user-firstname" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500" placeholder="Votre prénom">
+            </div>
+            <div class="mb-6">
+                <label for="user-lastname" class="block text-sm font-medium text-gray-400 mb-1">Nom :</label>
+                <input type="text" id="user-lastname" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500" placeholder="Votre nom">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-400 mb-2">Votre spécialisation :</label>
+                <div class="flex space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="specialization-choice" value="CDO" class="form-radio text-orange-500" checked>
+                        <span class="ml-2 text-white">CDO</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="specialization-choice" value="SD" class="form-radio text-fuchsia-500">
+                        <span class="ml-2 text-white">SD</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="modal-session-select" class="block text-sm font-medium text-gray-400 mb-1">Votre promo et session :</label>
+                <select id="modal-session-select" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500"></select>
+            </div>
+
+            <div class="mb-6">
+                <label for="modal-personal-start-date" class="block text-sm font-medium text-gray-400 mb-1">Ma date de début de formation :</label>
+                <input type="date" id="modal-personal-start-date" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500">
+            </div>
+
+            <button id="start-app-btn" class="w-full bg-pink-600 text-white py-2 rounded-full font-semibold hover:bg-pink-700 transition-colors duration-200">
+                Commencer l'aventure ! ✨
+            </button>
+        </div>
+    </div>
 
     <header class="mb-12 text-center">
         <h1 class="text-4xl font-bold mb-2 text-white">
@@ -47,6 +113,8 @@
         <p class="text-gray-400">
             Chief Digital Officer (CDO) et Stratégie Digitale (SD)
         </p>
+        <p id="welcome-message" class="text-gray-300 text-lg mt-4 hidden">Bonjour !</p>
+
 
         <div class="mt-8 flex justify-center space-x-4">
             <button id="btn-cdo" class="px-6 py-2 rounded-full font-semibold transition-all duration-300 bg-orange-600 text-white shadow-lg">
@@ -60,17 +128,17 @@
 
     <section class="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
         <div id="calendar-header" class="flex items-center cursor-pointer">
-            <svg id="calendar-chevron" class="w-6 h-6 mr-2 text-white transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-            </svg>
+            <span id="calendar-chevron" class="w-6 h-6 mr-2 text-white transition-transform duration-300 rotate-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
+            </span>
             <h2 class="text-2xl font-semibold text-white">Calendrier des sessions 📅</h2>
         </div>
 
         <div class="mt-8 mb-8 p-4 bg-gray-900 rounded-lg shadow-inner">
-            <h3 class="text-lg font-bold mb-2 text-yellow-400">Compte à rebours de la session sélectionnée</h3>
+            <h3 class="text-lg font-bold mb-2 text-yellow-400" id="countdown-title">Compte à rebours de la session sélectionnée</h3>
             <div class="flex items-center space-x-4 mb-4">
-                <span class="text-gray-300 font-medium">Sélectionner une session :</span>
-                <select id="session-select" class="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"></select>
+                <span class="text-gray-300 font-medium">Session sélectionnée :</span>
+                <span id="display-selected-session" class="text-white font-semibold"></span>
             </div>
             <div class="grid grid-cols-4 gap-4 text-center">
                 <div class="p-4 bg-gray-700 rounded-lg">
@@ -95,13 +163,12 @@
             </p>
         </div>
 
-        <div id="calendar-table-container" class="overflow-x-auto hidden">
+        <div id="calendar-table-container" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
             <table class="min-w-full divide-y divide-gray-700">
                 <thead class="bg-gray-700">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Promo</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Session</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date de début (modifiable)</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date de fin</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nature de la date de fin</th>
                     </tr>
@@ -339,6 +406,9 @@
                             'Production d\'un message',
                             'Le storytelling',
                             'Les moyens et supports de communication',
+                            'Les supports audio-visuels',
+                            'Le multicanal et le mix marketing',
+                            'Les outils de mesure de l\'efficacité',
                         ],
                     },
                 ],
@@ -515,7 +585,7 @@
                         title: 'Émettre des préconisations quant à la résolution de problèmes techniques',
                         topics: [
                             'La résolution d\'une situation critique pour la survie du projet',
-                            'Réaliser une analyse causale à l’aide d’entretiens et d’enquêtes terrain',
+                            'Réaliser une analyse causale à laide d’entretiens et d’enquêtes terrain',
                             'La conception de la solution grâce au Design Thinking',
                         ],
                     },
@@ -546,7 +616,7 @@
                     },
                     {
                         code: 'B7_M2',
-                        title: 'Promouvoir un site internet, une application mobile ou une web app', // Corrected title from previous error
+                        title: 'Promouvoir un site internet, une application mobile ou une web app',
                         topics: [
                             'Les sites internet',
                             'Le référencement des sites Web',
@@ -605,7 +675,7 @@
             rattrapage: [
                 { name: 'Examen Certifiant - Animer un processus de problématisation... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
                 { name: 'Examen Certifiant - Concevoir un projet de transformation... (écrit) - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
-                { name: 'Examen Certifiant - Concevoir et mettre en œuvre une stratégie de communication... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Concevoir et mettre en œuvre une stratégie de communication... - Rattrapage', date: '', grade: '', status: 'both' },
                 { name: 'Examen Certifiant - Piloter un projet d’innovation... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
                 { name: 'Examen Certifiant - Management d’une équipe projet... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
                 { name: 'Examen Certifiant - Garantir la performance d’un projet... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'CDO' },
@@ -785,7 +855,7 @@
                         "Pertinence des solutions proposées au regard du brief et de la démarche mise en œuvre."
                     ],
                     "C4.2 Observer les utilisateurs": [
-                        "Le candidat utilise des méthodologies de tests utilisateurs quantitatifs ou qualitatifs.",
+                        "Le candidat utilise des méthodologies de tests utilisateurs (quantitatifs ou qualitatifs) suivant des protocoles ad hoc adaptés.",
                         "Le candidat adopte une attitude d'apprentissage et ne cherche pas à défendre sa solution ou à influencer les réponses.",
                         "Démontre sa capacité à prendre en compte des éléments issus de la communication non verbale.",
                         "Le candidat documente les résultats de manière à en faciliter l'analyse."
@@ -896,6 +966,7 @@
         let programProgress = [];
         let programEvaluations = {};
         let sessions = sessionsData;
+        let customStartDates = {}; // Stores custom start dates by session index
         let expandedBlocks = {};
         let expandedModules = {}; // Still needed for internal module expansion
         let expandedEvaluations = {
@@ -917,7 +988,8 @@
         const evaluationsContainer = document.getElementById('evaluations-container');
         const totalProgressBar = document.getElementById('total-progress-bar');
         const totalProgressText = document.getElementById('total-progress-text');
-        const sessionSelect = document.getElementById('session-select');
+        // Removed sessionSelect and customStartDateInput from main UI
+        const displaySelectedSession = document.getElementById('display-selected-session'); // New element to display selected session
         const deadlineDate = document.getElementById('deadline-date');
         const countdownDays = document.getElementById('countdown-days');
         const countdownHours = document.getElementById('countdown-hours');
@@ -929,24 +1001,31 @@
         const calendarTableBody = document.getElementById('calendar-table-body');
         const motivationalTitle = document.getElementById('motivational-title');
         const motivationalText = document.getElementById('motivational-text');
-        // Removed quiz related DOM elements
-        // const quizModal = document.getElementById('quiz-modal');
-        // const quizContent = document.getElementById('quiz-content');
-        // const quizQuestion = document.getElementById('quiz-question');
-        // const quizOptions = document.getElementById('quiz-options');
-        // const quizMessage = document.getElementById('quiz-message');
-        // const quizNextBtn = document.getElementById('quiz-next-btn');
-        // const quizResult = document.getElementById('quiz-result');
-        // const resultTitle = document.getElementById('result-title');
-        // const resultMessage = document.getElementById('result-message');
-        // const quizCloseBtn = document.getElementById('quiz-close-btn');
-        // const quizCancelBtn = document.getElementById('quiz-cancel-btn');
+        const countdownTitle = document.getElementById('countdown-title'); // New DOM element
+
+        // Welcome Modal elements
+        const welcomeModal = document.getElementById('welcome-modal');
+        const userFirstnameInput = document.getElementById('user-firstname');
+        const userLastnameInput = document.getElementById('user-lastname');
+        const specializationChoiceRadios = document.querySelectorAll('input[name="specialization-choice"]');
+        const modalSessionSelect = document.getElementById('modal-session-select');
+        const modalPersonalStartDateInput = document.getElementById('modal-personal-start-date'); // New DOM element for modal input
+        const startAppBtn = document.getElementById('start-app-btn');
+        const welcomeMessageDisplay = document.getElementById('welcome-message');
 
 
         // Functions
         function saveAllData() {
             localStorage.setItem('mba_tracker_progress', JSON.stringify(programProgress));
             localStorage.setItem('mba_tracker_evaluations', JSON.stringify(programEvaluations));
+            // Save user preferences
+            localStorage.setItem('user_name', JSON.stringify({
+                firstName: userFirstnameInput.value,
+                lastName: userLastnameInput.value
+            }));
+            localStorage.setItem('selected_specialization', selectedSpecialization);
+            localStorage.setItem('selected_session_index', selectedSessionIndex);
+            localStorage.setItem('custom_start_dates', JSON.stringify(customStartDates)); // Save custom start dates
         }
 
         function loadAllData() {
@@ -973,6 +1052,79 @@
             } else {
                 programEvaluations = JSON.parse(JSON.stringify(evaluationData));
             }
+
+            // Load user preferences
+            const savedUserName = localStorage.getItem('user_name');
+            if (savedUserName) {
+                const userName = JSON.parse(savedUserName);
+                userFirstnameInput.value = userName.firstName;
+                userLastnameInput.value = userName.lastName;
+                updateWelcomeMessage();
+            }
+
+            const savedSpecialization = localStorage.getItem('selected_specialization');
+            if (savedSpecialization) {
+                selectedSpecialization = savedSpecialization;
+                // Update buttons to reflect loaded specialization
+                if (selectedSpecialization === 'CDO') {
+                    btnCdo.classList.add('bg-orange-600', 'text-white', 'shadow-lg');
+                    btnCdo.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-fuchsia-800');
+                    btnSd.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-fuchsia-800');
+                    btnSd.classList.remove('bg-fuchsia-600', 'text-white', 'shadow-lg');
+                } else {
+                    btnSd.classList.add('bg-fuchsia-600', 'text-white', 'shadow-lg');
+                    btnSd.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-orange-800');
+                    btnCdo.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-orange-800');
+                    btnCdo.classList.remove('bg-orange-600', 'text-white', 'shadow-lg');
+                }
+            }
+
+            const savedSessionIndex = localStorage.getItem('selected_session_index');
+            if (savedSessionIndex !== null) {
+                selectedSessionIndex = parseInt(savedSessionIndex);
+            }
+
+            const savedCustomStartDates = localStorage.getItem('custom_start_dates');
+            if (savedCustomStartDates) {
+                customStartDates = JSON.parse(savedCustomStartDates);
+            }
+        }
+
+        function updateWelcomeMessage() {
+            const firstName = userFirstnameInput.value;
+            if (firstName) {
+                welcomeMessageDisplay.textContent = `Bonjour, ${firstName} ! 👋`;
+                welcomeMessageDisplay.classList.remove('hidden');
+            } else {
+                welcomeMessageDisplay.classList.add('hidden');
+            }
+        }
+
+        function showWelcomeModal() {
+            welcomeModal.classList.remove('hidden');
+            // Populate modal session select
+            modalSessionSelect.innerHTML = '';
+            sessions.forEach((session, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${session.promo} - ${session.session}`;
+                modalSessionSelect.appendChild(option);
+            });
+            modalSessionSelect.value = selectedSessionIndex; // Pre-select current session
+
+            // Pre-fill modal personal start date if exists
+            modalPersonalStartDateInput.value = customStartDates[selectedSessionIndex] || '';
+
+            // Add event listener for modal session select
+            modalSessionSelect.addEventListener('change', () => {
+                selectedSessionIndex = parseInt(modalSessionSelect.value);
+                // Update the personal start date input in the modal based on the newly selected session
+                modalPersonalStartDateInput.value = customStartDates[selectedSessionIndex] || '';
+            });
+        }
+
+        function hideWelcomeModal() {
+            welcomeModal.classList.add('hidden');
         }
 
         function calculateProgress(items) {
@@ -1011,10 +1163,10 @@
 
             let allEvaluations = [];
             
-            const trainingEvals = evaluationData.training ? evaluationData.training.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const qcmEvals = evaluationData.qcm ? evaluationData.qcm.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const finalEvals = evaluationData.final ? evaluationData.final.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const rattrapageEvals = evaluationData.rattrapage ? evaluationData.rattrapage.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const trainingEvals = programEvaluations.training ? programEvaluations.training.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const qcmEvals = programEvaluations.qcm ? programEvaluations.qcm.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const finalEvals = programEvaluations.final ? programEvaluations.final.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const rattrapageEvals = programEvaluations.rattrapage ? programEvaluations.rattrapage.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
 
             allEvaluations = allEvaluations.concat(trainingEvals, qcmEvals, finalEvals, rattrapageEvals);
 
@@ -1209,7 +1361,7 @@
 
             for (const category in categories) {
                 const isExpanded = !!expandedEvaluations[category];
-                const filteredEvals = evaluationData[category].filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization);
+                const filteredEvals = programEvaluations[category].filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization);
                 const progress = getEvaluationProgress(filteredEvals);
 
                 let categoryHtml = `
@@ -1333,10 +1485,10 @@
 
             let allEvaluations = [];
             
-            const trainingEvals = evaluationData.training ? evaluationData.training.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const qcmEvals = evaluationData.qcm ? evaluationData.qcm.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const finalEvals = evaluationData.final ? evaluationData.final.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const rattrapageEvals = evaluationData.rattrapage ? evaluationData.rattrapage.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const trainingEvals = programEvaluations.training ? programEvaluations.training.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const qcmEvals = programEvaluations.qcm ? programEvaluations.qcm.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const finalEvals = programEvaluations.final ? programEvaluations.final.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const rattrapageEvals = programEvaluations.rattrapage ? programEvaluations.rattrapage.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
 
             allEvaluations = allEvaluations.concat(trainingEvals, qcmEvals, finalEvals, rattrapageEvals);
 
@@ -1406,38 +1558,47 @@
                 });
             });
 
+            // Corrected: Use programEvaluations instead of evaluationData constant
             document.querySelectorAll('.date-input').forEach(input => {
                 input.addEventListener('change', (e) => {
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
-                    const evalList = evaluationData[category];
-                    evalList[index].date = e.target.value;
-                    saveAllData();
-                    renderEvaluations(); 
+                    const evalList = programEvaluations[category]; // Corrected
+                    if (evalList && evalList[index]) { // Added safety check
+                        evalList[index].date = e.target.value;
+                        saveAllData();
+                        renderEvaluations();
+                    }
                 });
             });
 
+            // Corrected: Use programEvaluations instead of evaluationData constant
             document.querySelectorAll('.grade-input').forEach(input => {
                 input.addEventListener('input', (e) => {
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
-                    const evalList = evaluationData[category];
-                    evalList[index].grade = e.target.value;
-                    saveAllData();
-                    renderEvaluations();
+                    const evalList = programEvaluations[category]; // Corrected
+                    if (evalList && evalList[index]) { // Added safety check
+                        evalList[index].grade = e.target.value;
+                        saveAllData();
+                        renderEvaluations();
+                    }
                 });
             });
 
+            // Corrected: Use programEvaluations instead of evaluationData constant
             document.querySelectorAll('.set-status-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
                     const status = e.target.dataset.status;
-                    const evalList = evaluationData[category];
-                    evalList[index].status = status;
-                    saveAllData();
-                    renderEvaluations();
-                    updateTotalProgress();
+                    const evalList = programEvaluations[category]; // Corrected
+                    if (evalList && evalList[index]) { // Added safety check
+                        evalList[index].status = status;
+                        saveAllData();
+                        renderEvaluations();
+                        updateTotalProgress();
+                    }
                 });
             });
         }
@@ -1454,14 +1615,6 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${session.promo}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${session.session}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                        <input
-                            type="date"
-                            value="${session.startDate}"
-                            data-index="${index}"
-                            class="bg-gray-900 border border-gray-600 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:border-blue-500 date-input"
-                        />
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                         ${formatDate(session.endDate)}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
@@ -1472,14 +1625,16 @@
                     </td>
                 </tr>
             `).join('');
+            // No date input listeners needed here as the start date is now handled in the modal
+        }
 
-            document.querySelectorAll('.date-input').forEach(input => {
-                input.addEventListener('change', (e) => {
-                    const index = parseInt(e.target.dataset.index);
-                    sessions[index].startDate = e.target.value;
-                    // No save to localStorage for sessions for this conversion
-                });
-            });
+        function updateDisplaySelectedSession() {
+            const session = sessions[selectedSessionIndex];
+            if (session) {
+                displaySelectedSession.textContent = `${session.promo} - ${session.session}`;
+            } else {
+                displaySelectedSession.textContent = 'N/A';
+            }
         }
 
         function startCountdown() {
@@ -1491,23 +1646,92 @@
                 countdownMinutes.textContent = '0';
                 countdownSeconds.textContent = '0';
                 deadlineDate.textContent = 'N/A';
+                countdownTitle.textContent = 'Compte à rebours de la session sélectionnée';
                 return;
             }
 
-            const deadline = new Date(`${session.endDate}T23:59:59`).getTime();
+            const sessionEndDate = new Date(`${session.endDate}T23:59:59`).getTime();
             deadlineDate.textContent = formatDate(session.endDate);
 
+            const customStartDateStr = customStartDates[selectedSessionIndex];
+            let effectiveUserStartDate = null; 
+
+            if (customStartDateStr) {
+                effectiveUserStartDate = new Date(`${customStartDateStr}T00:00:00`).getTime();
+            } else {
+                // If no custom date is provided by the user, default to the session's official start date
+                effectiveUserStartDate = new Date(`${session.startDate}T00:00:00`).getTime();
+            }
+
+            let targetDateForCountdown;
+            let countdownDisplayTitle;
+
+            const now = new Date().getTime();
+
+            if (now < effectiveUserStartDate) {
+                // If current time is before the user's effective program start date
+                targetDateForCountdown = effectiveUserStartDate;
+                countdownDisplayTitle = 'Début de votre formation dans :';
+            } else if (now < sessionEndDate) {
+                // If current time is on or after the user's effective program start date,
+                // but before the session end date
+                targetDateForCountdown = sessionEndDate;
+                countdownDisplayTitle = 'Fin de la session dans :';
+            } else {
+                // If current time is on or after the session end date
+                clearInterval(countdownInterval);
+                countdownDays.textContent = '0';
+                countdownHours.textContent = '0';
+                countdownMinutes.textContent = '0';
+                countdownSeconds.textContent = '0';
+                countdownTitle.textContent = 'Session terminée !';
+                return;
+            }
+
+            // Set the initial title
+            countdownTitle.textContent = countdownDisplayTitle;
+
             countdownInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = deadline - now;
+                const nowInLoop = new Date().getTime(); // Get current time inside the loop for accuracy
+
+                let distance = targetDateForCountdown - nowInLoop;
+
+                // Recalculate target if phase changes (e.g., custom start date is reached)
+                if (effectiveUserStartDate && nowInLoop >= effectiveUserStartDate && targetDateForCountdown === effectiveUserStartDate) {
+                    // If we just passed the effectiveUserStartDate, switch target to sessionEndDate
+                    targetDateForCountdown = sessionEndDate;
+                    countdownDisplayTitle = 'Fin de la session dans :';
+                    distance = targetDateForCountdown - nowInLoop; // Recalculate distance with new target
+                }
 
                 if (distance < 0) {
-                    clearInterval(countdownInterval);
-                    countdownDays.textContent = '0';
-                    countdownHours.textContent = '0';
-                    countdownMinutes.textContent = '0';
-                    countdownSeconds.textContent = '0';
-                    return;
+                    // Handle countdown finished for current target
+                    if (targetDateForCountdown === sessionEndDate) {
+                        // If session ended
+                        clearInterval(countdownInterval);
+                        countdownDays.textContent = '0';
+                        countdownHours.textContent = '0';
+                        countdownMinutes.textContent = '0';
+                        countdownSeconds.textContent = '0';
+                        countdownTitle.textContent = 'Session terminée !';
+                    } else {
+                        // If custom start date reached, immediately switch to session end countdown
+                        targetDateForCountdown = sessionEndDate;
+                        countdownDisplayTitle = 'Fin de la session dans :';
+                        distance = targetDateForCountdown - nowInLoop; // Recalculate for new target
+                        if (distance < 0) { // If session end is also in past
+                             clearInterval(countdownInterval);
+                             countdownDays.textContent = '0';
+                             countdownHours.textContent = '0';
+                             countdownMinutes.textContent = '0';
+                             countdownSeconds.textContent = '0';
+                             countdownTitle.textContent = 'Session terminée !';
+                        }
+                    }
+                    // If the distance is still negative after recalculating, it means the session has truly ended.
+                    if (distance < 0) {
+                        return;
+                    }
                 }
 
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -1519,6 +1743,7 @@
                 countdownHours.textContent = hours;
                 countdownMinutes.textContent = minutes;
                 countdownSeconds.textContent = seconds;
+                countdownTitle.textContent = countdownDisplayTitle; // Update title in loop too
             }, 1000);
         }
         
@@ -1531,20 +1756,109 @@
         // Initialization
         function initialize() {
             loadAllData();
+            
+            // Check if user data exists to decide whether to show modal
+            const savedUserName = localStorage.getItem('user_name');
+            if (!savedUserName) {
+                showWelcomeModal();
+            } else {
+                // If data exists, directly render the program and evaluations
+                renderProgram();
+                renderEvaluations();
+                updateMotivationalPhrase();
+                // No need to populate sessionSelect or customStartDateInput here anymore
+                updateDisplaySelectedSession(); // Display the selected session
+                renderCalendarTable();
+                startCountdown();
+            }
+
+            // Event listener for calendar header to toggle visibility
+            calendarHeader.addEventListener('click', () => {
+                isCalendarTableExpanded = !isCalendarTableExpanded;
+                if (isCalendarTableExpanded) {
+                    calendarTableContainer.style.maxHeight = calendarTableContainer.scrollHeight + 'px';
+                    calendarChevron.innerHTML = ChevronDownIcon; // Change to down arrow
+                    calendarChevron.classList.remove('rotate-0');
+                    calendarChevron.classList.add('rotate-90');
+                } else {
+                    calendarTableContainer.style.maxHeight = '0';
+                    calendarChevron.innerHTML = ChevronRightIcon; // Change to right arrow
+                    calendarChevron.classList.remove('rotate-90');
+                    calendarChevron.classList.add('rotate-0');
+                }
+            });
+
+            // Event listeners for specialization buttons
+            btnCdo.addEventListener('click', () => {
+                selectedSpecialization = 'CDO';
+                saveAllData();
+                renderProgram();
+                renderEvaluations();
+                btnCdo.classList.replace('bg-gray-700', 'bg-orange-600');
+                btnCdo.classList.replace('text-gray-300', 'text-white');
+                btnCdo.classList.remove('hover:bg-fuchsia-800'); // Remove SD hover
+                btnCdo.classList.add('shadow-lg');
+                btnSd.classList.replace('bg-fuchsia-600', 'bg-gray-700');
+                btnSd.classList.replace('text-white', 'text-gray-300');
+                btnSd.classList.add('hover:bg-fuchsia-800'); // Add SD hover
+                btnSd.classList.remove('shadow-lg');
+            });
+
+            btnSd.addEventListener('click', () => {
+                selectedSpecialization = 'SD';
+                saveAllData();
+                renderProgram();
+                renderEvaluations();
+                btnSd.classList.replace('bg-gray-700', 'bg-fuchsia-600');
+                btnSd.classList.replace('text-white', 'text-gray-300');
+                btnSd.classList.remove('hover:bg-orange-800'); // Remove CDO hover
+                btnSd.classList.add('shadow-lg');
+                btnCdo.classList.replace('bg-orange-600', 'bg-gray-700');
+                btnCdo.classList.replace('text-white', 'text-gray-300');
+                btnCdo.classList.add('hover:bg-orange-800'); // Add CDO hover
+                btnCdo.classList.remove('shadow-lg');
+            });
+        }
+
+        // Event listeners for welcome modal
+        startAppBtn.addEventListener('click', () => {
+            const firstName = userFirstnameInput.value;
+            const lastName = userLastnameInput.value;
+            const specialization = document.querySelector('input[name="specialization-choice"]:checked').value;
+            const sessionIndex = parseInt(modalSessionSelect.value);
+            const personalStartDate = modalPersonalStartDateInput.value; // Get personal start date from modal
+
+            if (!firstName || !lastName || !personalStartDate) { // Added personalStartDate check
+                // Using a custom modal for alerts instead of window.alert
+                const alertModal = document.createElement('div');
+                alertModal.className = 'modal';
+                alertModal.innerHTML = `
+                    <div class="modal-content">
+                        <h2 class="text-2xl font-bold mb-4 text-red-400">Erreur de saisie</h2>
+                        <p class="mb-6 text-gray-300">Veuillez entrer votre prénom, votre nom et votre date de début de formation pour commencer.</p>
+                        <button class="w-full bg-red-600 text-white py-2 rounded-full font-semibold hover:bg-red-700 transition-colors duration-200" onclick="this.closest('.modal').remove()">Fermer</button>
+                    </div>
+                `;
+                document.body.appendChild(alertModal);
+                return;
+            }
+
+            selectedSpecialization = specialization;
+            selectedSessionIndex = sessionIndex;
+            customStartDates[selectedSessionIndex] = personalStartDate; // Store personal start date
+            saveAllData(); // Save initial user data
+
+            hideWelcomeModal();
+            updateWelcomeMessage();
             renderProgram();
             renderEvaluations();
             updateMotivationalPhrase();
-
-            // Populate session select
-            sessions.forEach((session, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = `${session.promo} - ${session.session}`;
-                sessionSelect.appendChild(option);
-            });
+            // Update display for selected session in main UI
+            updateDisplaySelectedSession(); 
             renderCalendarTable();
             startCountdown();
-        }
+        });
+
 
         document.addEventListener('DOMContentLoaded', initialize);
     </script>
