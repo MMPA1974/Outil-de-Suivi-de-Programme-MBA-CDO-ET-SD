@@ -3,511 +3,630 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programme MBA</title>
+    <title>MBA Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        
-        :root {
-            --bg-color: #1a202c;
-            --card-bg: #2d3748;
-            --card-bg-light: #4a5568;
-            --text-color: #e2e8f0;
-            --secondary-text-color: #a0aec0;
-            --accent-yellow: #ffc107;
-            --accent-pink: #ff4081;
-            --accent-green: #38a169;
-            --accent-indigo: #4c51bf;
-            --accent-fuchsia: #d53f8c;
-            --accent-blue: #4299e1;
-            --accent-orange: #ed8936;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 2rem;
-            line-height: 1.6;
+            font-family: 'Poppins', sans-serif;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .form-checkbox {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          height: 16px;
+          width: 16px;
+          border-radius: 4px;
+          border: 1px solid #4a5568;
+          background-color: #1f2937;
+          cursor: pointer;
+          position: relative;
+          transition: background-color 0.2s, border-color 0.2s;
         }
-
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
+        .form-checkbox:checked {
+          background-color: #ec4899;
+          border-color: #ec4899;
         }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-
-        .header h1 span {
-            color: var(--accent-yellow);
-        }
-
-        .header p {
-            color: var(--secondary-text-color);
-        }
-
-        .specialization-selection {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            font-weight: 600;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            color: #fff;
-        }
-
-        .btn-cdo {
-            background-color: var(--card-bg);
-            color: var(--secondary-text-color);
-        }
-
-        .btn-cdo.active {
-            background-color: var(--accent-orange);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            color: white;
-        }
-
-        .btn-sd {
-            background-color: var(--card-bg);
-            color: var(--secondary-text-color);
-        }
-
-        .btn-sd.active {
-            background-color: var(--accent-fuchsia);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            color: white;
-        }
-
-        .section {
-            background-color: var(--card-bg);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            margin-bottom: 2rem;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-        
-        .card-header-main {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .card-header h2, .card-header-main h2 {
-            margin: 0;
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .card-header h3 {
-            margin: 0;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .progress-bar-container {
-            width: 6rem;
-            background-color: var(--card-bg-light);
-            border-radius: 9999px;
-            height: 0.5rem;
-            overflow: hidden;
-            margin-left: 0.5rem;
-        }
-
-        .progress-bar {
-            height: 100%;
-            border-radius: 9999px;
-            transition: width 0.5s ease-in-out;
-            background: linear-gradient(90deg, #ffc107, #ff4081);
-        }
-
-        .progress-bar-block {
-            height: 100%;
-            border-radius: 9999px;
-            transition: width 0.5s ease-in-out;
-        }
-
-        .progress-bar-cdo {
-            background-color: var(--accent-orange);
-        }
-
-        .progress-bar-sd {
-            background-color: var(--accent-fuchsia);
-        }
-
-        .block-container {
-            border-left: 4px solid var(--card-bg-light);
-        }
-
-        .chevron-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            transition: transform 0.3s;
-        }
-
-        .chevron-icon.rotate {
-            transform: rotate(90deg);
-        }
-
-        .evaluation-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0;
-        }
-
-        .evaluation-item input[type="checkbox"] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 1rem;
-            height: 1rem;
-            background-color: var(--bg-color);
-            border: 1px solid var(--card-bg-light);
-            border-radius: 0.25rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .evaluation-item input[type="checkbox"]:checked {
-            background-color: var(--accent-pink);
-            border-color: var(--accent-pink);
-        }
-
-        .evaluation-item input[type="checkbox"]:checked::after {
-            content: '✓';
-            display: block;
-            color: white;
-            text-align: center;
-            line-height: 1rem;
-        }
-
-        .evaluation-details {
-            font-size: 0.875rem;
-            color: var(--secondary-text-color);
-        }
-
-        .criteria-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .criteria-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .criteria-bullet {
-            font-size: 1rem;
-            margin-right: 0.5rem;
-            flex-shrink: 0;
-            color: var(--accent-yellow);
-        }
-
-        .justified-text {
-            text-align: justify;
-        }
-
-        .form-section {
-            background-color: var(--card-bg);
-            border-radius: 0.75rem;
-            padding: 2rem;
-            max-width: 40rem;
-            margin: 0 auto 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            margin-top: 0.25rem;
-            border-radius: 0.375rem;
-            border: 1px solid var(--card-bg-light);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-blue);
-        }
-
-        .btn-primary {
-            background-color: var(--accent-blue);
-            color: white;
-            font-weight: 700;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            transition: background-color 0.2s;
-        }
-        
-        .btn-primary:hover {
-            background-color: #3182ce;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1rem;
-            border-radius: 9999px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.2s;
-        }
-
-        .whatsapp {
-            background-color: var(--accent-green);
-        }
-        
-        .whatsapp:hover {
-            background-color: #2f855a;
-        }
-
-        .discord {
-            background-color: var(--accent-indigo);
-        }
-        
-        .discord:hover {
-            background-color: #434190;
-        }
-
-        .notion {
-            background-color: var(--accent-pink);
-        }
-        
-        .notion:hover {
-            background-color: #d53f8c;
-        }
-
-        .scroll-to-top {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            background-color: var(--accent-blue);
-            color: white;
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: background-color 0.2s;
-        }
-        
-        .scroll-to-top:hover {
-            background-color: #3182ce;
-        }
-
-        .scroll-to-top-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-
-        .text-cdo {
-            color: var(--accent-orange);
-        }
-
-        .text-sd {
-            color: var(--accent-fuchsia);
-        }
-        
-        .bg-cdo {
-            background-color: var(--accent-orange);
-        }
-
-        .bg-sd {
-            background-color: var(--accent-fuchsia);
-        }
-
-        .border-cdo {
-            border-color: var(--accent-orange);
-        }
-
-        .border-sd {
-            border-color: var(--accent-fuchsia);
+        .form-checkbox:checked::after {
+          content: '✔';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 10px;
+          color: white;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen bg-gray-900 text-gray-100 p-8">
 
-    <div class="container">
-        <header>
-            <h1 class="header">
-                🚀 Programme <span class="text-accent-yellow">MBA</span>
-            </h1>
-            <p class="text-secondary-text-color">
-                Chief Digital Officer (CDO) et Stratégie Digitale (SD)
-            </p>
-        </header>
+    <header class="mb-12 text-center">
+        <h1 class="text-4xl font-bold mb-2 text-white">
+            🚀 Programme <span class="text-yellow-400">MBA</span>
+        </h1>
+        <p class="text-gray-400">
+            Chief Digital Officer (CDO) et Stratégie Digitale (SD)
+        </p>
 
-        <div id="app-root"></div>
+        <div class="mt-8 flex justify-center space-x-4">
+            <button id="btn-cdo" class="px-6 py-2 rounded-full font-semibold transition-all duration-300 bg-orange-600 text-white shadow-lg">
+                CDO
+            </button>
+            <button id="btn-sd" class="px-6 py-2 rounded-full font-semibold transition-all duration-300 bg-gray-700 text-gray-300 hover:bg-fuchsia-800">
+                SD
+            </button>
+        </div>
+    </header>
 
-        <section id="motivational-phrase" class="section text-center"></section>
-        
-        <footer class="text-center text-secondary-text-color mt-12">
-            <h3 class="text-lg font-semibold mb-4 text-white">Rejoignez-nous !</h3>
-            <div class="social-links">
-                <a href="https://chat.whatsapp.com/LHiRDN32feFCEko7VxH5oz" target="_blank" rel="noopener noreferrer" class="social-link whatsapp">
-                    <span>💬 WhatsApp</span>
-                </a>
-                <a href="https://discord.gg/DmKDG5FruF" target="_blank" rel="noopener noreferrer" class="social-link discord">
-                    <span>👾 Discord</span>
-                </a>
-                <a href="https://www.notion.so/team/208c2c02-df37-8146-b883-004268501963/join" target="_blank" rel="noopener noreferrer" class="social-link notion">
-                    <span>✨ Notion</span>
-                </a>
+    <section class="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
+        <h2 class="text-2xl font-semibold text-white mb-2">Progression Globale 📈</h2>
+        <div class="flex items-center space-x-4">
+            <span id="total-progress-text" class="text-3xl font-extrabold text-white">0%</span>
+            <div class="flex-grow">
+                <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2 overflow-hidden">
+                    <div id="total-progress-bar" class="h-2.5 rounded-full transition-all duration-500 ease-in-out" style="width: 0%; background: linear-gradient(90deg, #ffc107, #ff4081);"></div>
+                </div>
             </div>
-            <p class="mt-8 text-sm text-gray-500">
-                Créatrice de ce document : Mathilde de Martine PAISLEY "L'Enervante Enervante 🤪"
-            </p>
-        </footer>
+        </div>
+    </section>
 
-        <button id="scroll-to-top-btn" class="scroll-to-top" style="display: none;">
-            <svg class="scroll-to-top-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 4l-8 8h6v8h4v-8h6z" />
+    <main id="program-container" class="grid gap-8"></main>
+
+    <section class="mt-12 p-6 bg-gray-800 rounded-xl shadow-lg">
+        <div id="calendar-header" class="flex items-center cursor-pointer">
+            <svg id="calendar-chevron" class="w-6 h-6 mr-2 text-white transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
             </svg>
-        </button>
-    </div>
+            <h2 class="text-2xl font-semibold text-white">Calendrier des sessions 📅</h2>
+        </div>
+
+        <div class="mt-8 mb-8 p-4 bg-gray-900 rounded-lg shadow-inner">
+            <h3 class="text-lg font-bold mb-2 text-yellow-400">Compte à rebours de la session sélectionnée</h3>
+            <div class="flex items-center space-x-4 mb-4">
+                <span class="text-gray-300 font-medium">Sélectionner une session :</span>
+                <select id="session-select" class="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"></select>
+            </div>
+            <div class="grid grid-cols-4 gap-4 text-center">
+                <div class="p-4 bg-gray-700 rounded-lg">
+                    <span id="countdown-days" class="block text-2xl font-bold text-pink-500">0</span>
+                    <span class="block text-sm text-gray-400">Jours</span>
+                </div>
+                <div class="p-4 bg-gray-700 rounded-lg">
+                    <span id="countdown-hours" class="block text-2xl font-bold text-pink-500">0</span>
+                    <span class="block text-sm text-gray-400">Heures</span>
+                </div>
+                <div class="p-4 bg-gray-700 rounded-lg">
+                    <span id="countdown-minutes" class="block text-2xl font-bold text-pink-500">0</span>
+                    <span class="block text-sm text-gray-400">Minutes</span>
+                </div>
+                <div class="p-4 bg-gray-700 rounded-lg">
+                    <span id="countdown-seconds" class="block text-2xl font-bold text-pink-500">0</span>
+                    <span class="block text-sm text-gray-400">Secondes</span>
+                </div>
+            </div>
+            <p class="mt-4 text-sm text-gray-400 text-center">
+                Date limite de remise : <span id="deadline-date"></span>
+            </p>
+        </div>
+
+        <div id="calendar-table-container" class="overflow-x-auto hidden">
+            <table class="min-w-full divide-y divide-gray-700">
+                <thead class="bg-gray-700">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Promo</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Session</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date de début (modifiable)</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date de fin</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nature de la date de fin</th>
+                    </tr>
+                </thead>
+                <tbody id="calendar-table-body" class="divide-y divide-gray-700"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mt-12 text-center">
+        <div class="p-6 bg-gray-800 rounded-xl shadow-lg">
+            <h3 id="motivational-title" class="text-xl font-bold mb-2 text-yellow-400"></h3>
+            <p id="motivational-text" class="text-gray-300 text-lg"></p>
+        </div>
+    </section>
+
+    <footer class="mt-12 text-center text-gray-400">
+        <h3 class="text-lg font-semibold mb-4 text-white">Rejoignez-nous !</h3>
+        <div class="flex justify-center space-x-6">
+            <a href="https://chat.whatsapp.com/LHiRDN32feFCEko7VxH5oz" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 p-3 rounded-full bg-green-600 text-white hover:bg-green-700 transition-colors duration-200">
+                <span>💬 WhatsApp</span>
+            </a>
+            <a href="https://discord.gg/DmKDG5FruF" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 p-3 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-200">
+                <span>👾 Discord</span>
+            </a>
+            <a href="https://www.notion.so/team/208c2c02-df37-8146-b883-004268501963/join" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 p-3 rounded-full bg-pink-600 text-white hover:bg-pink-700 transition-colors duration-200">
+                <span>✨ Notion</span>
+            </a>
+        </div>
+        <p class="mt-8 text-sm text-gray-500">
+            Créatrice de ce document : Mathilde de Martine PAISLEY "L'Enervante Enervante 🤪"
+        </p>
+    </footer>
 
     <script>
-        // Déclaration des données statiques du programme et des sessions
+        // Data and SVG icons
         const initialProgramData = [
             {
                 code: 'B1',
                 title: "Animer un processus de problématisation et d’idéation à partir d'une analyse des besoins clients",
                 modules: [
-                    { code: 'B1_M1', title: 'Analyser les besoins de clients internes/externes', topics: ['La place de la stratégie digitale...', 'L\'environnement technologique...', 'La culture et les valeurs...', 'Les études de marché...', 'La notion de concurrence...', 'Le benchmark digital...', 'Le recueil et l\'analyse des besoins...', 'Identifier et comprendre le client...', 'Le brief digital...'] },
-                    { code: 'B1_M2', title: 'Elaborer un dispositif de veille...', topics: ['La démarche de veille...', 'La veille technologique...', 'La veille concurrentielle et sectorielle...', 'Les autres types de veille...', 'Les matrices de veille...', 'L\'évaluation de la fiabilité...'] },
-                    { code: 'B1_M3', title: 'Interpréter et articuler une problématique...', topics: ['La problématique d\'innovation...', 'Orienter le projet d\'innovation...'] },
-                    { code: 'B1_M4', title: 'Identifier et analyser l’ensemble des risques...', topics: ['Analyse des contraintes...', 'Analyse des risques...', 'Analyse de l\'impact...'] },
-                    { code: 'B1_M5', title: 'Animer un processus créatif...', topics: ['Apprendre à générer des idées...', 'Design Thinking : Définir la problématique...', 'Design Thinking : La phase d’idéation...', 'Design Thinking : La phase de prototypage...', 'Design Thinking : La phase de test...', 'Design Thinking : La phase de d\'itération...', 'Animer un atelier de brainstorming...', 'Préparer et présenter un dossier de conception...'] },
-                    { code: 'B1_M6', title: 'Evaluer l’adéquation des pistes créatives...', topics: ['La complémentarité études qualitatives / études quantitatives...', 'Les études qualitatives...', 'La mise en œuvre d\'études qualitatives...', 'Les types d\'études quantitatives...', 'La réalisation d\'une enquête...', 'Les méthodes d\'échantillonnage...', 'Les études à l\'épreuve du numérique...'] },
+                    {
+                        code: 'B1_M1',
+                        title: 'Analyser les besoins de clients internes/externes',
+                        topics: [
+                            'La place de la stratégie digitale dans la stratégie globale de l\'entreprise',
+                            'L\'environnement technologique et son impact sur l\'entreprise',
+                            'La culture et les valeurs de l\'entreprise',
+                            'Les études de marché',
+                            'La notion de concurrence et diversité concurrentielle',
+                            'Le benchmark digital',
+                            'Le recueil et l\'analyse des besoins',
+                            'Identifier et comprendre le client et sa demande',
+                            'Le brief digital',
+                        ],
+                    },
+                    {
+                        code: 'B1_M2',
+                        title: 'Elaborer un dispositif de veille scientifique, technique, technologique, réglementaire, sectorielle et concurrentielle',
+                        topics: [
+                            'La démarche de veille',
+                            'La veille technologique : sources, référents, outils et bonnes pratiques',
+                            'La veille concurrentielle et sectorielle',
+                            'Les autres types de veille',
+                            'Les matrices de veille',
+                            'L\'évaluation de la fiabilité du dispositif de veille',
+                        ],
+                    },
+                    {
+                        code: 'B1_M3',
+                        title: 'Interpréter et articuler une problématique en matière de projet d’innovation et/ou de transformation à un commanditaire',
+                        topics: [
+                            'La problématique d\'innovation ou de transformation',
+                            'Orienter le projet d\'innovation sur le client final',
+                        ],
+                    },
+                    {
+                        code: 'B1_M4',
+                        title: 'Identifier et analyser l’ensemble des risques pour la réussite du projet',
+                        topics: [
+                            'Analyse des contraintes dans la mise en œuvre d\'un projet',
+                            'Analyse des risques d\'un projet',
+                            'Analyse de l\'impact d\'un projet',
+                        ],
+                    },
+                    {
+                        code: 'B1_M5',
+                        title: 'Animer un processus créatif de production, développement et communication',
+                        topics: [
+                            'Apprendre à générer des idées',
+                            'Design Thinking : Définir la problématique',
+                            'Design Thinking : La phase d’idéation',
+                            'Design Thinking : La phase de prototypage de la solution',
+                            'Design Thinking : La phase de test de la solution',
+                            'Design Thinking : La phase de d\'itération',
+                            'Animer un atelier de brainstorming',
+                            'Préparer et présenter un dossier de conception',
+                        ],
+                    },
+                    {
+                        code: 'B1_M6',
+                        title: 'Evaluer l’adéquation des pistes créatives aux besoins des utilisateurs finaux',
+                        topics: [
+                            'La complémentarité études qualitatives / études quantitatives',
+                            'Les études qualitatives',
+                            'La mise en œuvre d\'études qualitatives',
+                            'Les types d\'études quantitatives',
+                            'La réalisation d\'une enquête',
+                            'Les méthodes d\'échantillonnage',
+                            'Les études à l\'épreuve du numérique',
+                        ],
+                    },
                 ],
-                evaluation: { title: "Évaluation du Bloc 1", isCompleted: false }
             },
             {
                 code: 'B2',
                 title: 'Concevoir un projet de transformation et/ou d’innovation',
                 modules: [
-                    { code: 'B2_M1', title: 'Elaborer la proposition de valeur d’un projet', topics: ['Les fondamentaux d\'une proposition de valeur...', 'Les objectifs d\'une proposition de valeur...', 'Construire et communiquer sa proposition de valeur...'] },
-                    { code: 'B2_M2', title: 'Définir l’organisation, les étapes et les besoins en ressources d\'un projet', topics: ['La planification d\'un projet web...', 'Le rôle de la note de cadrage...', 'La rédaction d\'un cahier des charges...', 'Les différents acteurs du projet...', 'Identifier et sélectionner les prestataires...', 'La construction d\'un tableau de bord opérationnel...'] },
-                    { code: 'B2_M3', title: 'Définir le modèle économique', topics: ['Le budget digital et les décisions d’investissement...', 'Calculer la rentabilité d’un projet digital...', 'L\'Executive Summary d\'un projet d\'innovation...'] },
-                    { code: 'B2_M4', title: 'Définir le business plan d\'un projet de transformation...', topics: ['La préparation et la structuration du business plan...', 'La faisabilité économique et financière...', 'Quels chiffres dans un business plan...'] },
-                    { code: 'B2_M5', title: 'Défendre la solution sélectionnée...', topics: ['Présenter son Business Plan...', 'Soutenir son business plan...', 'La présentation écrite d\'un projet...', 'Des présentations de résultats impactantes...'] },
+                    {
+                        code: 'B2_M1',
+                        title: 'Elaborer la proposition de valeur d’un projet',
+                        topics: [
+                            'Les fondamentaux d\'une proposition de valeur',
+                            'Les objectifs d\'une proposition de valeur',
+                            'Construire et communiquer sa proposition de valeur',
+                        ],
+                    },
+                    {
+                        code: 'B2_M2',
+                        title: 'Définir l’organisation, les étapes et les besoins en ressources d\'un projet',
+                        topics: [
+                            'La planification d\'un projet web',
+                            'Le rôle de la note de cadrage',
+                            'La rédaction d\'un cahier des charges',
+                            'Les différents acteurs du projet',
+                            'Identifier et sélectionner les prestataires et les fournisseurs adaptés aux besoins du projet',
+                            'La construction d\'un tableau de bord opérationnel',
+                        ],
+                    },
+                    {
+                        code: 'B2_M3',
+                        title: 'Définir le modèle économique',
+                        topics: [
+                            'Le budget digital et les décisions d’investissement',
+                            'Calculer la rentabilité d’un projet digital',
+                            'L\'Executive Summary d\'un projet d\'innovation',
+                        ],
+                    },
+                    {
+                        code: 'B2_M4',
+                        title: 'Définir le business plan d\'un projet de transformation et/ou d’innovation',
+                        topics: [
+                            'La préparation et la structuration du business plan',
+                            'La faisabilité économique et financière du business plan',
+                            'Quels chiffres dans un business plan ?',
+                        ],
+                    },
+                    {
+                        code: 'B2_M5',
+                        title: 'Défendre la solution sélectionnée/le projet de transformation',
+                        topics: [
+                            'Présenter son Business Plan',
+                            'Soutenir son business plan',
+                            'La présentation écrite d\'un projet',
+                            'Des présentations de résultats impactantes',
+                        ],
+                    },
                 ],
-                evaluation: {
-                    title: "Évaluation du Bloc 2",
-                    details: [
-                        { label: "Évaluation écrite", isCompleted: false },
-                        { label: "Évaluation vidéo", isCompleted: false }
-                    ]
-                }
             },
             {
                 code: 'B3',
                 title: 'Concevoir et mettre en œuvre une stratégie de communication interne/externe',
                 modules: [
-                    { code: 'B3_M1', title: 'Identifier les cibles de communication...', topics: ['Identifier ses cibles...', 'Les objectifs de communication...', 'Les cibles en fonction des différents réseaux sociaux...', 'La création des personas...'] },
-                    { code: 'B3_M2', title: 'Concevoir et déployer une stratégie de communication à destination de cibles internes', topics: ['La stratégie de communication : le positionnement...', 'La stratégie de communication : Les objectifs...', 'La stratégie de communication : Les cibles...', 'La stratégie de communication : L\'axe créatif...', 'Le projet de communication...', 'Fixer des objectifs SMART...', 'Les outils de mesure de l\'efficacité...', 'La place de la conduite du changement...'] },
-                    { code: 'B3_M3', title: 'Elaborer une stratégie de communication à destination de cibles externes', topics: ['Le positionnement de communication...', 'Le rôle du plan de communication...', 'Les composantes du plan de communication...', 'La définition des médias cible...', 'La budgétisation et le calendrier des actions...'] },
-                    { code: 'B3_M4', title: 'Réaliser une campagne de communication créative', topics: ['Les messages clés dans le cadre d\'une communication efficace...', 'Structurer son message...', 'Production d\'un message...', 'Le storytelling...', 'Les moyens et supports de communication...'] },
+                    {
+                        code: 'B3_M1',
+                        title: 'Identifier les cibles de communication internes / externes et les utilisateurs finaux',
+                        topics: [
+                            'Identifier ses cibles',
+                            'Les objectifs de communication',
+                            'Les cibles en fonction des différents réseaux sociaux',
+                            'La création des personas',
+                        ],
+                    },
+                    {
+                        code: 'B3_M2',
+                        title: 'Concevoir et déployer une stratégie de communication à destination de cibles internes',
+                        topics: [
+                            'La stratégie de communication : le positionnement',
+                            'La stratégie de communication : Les objectifs',
+                            'La stratégie de communication : Les cibles',
+                            'La stratégie de communication : L\'axe créatif',
+                            'Le projet de communication',
+                            'Fixer des objectifs SMART',
+                            'Les outils de mesure de l\'efficacité',
+                            'La place de la conduite du changement',
+                        ],
+                    },
+                    {
+                        code: 'B3_M3',
+                        title: 'Elaborer une stratégie de communication à destination de cibles externes',
+                        topics: [
+                            'Le positionnement de communication',
+                            'Le rôle du plan de communication',
+                            'Les composantes du plan de communication',
+                            'La définition des médias cible',
+                            'La budgétisation et le calendrier des actions',
+                        ],
+                    },
+                    {
+                        code: 'B3_M4',
+                        title: 'Réaliser une campagne de communication créative',
+                        topics: [
+                            'Les messages clés dans le cadre d\'une communication efficace',
+                            'Structurer son message',
+                            'Production d\'un message',
+                            'Le storytelling',
+                            'Les moyens et supports de communication',
+                        ],
+                    },
                 ],
-                evaluation: { title: "Évaluation du Bloc 3", isCompleted: false }
             },
             {
                 code: 'B4',
                 title: 'Piloter un projet d’innovation et/ou de transformation jusqu\'à la phase de rendu final',
                 modules: [
-                    { code: 'B4_M1', title: 'Réaliser le prototypage des différentes pistes créatives', topics: ['La phase d’idéation...', 'Le prototypage de la solution...', 'La réalisation de maquettes...', 'Introduction au parcours interactif...'] },
-                    { code: 'B4_M2', title: 'Observer les utilisateurs durant la phase test', topics: ['Test utilisateur...', 'Evaluation quantitative...', 'Evaluation qualitative...', 'Recueillir des informations...', 'Élaborer les fiches d\'observation...', 'Construire les rapports de test...'] },
-                    { code: 'B4_M3', title: 'Concevoir et réaliser une solution...', topics: ['La démarche qualité...', 'La mesure de la qualité...', 'Les tests qualité...', 'Normes et réglementations...', 'Low tech...', 'Présentation d\'une maquette...'] },
-                    { code: 'B4_M4', title: 'Piloter des revues de projet', topics: ['La revue de projet dans le cycle de vie...', 'Les participants à la revue de projet...', 'Animer des réunions structurées...', 'Les outils d\'une revue de projet...'] },
-                    { code: 'B4_M5', title: 'Évaluer l\'atteinte des objectifs...', topics: ['Le cahier des charges des livrables...', 'Éléments et critères de mesure de l\'expérience client...', 'Le management de la qualité des projets...', 'L\'évaluation d\'un projet : le bilan qualitatif...'] },
-                    { code: 'B4_M6', title: 'Piloter une démarche d’amélioration continue', topics: ['Le suivi des indicateurs qualité...', 'Organiser une gouvernance...', 'Méthodologie pour piloter un projet digital...', 'Émettre des recommandations pour les futurs projets...'] },
+                    {
+                        code: 'B4_M1',
+                        title: 'Réaliser le prototypage des différentes pistes créatives',
+                        topics: [
+                            'La phase d’idéation',
+                            'Le prototypage de la solution',
+                            'La réalisation de maquettes avec des prototypes UX',
+                            'Introduction au parcours interactif et au prototypage',
+                        ],
+                    },
+                    {
+                        code: 'B4_M2',
+                        title: 'Observer les utilisateurs durant la phase test',
+                        topics: [
+                            'Test utilisateur',
+                            'Evaluation quantitative de la solution proposée',
+                            'Evaluation qualitative de la solution proposée',
+                            'Recueillir des informations sur les comportements utilisateurs',
+                            'Élaborer les fiches d\'observation',
+                            'Construire les rapports de test',
+                        ],
+                    },
+                    {
+                        code: 'B4_M3',
+                        title: 'Concevoir et réaliser une solution d\'un projet d’innovation et/ou de transformation',
+                        topics: [
+                            'La démarche qualité',
+                            'La mesure de la qualité',
+                            'Les tests qualité selon la nature des livrables',
+                            'Normes et réglementations',
+                            'Low tech',
+                            'Présentation d\'une maquette de solution d\'innovation ou de transformation',
+                        ],
+                    },
+                    {
+                        code: 'B4_M4',
+                        title: 'Piloter des revues de projet',
+                        topics: [
+                            'La revue de projet dans le cycle de vie d\'un projet',
+                            'Les participants à la revue de projet',
+                            'Animer des réunions structurées',
+                            'Les outils d\'une revue de projet',
+                        ],
+                    },
+                    {
+                        code: 'B4_M5',
+                        title: 'Évaluer l\'atteinte des objectifs du projet d’innovation et/ou de transformation',
+                        topics: [
+                            'Le cahier des charges des livrables',
+                            'Éléments et critères de mesure de l\'expérience client',
+                            'Le management de la qualité des projets',
+                            'L\'évaluation d\'un projet : le bilan qualitatif',
+                        ],
+                    },
+                    {
+                        code: 'B4_M6',
+                        title: 'Piloter une démarche d’amélioration continue',
+                        topics: [
+                            'Le suivi des indicateurs qualité et amélioration continue',
+                            'Organiser une gouvernance dans le cadre d\'une démarche d\'amélioration continue',
+                            'Méthodologie pour piloter un projet digital : une démarche itérative',
+                            'Émettre des recommandations pour les futurs projets',
+                        ],
+                    },
                 ],
-                evaluation: { title: "Évaluation du Bloc 4", isCompleted: false }
             },
             {
                 code: 'B5',
                 title: 'Manager une équipe projet, une direction technique et/ou une équipe transverse',
                 modules: [
-                    { code: 'B5_M1', title: 'Sélectionner les membres de l’équipe projet...', topics: ['Recruter les compétences opérationnelles...', 'Les compétences et talents...', 'Typologie des organismes de prestataires...', 'L\'utilité du suivi de la performance...', 'La performance et l\'évaluation de la prestation...'] },
-                    { code: 'B5_M2', title: 'Évaluer l’adéquation entre les profils des collaborateurs...', topics: ['Cartographier les compétences...', 'Les compétences comportementales ou soft skills...', 'La maîtrise des processus...', 'Les relations d\'équipes face aux tâches...', 'L\'amélioration du travail en équipe...', 'La communication avec l\'équipe projet...', 'Traiter les dysfonctionnements...'] },
-                    { code: 'B5_M3', title: 'Diriger une équipe projet composée d\'intervenants internes et externes', topics: ['Communiquer sur son projet...', 'Le business model canvas...', 'La présentation écrite d\'un projet...', 'La politique d\'inclusion en entreprise...', 'La lutte contre la discrimination...'] },
+                    {
+                        code: 'B5_M1',
+                        title: 'Sélectionner les membres de l’équipe projet (internes et externes)',
+                        topics: [
+                            'Recruter les compétences opérationnelles nécessaires à l\'équipe projet digital',
+                            'Les compétences et talents',
+                            'Typologie des organismes de prestataires',
+                            'L\'utilité du suivi de la performance',
+                            'La performance et l\'évaluation de de la prestation',
+                        ],
+                    },
+                    {
+                        code: 'B5_M2',
+                        title: 'Évaluer l’adéquation entre les profils des collaborateurs de l’équipe projet et le besoin en compétences',
+                        topics: [
+                            'Cartographier les compétences nécessaires au projet',
+                            'Les compétences comportementales ou soft skills',
+                            'La maîtrise des processus',
+                            'Les relations d\'équipes face aux tâches',
+                            'L\'amélioration du travail en équipe',
+                            'La communication avec l\'équipe projet',
+                            'Traiter les dysfonctionnements du travail en équipe',
+                        ],
+                    },
+                    {
+                        code: 'B5_M3',
+                        title: 'Diriger une équipe projet composée d\'intervenants internes et externes',
+                        topics: [
+                            'Communiquer sur son projet pour développer l’adhésion',
+                            'Le business model canvas',
+                            'La présentation écrite d\'un projet',
+                            'La politique d\'inclusion en entreprise',
+                            'La lutte contre la discrimination',
+                        ],
+                    },
                 ],
-                evaluation: { title: "Évaluation du Bloc 5", isCompleted: false }
             },
             {
                 code: 'B6',
                 title: 'Garantir la performance d’un projet de transformation et/ou d’innovation en matière de technique et/ou technologie',
                 specialization: 'CDO',
                 modules: [
-                    { code: 'B6_M1', title: 'Piloter un projet de transformation...', topics: ['Les spécificités du projet digital...', 'Le recueil de l\'analyse des besoins...', 'Définir la solution et le projet cibles...', 'Définir les objectifs et faire valider...', 'Le choix technologique de la solution...', 'Le cahier des charges technique : détailler...', 'Le cahier des charges technique : du besoin...', 'La construction du planning...', 'Les principaux acteurs : la maîtrise d’œuvre...', 'Les principaux acteurs : la maîtrise d’ouvrage...', 'Établir la gouvernance du projet...'] },
-                    { code: 'B6_M2', title: 'Définir l’architecture technique adaptée...', topics: ['Introduction aux architectures multicouches...', 'Les design patterns...', 'Les frameworks et ORM...', 'Les microservices et architecture distribuée...', 'L\'éco-conception dans l\'architecture logicielle...', 'L\'offre de service d\'un fournisseur Cloud...', 'Les solutions SaaS...', 'Les principes de sécurité en architecture...', 'La réalisation de l\'étude de faisabilité...', 'Le cahier des charges technique : description...', 'Le cahier des charges techniques : budget, délais...', 'Rédiger un dossier technique d\'architecture...'] },
-                    { code: 'B6_M3', title: 'Tester sa solution digitale', topics: ['La démarche qualité en développement...', 'La démarche DevOps...', 'La mise en place de l\'intégration continue (CI)...', 'La mise en place de la livraison...', 'Les enjeux des plans de test...', 'Élaborer un scénario de test...', 'Mettre en place un environnement de test...', 'Les outils et les stratégies des tests de sécurité...', 'Planifier efficacement les tests...', 'Valider les résultats des tests...', 'Automatiser les tests en DevOps...'] },
-                    { code: 'B6_M4', title: 'Émettre des préconisations quant à la résolution de problèmes techniques', topics: ['La résolution d\'une situation critique...', 'Réaliser une analyse causale...', 'La conception de la solution grâce au Design Thinking...'] },
+                    {
+                        code: 'B6_M1',
+                        title: 'Piloter un projet de transformation et/ou d’innovation en matière de technique et/ou technologie',
+                        topics: [
+                            'Les spécificités du projet digital',
+                            'Le recueil de l\'analyse des besoins',
+                            'Définir la solution et le projet cibles',
+                            'Définir les objectifs et faire valider l’opportunité du projet',
+                            'Le choix technologique de la solution',
+                            'Le cahier des charges technique : détailler la mise en œuvre',
+                            'Le cahier des charges technique : du besoin à la solution technique',
+                            'La construction du planning',
+                            'Les principaux acteurs d’un projet digital : la maîtrise d’œuvre',
+                            'Les principaux acteurs d’un projet digital : la maîtrise d’ouvrage',
+                            'Établir la gouvernance du projet, définir les rôles et les responsabilités',
+                        ],
+                    },
+                    {
+                        code: 'B6_M2',
+                        title: 'Définir l’architecture technique adaptée au projet',
+                        topics: [
+                            'Introduction aux architectures multicouches',
+                            'Les design patterns',
+                            'Les frameworks et ORM',
+                            'Les microservices et architecture distribuée',
+                            'L\'éco-conception dans l\'architecture logicielle',
+                            'L\'offre de service d\'un fournisseur de services Cloud',
+                            'Les solutions SaaS et leurs implications architecturales',
+                            'Les principes de sécurité en architecture',
+                            'La réalisation de l\'étude de faisabilité',
+                            'Le cahier des charges technique : description fonctionnelle et technique',
+                            'Le cahier des charges techniques : budget, délais et suivi',
+                            'Rédiger un dossier technique d\'architecture',
+                        ],
+                    },
+                    {
+                        code: 'B6_M3',
+                        title: 'Tester sa solution digitale',
+                        topics: [
+                            'La démarche qualité en développement',
+                            'La démarche DevOps',
+                            'La mise en place de l\'intégration continue (CI)',
+                            'La mise en place de la livraison ou déploiement continu (CD)',
+                            'Les enjeux des plans de test',
+                            'Élaborer un scénario de test',
+                            'Mettre en place un environnement de test',
+                            'Les outils et les stratégies des tests de sécurité',
+                            'Planifier efficacement les tests',
+                            'Valider les résultats des tests',
+                            'Automatiser les tests en DevOps',
+                        ],
+                    },
+                    {
+                        code: 'B6_M4',
+                        title: 'Émettre des préconisations quant à la résolution de problèmes techniques',
+                        topics: [
+                            'La résolution d\'une situation critique pour la survie du projet',
+                            'Réaliser une analyse causale à l’aide d’entretiens et d’enquêtes terrain',
+                            'La conception de la solution grâce au Design Thinking',
+                        ],
+                    },
                 ],
-                evaluation: { title: "Évaluation du Bloc 6", isCompleted: false }
             },
             {
                 code: 'B7',
                 title: 'Concevoir et mettre en œuvre de la stratégie de communication',
                 specialization: 'SD',
                 modules: [
-                    { code: 'B7_M1', title: 'Élaborer et déployer une stratégie de brand content', topics: ['Une introduction à la stratégie de contenu...', 'Les étapes de la stratégie de contenu...', 'Les KPI dans la stratégie de contenu...', 'Le développement d\'une stratégie de contenu...', 'Les étapes de la stratégie de création...', 'Réussir sa stratégie de création...', 'L\'orientation artistique et le brief créatif...', 'Introduction à la production de contenus...', 'La création de contenu digital...', 'Le brand content...', 'Le brand content et le storytelling...', 'Le contenu de marque...'] },
-                    { code: 'B7_M2', title: 'Promouvoir un site internet, une application mobile ou une web app', topics: ['Les sites internet...', 'Le référencement des sites Web...', 'Les nouvelles techniques du SEO...', 'UX/UI Design...', 'Les coûts de promotion...', 'Introduction aux social ads...', 'Les différentes formes de communication...', 'Les moyens et supports...', 'Les supports audio-visuels...', 'Le multicanal et le mix marketing...', 'Les outils de mesure de l\'efficacité...'] },
-                    { code: 'B7_M3', title: 'Produire un contenu différenciant', topics: ['La rédaction de la charte...', 'Les outils du content marketing...', 'Animation du plan d’action marketing...', 'Produire du contenu avec l\'IA générative...'] },
+                    {
+                        code: 'B7_M1',
+                        title: 'Élaborer et déployer une stratégie de brand content',
+                        topics: [
+                            'Une introduction à la stratégie de contenu',
+                            'Les étapes de la stratégie de contenu',
+                            'Les KPI dans la stratégie de contenu',
+                            'Le développement d\'une stratégie de contenu',
+                            'Les étapes de la stratégie de création de contenu',
+                            'Réussir sa stratégie de création de contenu',
+                            'L\'orientation artistique et le brief créatif',
+                            'Introduction à la production de contenus digitaux',
+                            'La création de contenu digital en adéquation avec sa cible',
+                            'Le brand content',
+                            'Le brand content et le storytelling digital',
+                            'Le contenu de marque',
+                        ],
+                    },
+                    {
+                        code: 'B7_M2',
+                        title: 'Promouvoir un site internet, une application mobile ou une web app',
+                        topics: [
+                            'Les sites internet',
+                            'Le référencement des sites Web',
+                            'Les nouvelles techniques du SEO',
+                            'UX/UI Design',
+                            'Les coûts de promotion',
+                            'Introduction aux social ads (publicité sur les réseaux sociaux)',
+                            'Les différentes formes de communication',
+                            'Les moyens et supports de communication',
+                            'Les supports audio-visuels',
+                            'Le multicanal et le mix marketing',
+                            'Les outils de mesure de l\'efficacité',
+                        ],
+                    },
+                    {
+                        code: 'B7_M3',
+                        title: 'Produire un contenu différenciant',
+                        topics: [
+                            'La rédaction de la charte et de la ligne éditoriale',
+                            'Les outils du content marketing',
+                            'Animation du plan d’action marketing',
+                            'Produire du contenu avec l\'IA générative',
+                        ],
+                    },
                 ],
-                evaluation: { title: "Évaluation du Bloc 7", isCompleted: false }
             },
         ];
 
         const sessionsData = [
-            { promo: '2025', session: 'Session 2', startDate: '2025-01-01', endDate: '2025-11-24', status: '✅ Date confirmée par Studie', isConfirmed: true },
-            { promo: '2026', session: 'Session 1', startDate: '2026-01-01', endDate: '2026-05-28', status: '⚠️ Date fictive – en attente de validation', isConfirmed: false },
-            { promo: '2026', session: 'Session 2', startDate: '2026-01-01', endDate: '2026-11-26', status: '⚠️ Date fictive – en attente de validation', isConfirmed: false },
-            { promo: '2027', session: 'Session 1', startDate: '2027-01-01', endDate: '2027-05-27', status: '⚠️ Date fictive – en attente de validation', isConfirmed: false },
-            { promo: '2027', session: 'Session 2', startDate: '2027-01-01', endDate: '2027-11-25', status: '⚠️ Date fictive – en attente de validation', isConfirmed: false },
-            { promo: '2028', session: 'Session 1', startDate: '2028-01-01', endDate: '2028-05-25', status: '⚠️ Date fictive – en attente de validation', isConfirmed: false },
-            { promo: '2028', session: 'Session 2', startDate: '2028-01-01', endDate: '2028-11-23', status: '⚠️ Date fictive – en attente de validation', isConfirmed: false },
+            {
+                promo: '2025',
+                session: 'Session 2',
+                startDate: '2025-01-01',
+                endDate: '2025-11-24',
+                status: '✅ Date confirmée par Studie',
+                isConfirmed: true
+            },
+            {
+                promo: '2026',
+                session: 'Session 1',
+                startDate: '2026-01-01',
+                endDate: '2026-05-28',
+                status: '⚠️ Date fictive – en attente de validation',
+                isConfirmed: false
+            },
+            {
+                promo: '2026',
+                session: 'Session 2',
+                startDate: '2026-01-01',
+                endDate: '2026-11-26',
+                status: '⚠️ Date fictive – en attente de validation',
+                isConfirmed: false
+            },
+            {
+                promo: '2027',
+                session: 'Session 1',
+                startDate: '2027-01-01',
+                endDate: '2027-05-27',
+                status: '⚠️ Date fictive – en attente de validation',
+                isConfirmed: false
+            },
+            {
+                promo: '2027',
+                session: 'Session 2',
+                startDate: '2027-01-01',
+                endDate: '2027-11-25',
+                status: '⚠️ Date fictive – en attente de validation',
+                isConfirmed: false
+            },
+            {
+                promo: '2028',
+                session: 'Session 1',
+                startDate: '2028-01-01',
+                endDate: '2028-05-25',
+                status: '⚠️ Date fictive – en attente de validation',
+                isConfirmed: false
+            },
+            {
+                promo: '2028',
+                session: 'Session 2',
+                startDate: '2028-01-01',
+                endDate: '2028-11-23',
+                status: '⚠️ Date fictive – en attente de validation',
+                isConfirmed: false
+            },
         ];
 
         const sharedEvaluationCriteria = {
@@ -547,7 +666,7 @@
                     ],
                     "C1.6 Évaluer l'adéquation des pistes créatives": [
                         "Le candidat utilise des méthodologies de tests utilisateurs (quantitatifs ou qualitatifs) suivant des protocoles ad hoc adaptés.",
-                        "Le candidat adopte une attitude d'apprentissage et ne cherche pas à défendre sa solution ou à influencer les réponses.",
+                        "Le candidat adopte une attitude d'apprentissage et ne cherche pas à défendre sa solution ou à influencer les réponses des utilisateurs.",
                         "Démontre sa capacité à prendre en compte des éléments issus de la communication non verbale.",
                         "Le candidat documente les résultats de manière à en faciliter l'analyse."
                     ]
@@ -609,7 +728,7 @@
                 }
             },
             B4: {
-                title: "Piloter un projet d'innovation et/ou de transformation...",
+                title: "Pilotage du projet d'innovation et/ou de transformation...",
                 criteria: {
                     "C4.1 Réaliser le prototypage": [
                         "Prise en compte des informations qualitatives et quantitatives lors des recherches exploratoires pour la création des représentations de produits, de services, d'espace et d'identité.",
@@ -706,12 +825,13 @@
                         "Le candidat détermine des objectifs chiffrés et mesurables d'acquisition et de transformation des cibles visées selon les canaux de communication retenus dans le cadre de la stratégie de brand content.",
                         "Le candidat propose une ligne éditoriale claire et différenciante. Cette ligne éditoriale est respectée dans le cadre de la production des différents contenus.",
                         "Le contenu proposé par le candidat est différenciant en ce sens qu'il aborde le sujet en profondeur, en s'appuyant sur l'existant (source) et en intégrant un point de vue novateur.",
+                        "Le candidat démontre sa maîtrise du cycle de vie du content marketing pour gagner en visibilité. Lorsque cela est possible, il explicite les tâches automatisables.",
                         "Le candidat démontre sa capacité à mobiliser des connaissances théoriques (théories, actualité, méthodes de travail...) et à les adapter pour répondre à un contexte spécifique et complexe."
                     ]
                 }
             }
         };
-
+        
         const motivationalPhrases = [
             { title: "N'abandonnez jamais", text: "Chaque pas, même le plus petit, vous rapproche de votre objectif. La persévérance est la clé du succès." },
             { title: "Le succès est au bout de l'effort", text: "La seule limite à notre épanouissement de demain sera nos doutes d'aujourd'hui." },
@@ -719,36 +839,61 @@
             { title: "Chaque jour est une nouvelle chance", text: "Ne laissez pas hier prendre trop de place aujourd'hui." },
             { title: "Le travail d'équipe rend le rêve possible", text: "Seul on va plus vite, ensemble on va plus loin." },
         ];
+        
+        const CheckCircleIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>`;
+        const DangerousIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z" /></svg>`;
+        const ChevronRightIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>`;
+        const ChevronDownIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" /></svg>`;
 
-        // État de l'application
-        let selectedSpecialization = localStorage.getItem('mba_tracker_specialization') || 'CDO';
-        let programProgress = JSON.parse(localStorage.getItem('mba_tracker_progress')) || initialProgramData.map(block => ({
-            ...block,
-            modules: block.modules.map(module => ({ ...module, topics: module.topics.map(topic => ({ text: topic, isCompleted: false })) })),
-            evaluation: block.evaluation ? { ...block.evaluation, isCompleted: false, details: block.evaluation.details ? block.evaluation.details.map(d => ({...d, isCompleted: false})) : undefined } : undefined,
-        }));
+        // State-like variables
+        let selectedSpecialization = 'CDO';
+        let programProgress = [];
         let sessions = sessionsData;
-        let expandedBlocks = JSON.parse(localStorage.getItem('mba_tracker_expandedBlocks')) || {};
-        let expandedModules = JSON.parse(localStorage.getItem('mba_tracker_expandedModules')) || {};
-        let isCalendarTableExpanded = JSON.parse(localStorage.getItem('mba_tracker_calendarExpanded')) || false;
-        let selectedSessionIndex = localStorage.getItem('mba_tracker_selectedSessionIndex') || 0;
-        let countdown = {};
-        let motivationalPhrase = {};
-        let userInfo = JSON.parse(localStorage.getItem('mba_tracker_user_info'));
-        let isFormVisible = !userInfo;
+        let expandedBlocks = {};
+        let expandedModules = {};
+        let isCalendarTableExpanded = false;
+        let selectedSessionIndex = 0;
+        let countdownInterval;
 
-        // Éléments du DOM
-        const appRoot = document.getElementById('app-root');
-        const scrollBtn = document.getElementById('scroll-to-top-btn');
+        // DOM elements
+        const btnCdo = document.getElementById('btn-cdo');
+        const btnSd = document.getElementById('btn-sd');
+        const programContainer = document.getElementById('program-container');
+        const totalProgressBar = document.getElementById('total-progress-bar');
+        const totalProgressText = document.getElementById('total-progress-text');
+        const sessionSelect = document.getElementById('session-select');
+        const deadlineDate = document.getElementById('deadline-date');
+        const countdownDays = document.getElementById('countdown-days');
+        const countdownHours = document.getElementById('countdown-hours');
+        const countdownMinutes = document.getElementById('countdown-minutes');
+        const countdownSeconds = document.getElementById('countdown-seconds');
+        const calendarHeader = document.getElementById('calendar-header');
+        const calendarChevron = document.getElementById('calendar-chevron');
+        const calendarTableContainer = document.getElementById('calendar-table-container');
+        const calendarTableBody = document.getElementById('calendar-table-body');
+        const motivationalTitle = document.getElementById('motivational-title');
+        const motivationalText = document.getElementById('motivational-text');
 
-        // Fonctions utilitaires
-        function saveState() {
+        // Functions
+        function saveProgress() {
             localStorage.setItem('mba_tracker_progress', JSON.stringify(programProgress));
-            localStorage.setItem('mba_tracker_specialization', selectedSpecialization);
-            localStorage.setItem('mba_tracker_expandedBlocks', JSON.stringify(expandedBlocks));
-            localStorage.setItem('mba_tracker_expandedModules', JSON.stringify(expandedModules));
-            localStorage.setItem('mba_tracker_calendarExpanded', JSON.stringify(isCalendarTableExpanded));
-            localStorage.setItem('mba_tracker_selectedSessionIndex', selectedSessionIndex);
+        }
+
+        function loadProgress() {
+            const savedData = localStorage.getItem('mba_tracker_progress');
+            if (savedData) {
+                return JSON.parse(savedData);
+            }
+            return initialProgramData.map(block => ({
+                ...block,
+                modules: block.modules.map(module => ({
+                    ...module,
+                    topics: module.topics.map(topic => ({
+                        text: topic,
+                        isCompleted: false,
+                    })),
+                })),
+            }));
         }
 
         function calculateProgress(items) {
@@ -758,473 +903,359 @@
             return Math.round((completed / total) * 100);
         }
 
+        function getBlockProgress(block) {
+            const topics = block.modules.flatMap(module => module.topics);
+            return calculateProgress(topics);
+        }
+
+        function getModuleProgress(module) {
+            return calculateProgress(module.topics);
+        }
+
+        function getTotalProgress() {
+            const allTopics = programProgress.flatMap(block =>
+                block.modules.flatMap(module => module.topics)
+            );
+            return calculateProgress(allTopics);
+        }
+
+        function renderProgressBar(progress, accentColor) {
+            return `
+                <div class="w-24 bg-gray-700 rounded-full h-2.5">
+                    <div
+                        class="h-2.5 rounded-full transition-all duration-500 ease-in-out ${accentColor}"
+                        style="width: ${progress}%"
+                    ></div>
+                </div>
+            `;
+        }
+
+        function renderProgram() {
+            programContainer.innerHTML = '';
+            programProgress.forEach((block, blockIndex) => {
+                const isSpecializationBlock = block.specialization && block.specialization !== selectedSpecialization;
+                if (isSpecializationBlock) return;
+
+                const blockProgress = getBlockProgress(block);
+                const accentColor = block.code === 'B6' && selectedSpecialization === 'CDO'
+                    ? 'bg-orange-600'
+                    : block.code === 'B7' && selectedSpecialization === 'SD'
+                    ? 'bg-fuchsia-600'
+                    : 'bg-blue-600';
+                const headerColor = block.code === 'B6' && selectedSpecialization === 'CDO'
+                    ? 'text-orange-400'
+                    : block.code === 'B7' && selectedSpecialization === 'SD'
+                    ? 'text-fuchsia-400'
+                    : 'text-blue-400';
+                const isBlockExpanded = !!expandedBlocks[block.code];
+
+                const sharedData = sharedEvaluationCriteria[block.code] || {};
+                const specificData = block.specialization === 'CDO' ? cdoEvaluationCriteria[block.code] : sdEvaluationCriteria[block.code];
+
+                const criteriaTitleColor = block.specialization === 'SD' ? 'text-fuchsia-400' : 'text-orange-400';
+                const criteriaBulletColor = block.specialization === 'SD' ? 'text-pink-500' : 'text-yellow-400';
+                const specialTitleColor = block.specialization === 'SD' ? 'text-fuchsia-400' : 'text-orange-400';
+
+                let blockHtml = `
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border-l-4 border-l-gray-700">
+                        <div class="flex justify-between items-center cursor-pointer block-header" data-block-code="${block.code}">
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 mr-2 text-white transition-transform duration-300 ${isBlockExpanded ? 'rotate-90' : ''}">
+                                    ${ChevronRightIcon}
+                                </span>
+                                <h2 class="text-xl font-bold ${headerColor}">${block.code} : ${block.title}</h2>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-semibold text-white">${blockProgress}%</span>
+                                ${renderProgressBar(blockProgress, accentColor)}
+                            </div>
+                        </div>
+                `;
+
+                if (isBlockExpanded) {
+                    blockHtml += `
+                        <div class="grid gap-4 mt-4">
+                    `;
+                    block.modules.forEach((module, moduleIndex) => {
+                        const moduleProgress = getModuleProgress(module);
+                        const isModuleExpanded = !!expandedModules[module.code];
+
+                        blockHtml += `
+                            <div class="p-4 bg-gray-700 rounded-lg">
+                                <div class="flex justify-between items-center cursor-pointer module-header" data-module-code="${module.code}">
+                                    <div class="flex items-center">
+                                        <span class="w-5 h-5 mr-2 text-gray-300 transition-transform duration-300 ${isModuleExpanded ? 'rotate-90' : ''}">
+                                            ${ChevronRightIcon}
+                                        </span>
+                                        <h3 class="text-md font-semibold text-gray-200">
+                                            ${module.code} : ${module.title}
+                                        </h3>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-300">${moduleProgress}%</span>
+                                </div>
+                        `;
+
+                        if (isModuleExpanded) {
+                            blockHtml += `
+                                <div class="grid gap-2 mt-2">
+                            `;
+                            module.topics.forEach((topic, topicIndex) => {
+                                blockHtml += `
+                                    <div class="flex items-center text-gray-300">
+                                        <input
+                                            type="checkbox"
+                                            class="form-checkbox h-4 w-4 text-pink-500 rounded border-gray-600 focus:ring-pink-500 bg-gray-800 transition-colors duration-200 cursor-pointer topic-checkbox"
+                                            data-block-index="${blockIndex}"
+                                            data-module-index="${moduleIndex}"
+                                            data-topic-index="${topicIndex}"
+                                            ${topic.isCompleted ? 'checked' : ''}
+                                        />
+                                        <span class="ml-3 text-sm">${topic.text}</span>
+                                    </div>
+                                `;
+                            });
+                            blockHtml += `
+                                </div>
+                            `;
+                        }
+
+                        blockHtml += `
+                            </div>
+                        `;
+                    });
+
+                    // Critères d'évaluation
+                    let criteriaHtml = '';
+                    if (sharedData.criteria) {
+                        Object.entries(sharedData.criteria).forEach(([compCode, criteriaList]) => {
+                            criteriaHtml += `
+                                <div class="mb-4">
+                                    <h5 class="text-md font-semibold text-gray-300 mb-2">${compCode}</h5>
+                                    <ul class="list-none pl-0 space-y-1 text-gray-400">
+                                        ${criteriaList.map(crit => `
+                                            <li class="flex items-start">
+                                                <span class="${criteriaBulletColor} mr-2 flex-shrink-0 mt-1">⭐</span>
+                                                <p class="text-sm text-gray-400 text-justify">${crit}</p>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            `;
+                        });
+                    }
+
+                    if (specificData && specificData.criteria) {
+                        criteriaHtml += `
+                            <h5 class="text-md font-semibold ${specialTitleColor} mb-2 mt-4">Critères spécifiques au ${selectedSpecialization} :</h5>
+                        `;
+                        Object.entries(specificData.criteria).forEach(([compCode, criteriaList]) => {
+                            criteriaHtml += `
+                                <div class="mb-4">
+                                    <h5 class="text-md font-semibold text-gray-300 mb-2">${compCode}</h5>
+                                    <ul class="list-none pl-0 space-y-1 text-gray-400">
+                                        ${criteriaList.map(crit => `
+                                            <li class="flex items-start">
+                                                <span class="${criteriaBulletColor} mr-2 flex-shrink-0 mt-1">⭐</span>
+                                                <p class="text-sm text-gray-400 text-justify">${crit}</p>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            `;
+                        });
+                    }
+
+                    if (criteriaHtml) {
+                        blockHtml += `
+                            <div class="mt-4 p-4 bg-gray-900 rounded-xl shadow-inner">
+                                <h4 class="text-lg font-bold ${criteriaTitleColor} mb-4">Critères d'évaluation du bloc 📝</h4>
+                                ${criteriaHtml}
+                            </div>
+                        `;
+                    }
+
+                    blockHtml += `
+                        </div>
+                    `;
+                }
+
+                blockHtml += `
+                    </div>
+                `;
+                programContainer.innerHTML += blockHtml;
+            });
+            updateTotalProgress();
+            addEventListeners();
+        }
+
+        function updateTotalProgress() {
+            const totalProgress = getTotalProgress();
+            totalProgressText.textContent = `${totalProgress}%`;
+            totalProgressBar.style.width = `${totalProgress}%`;
+        }
+
+        function addEventListeners() {
+            document.querySelectorAll('.block-header').forEach(header => {
+                header.addEventListener('click', (e) => {
+                    const blockCode = e.currentTarget.dataset.blockCode;
+                    expandedBlocks[blockCode] = !expandedBlocks[blockCode];
+                    renderProgram();
+                });
+            });
+
+            document.querySelectorAll('.module-header').forEach(header => {
+                header.addEventListener('click', (e) => {
+                    const moduleCode = e.currentTarget.dataset.moduleCode;
+                    expandedModules[moduleCode] = !expandedModules[moduleCode];
+                    renderProgram();
+                });
+            });
+
+            document.querySelectorAll('.topic-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const blockIndex = parseInt(e.target.dataset.blockIndex);
+                    const moduleIndex = parseInt(e.target.dataset.moduleIndex);
+                    const topicIndex = parseInt(e.target.dataset.topicIndex);
+                    programProgress[blockIndex].modules[moduleIndex].topics[topicIndex].isCompleted = e.target.checked;
+                    saveProgress();
+                    renderProgram();
+                });
+            });
+        }
+
         function formatDate(dateString) {
             const [year, month, day] = dateString.split('-');
             return `${day}/${month}/${year}`;
         }
-        
-        function getBlockColor(blockCode) {
-            if (blockCode === 'B6' && selectedSpecialization === 'CDO') return 'orange';
-            if (blockCode === 'B7' && selectedSpecialization === 'SD') return 'fuchsia';
-            return 'blue';
+
+        function renderCalendarTable() {
+            calendarTableBody.innerHTML = sessions.map((session, index) => `
+                <tr class="bg-gray-800 hover:bg-gray-700 transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${session.promo}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${session.session}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        <input
+                            type="date"
+                            value="${session.startDate}"
+                            data-index="${index}"
+                            class="bg-gray-900 border border-gray-600 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:border-blue-500 date-input"
+                        />
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        ${formatDate(session.endDate)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <div class="flex items-center space-x-2">
+                            ${session.isConfirmed ? `<span class="text-green-500 w-5 h-5">${CheckCircleIcon}</span>` : `<span class="text-yellow-500 w-5 h-5">${DangerousIcon}</span>`}
+                            <span class="text-gray-300">${session.status}</span>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.querySelectorAll('.date-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const index = parseInt(e.target.dataset.index);
+                    sessions[index].startDate = e.target.value;
+                    // No save to localStorage for sessions for this conversion
+                });
+            });
         }
 
-        function render() {
-            if (isFormVisible) {
-                renderForm();
-            } else {
-                renderMainApp();
+        function startCountdown() {
+            clearInterval(countdownInterval);
+            const session = sessions[selectedSessionIndex];
+            if (!session) {
+                countdownDays.textContent = '0';
+                countdownHours.textContent = '0';
+                countdownMinutes.textContent = '0';
+                countdownSeconds.textContent = '0';
+                deadlineDate.textContent = 'N/A';
+                return;
             }
-        }
-        
-        function renderForm() {
-            appRoot.innerHTML = `
-                <div class="form-section">
-                    <h2 class="text-2xl font-semibold text-white mb-4">Bienvenue ! 👋</h2>
-                    <p class="text-secondary-text-color mb-4">
-                        Pour commencer, veuillez saisir vos informations. Elles seront conservées localement dans votre navigateur pour personnaliser votre suivi.
-                    </p>
-                    <form id="user-form">
-                        <div class="mb-4">
-                            <label class="block text-secondary-text-color text-sm font-bold mb-2" for="firstName">Prénom</label>
-                            <input class="form-input" id="firstName" type="text" value="${userInfo?.firstName || ''}" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-secondary-text-color text-sm font-bold mb-2" for="name">Nom</label>
-                            <input class="form-input" id="name" type="text" value="${userInfo?.name || ''}" required>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-secondary-text-color text-sm font-bold mb-2" for="pseudo">Pseudo (facultatif)</label>
-                            <input class="form-input" id="pseudo" type="text" value="${userInfo?.pseudo || ''}">
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <button class="btn-primary" type="submit">Commencer</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            document.getElementById('user-form').addEventListener('submit', handleFormSubmit);
-        }
 
-        function renderMainApp() {
-            const userInfoElement = `
-                <div class="section max-w-4xl mx-auto">
-                    <h2 class="text-2xl font-semibold text-white mb-2">
-                        Bienvenue dans votre parcours, <span class="text-accent-yellow">${userInfo.firstName} ${userInfo.name}</span> ! 👋
-                    </h2>
-                    <p class="text-secondary-text-color mb-4">
-                        Ici, vous pouvez suivre votre progression et accéder aux critères d'évaluation de votre programme.
-                    </p>
-                    <div class="specialization-selection">
-                        <button class="btn btn-cdo ${selectedSpecialization === 'CDO' ? 'active' : ''}" onclick="handleSpecializationChange('CDO')">CDO</button>
-                        <button class="btn btn-sd ${selectedSpecialization === 'SD' ? 'active' : ''}" onclick="handleSpecializationChange('SD')">SD</button>
-                    </div>
-                </div>
-            `;
+            const deadline = new Date(`${session.endDate}T23:59:59`).getTime();
+            deadlineDate.textContent = formatDate(session.endDate);
 
-            appRoot.innerHTML = userInfoElement + renderCalendar() + renderGlobalProgress() + renderProgramBlocks() + renderEvaluations();
-            
-            // Re-attacher les écouteurs d'événements pour le calendrier
-            document.getElementById('session-select').addEventListener('change', (e) => handleSessionChange(e.target.value));
-            document.querySelectorAll('[onchange*="handleDateChange"]').forEach(input => {
-                const index = parseInt(input.getAttribute('onchange').match(/\d+/)[0]);
-                input.addEventListener('change', (e) => handleDateChange(index, e.target.value));
-            });
-            document.querySelectorAll('[onclick*="toggleCalendarTable"]').forEach(el => el.addEventListener('click', toggleCalendarTable));
-            document.querySelectorAll('[onclick*="toggleBlock"]').forEach(el => {
-                const blockCode = el.getAttribute('onclick').match(/'(.*?)'/)[1];
-                el.addEventListener('click', () => toggleBlock(blockCode));
-            });
-            document.querySelectorAll('[onclick*="toggleModule"]').forEach(el => {
-                const moduleCode = el.getAttribute('onclick').match(/'(.*?)'/)[1];
-                el.addEventListener('click', () => toggleModule(moduleCode));
-            });
-            document.querySelectorAll('[onchange*="handleTopicChange"]').forEach(input => {
-                const args = input.getAttribute('onchange').match(/(\d+|'[^']*')/g);
-                const blockIndex = parseInt(args[0]);
-                const moduleIndex = parseInt(args[1]);
-                const topicIndex = parseInt(args[2]);
-                input.addEventListener('change', () => handleTopicChange(blockIndex, moduleIndex, topicIndex));
-            });
-            document.querySelectorAll('[onchange*="handleEvaluationChange"]').forEach(input => {
-                const args = input.getAttribute('onchange').match(/(\d+|'[^']*')/g);
-                const blockIndex = parseInt(args[0]);
-                const evaluationLabel = args.length > 1 ? args[1].replace(/'/g, '') : null;
-                input.addEventListener('change', () => handleEvaluationChange(blockIndex, evaluationLabel));
-            });
-        }
-        
-        function renderCalendar() {
-            const currentSession = sessions[selectedSessionIndex];
-            const countdownHTML = `
-                <div class="p-4 bg-gray-900 rounded-lg shadow-inner mb-4">
-                    <h3 class="text-lg font-bold mb-2 text-accent-yellow">Compte à rebours de la session sélectionnée</h3>
-                    <div class="flex items-center space-x-4 mb-4">
-                        <span class="text-secondary-text-color font-medium">Sélectionner une session :</span>
-                        <select id="session-select" class="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500">
-                            ${sessions.map((session, index) => `<option value="${index}" ${index == selectedSessionIndex ? 'selected' : ''}>${session.promo} - ${session.session}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-4 gap-4 text-center">
-                        <div class="p-4 bg-gray-700 rounded-lg">
-                            <span class="block text-2xl font-bold text-accent-pink">${countdown.days}</span>
-                            <span class="block text-sm text-secondary-text-color">Jours</span>
-                        </div>
-                        <div class="p-4 bg-gray-700 rounded-lg">
-                            <span class="block text-2xl font-bold text-accent-pink">${countdown.hours}</span>
-                            <span class="block text-sm text-secondary-text-color">Heures</span>
-                        </div>
-                        <div class="p-4 bg-gray-700 rounded-lg">
-                            <span class="block text-2xl font-bold text-accent-pink">${countdown.minutes}</span>
-                            <span class="block text-sm text-secondary-text-color">Minutes</span>
-                        </div>
-                        <div class="p-4 bg-gray-700 rounded-lg">
-                            <span class="block text-2xl font-bold text-accent-pink">${countdown.seconds}</span>
-                            <span class="block text-sm text-secondary-text-color">Secondes</span>
-                        </div>
-                    </div>
-                    <p class="mt-4 text-sm text-secondary-text-color text-center">
-                        Date limite de remise : le ${formatDate(currentSession.endDate)} à 23h59
-                    </p>
-                </div>
-            `;
-            
-            const tableHTML = `
-                <div class="overflow-x-auto mt-4" id="calendar-table" style="display: ${isCalendarTableExpanded ? 'block' : 'none'};">
-                    <table class="min-w-full divide-y divide-gray-700">
-                        <thead class="bg-gray-700">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Promo</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Session</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date de début (modifiable)</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date de fin</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nature de la date de fin</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-700">
-                            ${sessions.map((session, index) => `
-                                <tr class="bg-gray-800 hover:bg-gray-700 transition-colors duration-200">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${session.promo}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-secondary-text-color">${session.session}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-secondary-text-color">
-                                        <input type="date" value="${session.startDate}" onchange="handleDateChange(${index}, this.value)" class="bg-gray-900 border border-gray-600 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:border-blue-500" />
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-secondary-text-color">${formatDate(session.endDate)}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        <div class="flex items-center space-x-2">
-                                            ${session.isConfirmed ? '<svg class="text-accent-green w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>' : '<svg class="text-accent-yellow w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z" /></svg>'}
-                                            <span class="text-secondary-text-color">${session.status}</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = deadline - now;
 
-            return `
-                <section class="section">
-                    <div class="card-header-main" onclick="toggleCalendarTable()">
-                        <div class="flex items-center">
-                            <svg class="chevron-icon ${isCalendarTableExpanded ? 'rotate' : ''}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
-                            <h2>Calendrier des sessions 📅</h2>
-                        </div>
-                    </div>
-                    ${countdownHTML}
-                    <div class="card-header-main" onclick="toggleCalendarTable()">
-                             <div class="flex items-center">
-                                <svg class="chevron-icon ${isCalendarTableExpanded ? 'rotate' : ''}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
-                                <h3 class="text-white">Détails des sessions</h3>
-                             </div>
-                    </div>
-                    ${tableHTML}
-                </section>
-            `;
-        }
-
-        function renderGlobalProgress() {
-            const allTopics = programProgress.flatMap(block =>
-                block.modules.flatMap(module => module.topics)
-            );
-            const progress = calculateProgress(allTopics);
-            return `
-                <section class="section">
-                    <h2 class="text-2xl font-semibold text-white mb-2">Progression Globale 📈</h2>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-3xl font-extrabold text-white">${progress}%</span>
-                        <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2 overflow-hidden">
-                            <div class="h-2.5 rounded-full transition-all duration-500 ease-in-out" style="width: ${progress}%; background: linear-gradient(90deg, #ffc107, #ff4081);"></div>
-                        </div>
-                    </div>
-                </section>
-            `;
-        }
-
-        function renderProgramBlocks() {
-            const criteriaTitleColor = selectedSpecialization === 'SD' ? 'text-sd' : 'text-cdo';
-            const criteriaBulletColor = selectedSpecialization === 'SD' ? 'text-accent-pink' : 'text-accent-yellow';
-
-            return `
-                <main class="grid gap-8">
-                    ${programProgress.map((block, blockIndex) => {
-                        if (block.specialization && block.specialization !== selectedSpecialization) {
-                            return '';
-                        }
-                        
-                        const isBlockExpanded = expandedBlocks[block.code];
-                        const blockProgress = calculateProgress(block.modules.flatMap(m => m.topics));
-                        const accentColor = getBlockColor(block.code);
-                        const headerColor = block.specialization === 'CDO' ? 'text-cdo' : 'text-sd';
-
-                        let criteriaHTML = '';
-                        const shared = sharedEvaluationCriteria[block.code];
-                        const specific = selectedSpecialization === 'CDO' ? cdoEvaluationCriteria[block.code] : sdEvaluationCriteria[block.code];
-
-                        if (shared || specific) {
-                            let criteriaContent = '';
-                            if (shared && shared.criteria) {
-                                for (const compCode in shared.criteria) {
-                                    criteriaContent += `<div class="mb-4">
-                                        <h5 class="text-md font-semibold text-gray-300 mb-2">${compCode}</h5>
-                                        <ul class="criteria-list space-y-1 text-secondary-text-color">
-                                            ${shared.criteria[compCode].map(crit => `
-                                                <li class="criteria-item">
-                                                    <span class="criteria-bullet">⭐</span>
-                                                    <p class="justified-text text-sm text-gray-400">${crit}</p>
-                                                </li>
-                                            `).join('')}
-                                        </ul>
-                                    </div>`;
-                                }
-                            }
-                            if (specific && specific.criteria) {
-                                criteriaContent += `<h5 class="text-md font-semibold ${headerColor} mb-2 mt-4">
-                                    Critères spécifiques au ${selectedSpecialization} :
-                                </h5>`;
-                                for (const compCode in specific.criteria) {
-                                    criteriaContent += `<div class="mb-4">
-                                        <h5 class="text-md font-semibold text-gray-300 mb-2">${compCode}</h5>
-                                        <ul class="criteria-list space-y-1 text-secondary-text-color">
-                                            ${specific.criteria[compCode].map(crit => `
-                                                <li class="criteria-item">
-                                                    <span class="criteria-bullet">⭐</span>
-                                                    <p class="justified-text text-sm text-gray-400">${crit}</p>
-                                                </li>
-                                            `).join('')}
-                                        </ul>
-                                    </div>`;
-                                }
-                            }
-
-                            criteriaHTML = `
-                                <div class="mt-4 p-4 bg-gray-900 rounded-xl shadow-inner">
-                                    <h4 class="text-lg font-bold ${criteriaTitleColor} mb-4">Critères d'évaluation du bloc 📝</h4>
-                                    ${criteriaContent}
-                                </div>
-                            `;
-                        }
-                        
-                        return `
-                            <div class="section block-container">
-                                <div class="card-header" onclick="toggleBlock('${block.code}')">
-                                    <div class="flex items-center">
-                                        <svg class="chevron-icon ${isBlockExpanded ? 'rotate' : ''}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
-                                        <h2 class="${headerColor}">${block.code} : ${block.title}</h2>
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="text-lg font-semibold text-white">${blockProgress}%</span>
-                                        <div class="progress-bar-container">
-                                            <div class="progress-bar-block bg-${accentColor}" style="width: ${blockProgress}%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="block-content-${block.code}" style="display: ${isBlockExpanded ? 'block' : 'none'};">
-                                    ${block.modules.map((module, moduleIndex) => `
-                                        <div class="p-4 bg-gray-700 rounded-lg mt-4">
-                                            <div class="card-header" onclick="toggleModule('${module.code}')">
-                                                <div class="flex items-center">
-                                                    <svg class="chevron-icon w-5 h-5 mr-2 text-gray-300 ${expandedModules[module.code] ? 'rotate' : ''}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
-                                                    <h3 class="text-md font-semibold text-gray-200">${module.code} : ${module.title}</h3>
-                                                </div>
-                                                <span class="text-sm font-medium text-gray-300">${calculateProgress(module.topics)}%</span>
-                                            </div>
-                                            <div id="module-content-${module.code}" style="display: ${expandedModules[module.code] ? 'block' : 'none'};">
-                                                <div class="grid gap-2 mt-2">
-                                                    ${module.topics.map((topic, topicIndex) => `
-                                                        <div class="evaluation-item text-gray-300">
-                                                            <input type="checkbox" onchange="handleTopicChange(${blockIndex}, ${moduleIndex}, ${topicIndex})" ${topic.isCompleted ? 'checked' : ''} class="form-checkbox" />
-                                                            <span class="ml-3 text-sm">${topic.text}</span>
-                                                        </div>
-                                                    `).join('')}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                    ${criteriaHTML}
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </main>
-            `;
-        }
-
-        function renderEvaluations() {
-            const filteredBlocks = programProgress.filter(block =>
-                !block.specialization || block.specialization === selectedSpecialization
-            );
-            return `
-                <section class="section">
-                    <h2 class="text-2xl font-semibold text-white mb-4">Suivi des évaluations 📋</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        ${filteredBlocks.map((block, blockIndex) => {
-                            if (block.evaluation) {
-                                return `
-                                    <div class="p-4 bg-gray-700 rounded-lg">
-                                        <h3 class="text-md font-bold text-gray-200 mb-2">${block.evaluation.title}</h3>
-                                        ${block.evaluation.details ? block.evaluation.details.map((detail, detailIndex) => `
-                                            <div class="evaluation-item text-gray-300">
-                                                <input type="checkbox" onchange="handleEvaluationChange(${blockIndex}, '${detail.label}')" ${detail.isCompleted ? 'checked' : ''} class="form-checkbox" />
-                                                <span class="ml-3 text-sm">${detail.label}</span>
-                                            </div>
-                                        `).join('') : `
-                                            <div class="evaluation-item text-gray-300">
-                                                <input type="checkbox" onchange="handleEvaluationChange(${blockIndex})" ${block.evaluation.isCompleted ? 'checked' : ''} class="form-checkbox" />
-                                                <span class="ml-3 text-sm">Évaluation du bloc terminée</span>
-                                            </div>
-                                        `}
-                                    </div>
-                                `;
-                            }
-                            return '';
-                        }).join('')}
-                    </div>
-                </section>
-            `;
-        }
-        
-        function renderMotivationalPhrase() {
-            const randomPhrase = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
-            const phraseElement = document.getElementById('motivational-phrase');
-            if (phraseElement) {
-                 phraseElement.innerHTML = `
-                    <div class="p-6 bg-gray-800 rounded-xl shadow-lg">
-                        <h3 class="text-xl font-bold mb-2 text-accent-yellow">${randomPhrase.title}</h3>
-                        <p class="text-gray-300 text-lg">${randomPhrase.text}</p>
-                    </div>
-                 `;
-            }
-        }
-
-        // Gestionnaires d'événements
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const firstName = document.getElementById('firstName').value;
-            const pseudo = document.getElementById('pseudo').value;
-            userInfo = { name, firstName, pseudo };
-            localStorage.setItem('mba_tracker_user_info', JSON.stringify(userInfo));
-            isFormVisible = false;
-            render();
-        }
-
-        function handleSpecializationChange(spec) {
-            selectedSpecialization = spec;
-            saveState();
-            render();
-        }
-
-        function handleSessionChange(index) {
-            selectedSessionIndex = parseInt(index);
-            saveState();
-            render();
-        }
-        
-        function handleTopicChange(blockIndex, moduleIndex, topicIndex) {
-            programProgress[blockIndex].modules[moduleIndex].topics[topicIndex].isCompleted = !programProgress[blockIndex].modules[moduleIndex].topics[topicIndex].isCompleted;
-            saveState();
-            render();
-        }
-
-        function handleEvaluationChange(blockIndex, evaluationLabel = null) {
-            const evaluation = programProgress[blockIndex].evaluation;
-            if (evaluationLabel && evaluation.details) {
-                const detail = evaluation.details.find(d => d.label === evaluationLabel);
-                if (detail) {
-                    detail.isCompleted = !detail.isCompleted;
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    countdownDays.textContent = '0';
+                    countdownHours.textContent = '0';
+                    countdownMinutes.textContent = '0';
+                    countdownSeconds.textContent = '0';
+                    return;
                 }
-            } else {
-                evaluation.isCompleted = !evaluation.isCompleted;
-            }
-            saveState();
-            render();
-        }
 
-        function toggleBlock(blockCode) {
-            expandedBlocks[blockCode] = !expandedBlocks[blockCode];
-            saveState();
-            render();
-        }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        function toggleModule(moduleCode) {
-            expandedModules[moduleCode] = !expandedModules[moduleCode];
-            saveState();
-            render();
+                countdownDays.textContent = days;
+                countdownHours.textContent = hours;
+                countdownMinutes.textContent = minutes;
+                countdownSeconds.textContent = seconds;
+            }, 1000);
         }
         
-        function toggleCalendarTable() {
-            isCalendarTableExpanded = !isCalendarTableExpanded;
-            saveState();
-            render();
+        function updateMotivationalPhrase() {
+            const randomPhrase = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
+            motivationalTitle.textContent = randomPhrase.title;
+            motivationalText.textContent = randomPhrase.text;
         }
 
-        function handleDateChange(index, newDate) {
-            sessions[index].startDate = newDate;
-            saveState();
-            render();
-        }
-        
-        // Timer du décompte
-        let countdownInterval;
-        function updateCountdown() {
-            const currentSession = sessions[selectedSessionIndex];
-            if (!currentSession) return;
-            const deadline = new Date(`${currentSession.endDate}T23:59:59`).getTime();
-            const now = new Date().getTime();
-            const distance = deadline - now;
-            
-            if (distance < 0) {
-                countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
-                clearInterval(countdownInterval);
-            } else {
-                countdown = {
-                    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-                    seconds: Math.floor((distance % (1000 * 60)) / 1000),
-                };
-            }
-            render();
-        }
-        
-        // Bouton de retour en haut
-        window.onscroll = () => {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                scrollBtn.style.display = "block";
-            } else {
-                scrollBtn.style.display = "none";
-            }
-        };
-
-        scrollBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', () => {
-            render();
-            renderMotivationalPhrase();
-            countdownInterval = setInterval(updateCountdown, 1000);
+        // Event Listeners
+        btnCdo.addEventListener('click', () => {
+            selectedSpecialization = 'CDO';
+            btnCdo.classList.add('bg-orange-600', 'text-white', 'shadow-lg');
+            btnCdo.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-orange-800');
+            btnSd.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-fuchsia-800');
+            btnSd.classList.remove('bg-fuchsia-600', 'text-white', 'shadow-lg');
+            renderProgram();
         });
+
+        btnSd.addEventListener('click', () => {
+            selectedSpecialization = 'SD';
+            btnSd.classList.add('bg-fuchsia-600', 'text-white', 'shadow-lg');
+            btnSd.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-fuchsia-800');
+            btnCdo.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-orange-800');
+            btnCdo.classList.remove('bg-orange-600', 'text-white', 'shadow-lg');
+            renderProgram();
+        });
+
+        sessionSelect.addEventListener('change', (e) => {
+            selectedSessionIndex = parseInt(e.target.value);
+            startCountdown();
+        });
+        
+        calendarHeader.addEventListener('click', () => {
+            isCalendarTableExpanded = !isCalendarTableExpanded;
+            calendarTableContainer.classList.toggle('hidden', !isCalendarTableExpanded);
+            calendarChevron.classList.toggle('rotate-90', isCalendarTableExpanded);
+        });
+
+        // Initialization
+        function initialize() {
+            programProgress = loadProgress();
+            renderProgram();
+            updateMotivationalPhrase();
+
+            // Populate session select
+            sessions.forEach((session, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${session.promo} - ${session.session}`;
+                sessionSelect.appendChild(option);
+            });
+            renderCalendarTable();
+            startCountdown();
+        }
+
+        document.addEventListener('DOMContentLoaded', initialize);
     </script>
 </body>
 </html>
