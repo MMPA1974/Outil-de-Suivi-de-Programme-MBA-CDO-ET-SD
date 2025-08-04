@@ -59,20 +59,6 @@
     </header>
 
     <section class="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
-        <h2 class="text-2xl font-semibold text-white mb-2">Progression Globale 📈</h2>
-        <div class="flex items-center space-x-4">
-            <span id="total-progress-text" class="text-3xl font-extrabold text-white">0%</span>
-            <div class="flex-grow">
-                <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2 overflow-hidden">
-                    <div id="total-progress-bar" class="h-2.5 rounded-full transition-all duration-500 ease-in-out" style="width: 0%; background: linear-gradient(90deg, #ffc107, #ff4081);"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <main id="program-container" class="grid gap-8"></main>
-
-    <section class="mt-12 p-6 bg-gray-800 rounded-xl shadow-lg">
         <div id="calendar-header" class="flex items-center cursor-pointer">
             <svg id="calendar-chevron" class="w-6 h-6 mr-2 text-white transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
@@ -125,6 +111,28 @@
         </div>
     </section>
 
+    <section class="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
+        <h2 class="text-2xl font-semibold text-white mb-2">Progression Globale 📈</h2>
+        <div class="flex items-center space-x-4">
+            <span id="total-progress-text" class="text-3xl font-extrabold text-white">0%</span>
+            <div class="flex-grow">
+                <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2 overflow-hidden">
+                    <div id="total-progress-bar" class="h-2.5 rounded-full transition-all duration-500 ease-in-out" style="width: 0%; background: linear-gradient(90deg, #ffc107, #ff4081);"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main id="program-container" class="grid gap-8"></main>
+
+    <section class="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
+        <h2 class="text-2xl font-semibold text-white mb-2">Suivi des certifications et évaluations 📝</h2>
+
+        <div id="evaluations-container" class="grid gap-4 mt-4"></div>
+    </section>
+    
+    <div id="confetti-container" class="confetti-container"></div>
+
     <section class="mt-12 text-center">
         <div class="p-6 bg-gray-800 rounded-xl shadow-lg">
             <h3 id="motivational-title" class="text-xl font-bold mb-2 text-yellow-400"></h3>
@@ -169,7 +177,6 @@
                             'Le benchmark digital',
                             'Le recueil et l\'analyse des besoins',
                             'Identifier et comprendre le client et sa demande',
-                            'Le brief digital',
                         ],
                     },
                     {
@@ -209,7 +216,6 @@
                             'Design Thinking : Définir la problématique',
                             'Design Thinking : La phase d’idéation',
                             'Design Thinking : La phase de prototypage de la solution',
-                            'Design Thinking : La phase de test de la solution',
                             'Design Thinking : La phase de d\'itération',
                             'Animer un atelier de brainstorming',
                             'Préparer et présenter un dossier de conception',
@@ -476,7 +482,6 @@
                         topics: [
                             'Introduction aux architectures multicouches',
                             'Les design patterns',
-                            'Les frameworks et ORM',
                             'Les microservices et architecture distribuée',
                             'L\'éco-conception dans l\'architecture logicielle',
                             'L\'offre de service d\'un fournisseur de services Cloud',
@@ -541,11 +546,10 @@
                     },
                     {
                         code: 'B7_M2',
-                        title: 'Promouvoir un site internet, une application mobile ou une web app',
+                        title: 'Promouvoir un site internet, une application mobile ou une web app', // Corrected title from previous error
                         topics: [
                             'Les sites internet',
                             'Le référencement des sites Web',
-                            'Les nouvelles techniques du SEO',
                             'UX/UI Design',
                             'Les coûts de promotion',
                             'Introduction aux social ads (publicité sur les réseaux sociaux)',
@@ -570,13 +574,52 @@
             },
         ];
 
+        const evaluationData = {
+            qcm: [
+                { name: 'Réussir ma certification Studi du bloc Animer un processus de problématisation et d’idéation...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Réussir ma certification Studi du bloc Concevoir un projet de transformation...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Réussir ma certification Studi du bloc Concevoir et mettre en œuvre une stratégie de communication...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Réussir ma certification Studi du bloc Piloter un projet d’innovation et/ou de transformation...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Réussir ma certification Studi du bloc Manager une équipe projet...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Réussir ma certification Studi du bloc Garantir la performance d’un projet de transformation...', date: '', grade: '', status: 'À faire', specialization: 'CDO' },
+                { name: 'Réussir ma certification Studi du bloc Concevoir et mettre en œuvre de la stratégie de communication', date: '', grade: '', status: 'À faire', specialization: 'SD' },
+                { name: 'Réussir mon Diplôme Studi Chief Digital Officer', date: '', grade: '', status: 'À faire', specialization: 'CDO' },
+                { name: 'Réussir mon Diplôme Studi Stratégie Digitale', date: '', grade: '', status: 'À faire', specialization: 'SD' },
+            ],
+            training: [
+                { name: 'Évaluation d’entraînement - Animer un processus de problématisation et d’idéation...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Évaluation d’entraînement - Concevoir et mettre en œuvre une stratégie de communication...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Évaluation d’entraînement - Manager une équipe projet...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Évaluation d’entraînement - Piloter un projet d’innovation et/ou de transformation...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+            ],
+            final: [
+                { name: 'Examen Certifiant - Animer un processus de problématisation et d’idéation...', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Concevoir un projet de transformation et/ou d’innovation (écrit)', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Concevoir un projet de transformation et/ou d’innovation (vidéo)', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Concevoir et mettre en œuvre une stratégie de communication interne/externe', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Piloter un projet d’innovation et/ou de transformation jusqu’à la phase de rendu final', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Management d’une équipe projet, d’une direction technique et/ou d’une équipe transverse', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Garantir la performance d’un projet de transformation et/ou d’innovation en matière de technique et/ou technologie', date: '', grade: '', status: 'À faire', specialization: 'CDO' },
+                { name: 'Examen Certifiant - Concevoir et mettre en œuvre de la stratégie de communication', date: '', grade: '', status: 'À faire', specialization: 'SD' },
+            ],
+            rattrapage: [
+                { name: 'Examen Certifiant - Animer un processus de problématisation... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Concevoir un projet de transformation... (écrit) - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Concevoir et mettre en œuvre une stratégie de communication... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Piloter un projet d’innovation... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Management d’une équipe projet... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Garantir la performance d’un projet... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'CDO' },
+                { name: 'Examen Certifiant - Concevoir et mettre en œuvre de la stratégie de communication - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'SD' },
+            ]
+        };
+
         const sessionsData = [
             {
                 promo: '2025',
                 session: 'Session 2',
                 startDate: '2025-01-01',
                 endDate: '2025-11-24',
-                status: '✅ Date confirmée par Studie',
+                status: '✅ Date confirmée par Studi',
                 isConfirmed: true
             },
             {
@@ -700,7 +743,7 @@
                 }
             },
             B3: {
-                title: "Conception et mise en œuvre d'une stratégie de communication interne/externe",
+                title: "Concevoir et mettre en œuvre une stratégie de communication interne/externe",
                 criteria: {
                     "C3.1 Identifier les cibles de communication": [
                         "Le candidat propose une identification de la cible complète (habitudes, persona, âge, besoins).",
@@ -708,11 +751,11 @@
                         "La construction d'un personae synthétise de façon claire et concise les résultats de l'analyse de l'audience.",
                         "Les objectifs de la stratégie de communication sont définis et sont SMART."
                     ],
-                    "C3.2 Concevoir et déployer une stratégie de communication interne": [
+                    "C3.2 Concevoir et déployer une stratégie de communication à destination de cibles internes": [
                         "Les actions de communication déployées permettent aux collaborateurs de s'approprier le projet.",
                         "Les indicateurs de résultats de la stratégie sont définis."
                     ],
-                    "C3.3 Élaborer une stratégie de communication externe": [
+                    "C3.3 Élaborer une stratégie de communication à destination de cibles externes": [
                         "La stratégie de communication reflète une traduction créative de la proposition de valeur du projet.",
                         "Les objectifs de la stratégie sont définis et sont SMART.",
                         "Les axes de communication et les différents canaux sont définis et adaptés à la cible.",
@@ -720,15 +763,19 @@
                         "Le budget de la stratégie est défini et respecté."
                     ],
                     "C3.4 Réaliser une campagne de communication créative": [
-                        "Les objectifs du dispositif de communication sont clairement définis.",
-                        "Le message du dispositif est bref et percutant.",
-                        "Les techniques de storytelling sont utilisées.",
-                        "Les choix effectués respectent les codes de la marque et sont adaptés à son canal de diffusion (online, off-line) et au support."
+                        "Les messages clés dans le cadre d'une communication efficace",
+                        "Structurer son message",
+                        "Production d'un message",
+                        "Le storytelling",
+                        "Les moyens et supports de communication",
+                        "Les supports audio-visuels",
+                        "Le multicanal et le mix marketing",
+                        "Les outils de mesure de l'efficacité",
                     ]
                 }
             },
             B4: {
-                title: "Pilotage du projet d'innovation et/ou de transformation...",
+                title: "Piloter un projet d’innovation et/ou de transformation jusqu\'à la phase de rendu final",
                 criteria: {
                     "C4.1 Réaliser le prototypage": [
                         "Prise en compte des informations qualitatives et quantitatives lors des recherches exploratoires pour la création des représentations de produits, de services, d'espace et d'identité.",
@@ -757,7 +804,7 @@
                         "Le candidat démontre que le projet a été piloté avec le souci de respecter la problématique.",
                         "Il propose une évaluation globale du déroulé et de la réussite du projet."
                     ],
-                    "C4.6 Piloter une démarche d'amélioration continue": [
+                    "C4.6 Piloter une démarche d’amélioration continue": [
                         "Le candidat explicite la façon dont il va mobiliser la direction générale et la gouvernance du projet.",
                         "La démarche itérative est explicitée et permet d'intégrer facilement des ajustements éventuels.",
                         "Le candidat identifie correctement les objectifs et freins potentiels à la réalisation du projet, et apporte des réponses permettant de lever ces résistances aux changements."
@@ -765,13 +812,12 @@
                 }
             },
             B5: {
-                title: "Management d'une équipe projet, d'une direction technique et/ou d'une équipe transverse",
+                title: "Manager une équipe projet, une direction technique et/ou une équipe transverse",
                 criteria: {
                     "C5.1 et C5.2 Sélectionner et évaluer l'équipe": [
                         "Le candidat traduit correctement les enjeux du projet et les compétences clés à maîtriser.",
                         "Il identifie des critères ayant permis de constituer une équipe (expérience, diplômes, aspirations).",
                         "Il évalue la performance de chaque membre et explicite les axes d'amélioration.",
-                        "Le candidat évalue justement le besoin en compétence de l'équipe projet.",
                         "Explication claire du rôle de chacun et des ajustements mis en œuvre."
                     ],
                     "C5.3 Diriger une équipe projet": [
@@ -817,7 +863,7 @@
                         "La stratégie de brand content est claire et intègre l'identité visuelle, la planification des publications, les types de contenus (écrits, visuels, sonores, audiovisuels, oeuvres... à publier et la teneur des messages à porter (style, vocabulaire, ton...)).",
                         "Le candidat choisit les médias pertinents sur lesquels diffuser sa stratégie de brand content au regard de la stratégie globale de l'organisation et de sa cible."
                     ],
-                    "C6A 2 Promouvoir un site internet, une application mobile ou une web app": [
+                    "C6A.2 Promouvoir un site internet, une application mobile ou une web app": [
                         "Le candidat propose une stratégie de référencement (naturel et payant) cohérente par rapport à la stratégie globale de l'organisation, sa cible, son positionnement et son budget.",
                         "Le candidat présente une stratégie de cross-promotion réaliste et pertinente intégrant l'ensemble des médias sur lesquels communiquer en vue de la promotion du site interne/de l'application mobile/web mobile."
                     ],
@@ -825,7 +871,6 @@
                         "Le candidat détermine des objectifs chiffrés et mesurables d'acquisition et de transformation des cibles visées selon les canaux de communication retenus dans le cadre de la stratégie de brand content.",
                         "Le candidat propose une ligne éditoriale claire et différenciante. Cette ligne éditoriale est respectée dans le cadre de la production des différents contenus.",
                         "Le contenu proposé par le candidat est différenciant en ce sens qu'il aborde le sujet en profondeur, en s'appuyant sur l'existant (source) et en intégrant un point de vue novateur.",
-                        "Le candidat démontre sa maîtrise du cycle de vie du content marketing pour gagner en visibilité. Lorsque cela est possible, il explicite les tâches automatisables.",
                         "Le candidat démontre sa capacité à mobiliser des connaissances théoriques (théories, actualité, méthodes de travail...) et à les adapter pour répondre à un contexte spécifique et complexe."
                     ]
                 }
@@ -842,23 +887,34 @@
         
         const CheckCircleIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>`;
         const DangerousIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z" /></svg>`;
+        const InfoIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" /></svg>`;
         const ChevronRightIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>`;
         const ChevronDownIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" /></svg>`;
 
         // State-like variables
         let selectedSpecialization = 'CDO';
         let programProgress = [];
+        let programEvaluations = {};
         let sessions = sessionsData;
         let expandedBlocks = {};
-        let expandedModules = {};
+        let expandedModules = {}; // Still needed for internal module expansion
+        let expandedEvaluations = {
+            training: false,
+            qcm: false,
+            final: false,
+            rattrapage: false
+        };
+        let expandedCriteria = {}; // New state for collapsible criteria
         let isCalendarTableExpanded = false;
         let selectedSessionIndex = 0;
         let countdownInterval;
+        // Removed quizState and quizQuestions as quiz functionality is removed.
 
         // DOM elements
         const btnCdo = document.getElementById('btn-cdo');
         const btnSd = document.getElementById('btn-sd');
         const programContainer = document.getElementById('program-container');
+        const evaluationsContainer = document.getElementById('evaluations-container');
         const totalProgressBar = document.getElementById('total-progress-bar');
         const totalProgressText = document.getElementById('total-progress-text');
         const sessionSelect = document.getElementById('session-select');
@@ -873,27 +929,50 @@
         const calendarTableBody = document.getElementById('calendar-table-body');
         const motivationalTitle = document.getElementById('motivational-title');
         const motivationalText = document.getElementById('motivational-text');
+        // Removed quiz related DOM elements
+        // const quizModal = document.getElementById('quiz-modal');
+        // const quizContent = document.getElementById('quiz-content');
+        // const quizQuestion = document.getElementById('quiz-question');
+        // const quizOptions = document.getElementById('quiz-options');
+        // const quizMessage = document.getElementById('quiz-message');
+        // const quizNextBtn = document.getElementById('quiz-next-btn');
+        // const quizResult = document.getElementById('quiz-result');
+        // const resultTitle = document.getElementById('result-title');
+        // const resultMessage = document.getElementById('result-message');
+        // const quizCloseBtn = document.getElementById('quiz-close-btn');
+        // const quizCancelBtn = document.getElementById('quiz-cancel-btn');
+
 
         // Functions
-        function saveProgress() {
+        function saveAllData() {
             localStorage.setItem('mba_tracker_progress', JSON.stringify(programProgress));
+            localStorage.setItem('mba_tracker_evaluations', JSON.stringify(programEvaluations));
         }
 
-        function loadProgress() {
-            const savedData = localStorage.getItem('mba_tracker_progress');
-            if (savedData) {
-                return JSON.parse(savedData);
-            }
-            return initialProgramData.map(block => ({
-                ...block,
-                modules: block.modules.map(module => ({
-                    ...module,
-                    topics: module.topics.map(topic => ({
-                        text: topic,
-                        isCompleted: false,
+        function loadAllData() {
+            const savedProgress = localStorage.getItem('mba_tracker_progress');
+            if (savedProgress) {
+                programProgress = JSON.parse(savedProgress);
+            } else {
+                // Initialize program data with modules, but topics within modules are strings
+                programProgress = initialProgramData.map(block => ({
+                    ...block,
+                    modules: block.modules.map(module => ({
+                        ...module,
+                        topics: module.topics.map(topic => ({
+                            text: topic,
+                            isCompleted: false,
+                        })),
                     })),
-                })),
-            }));
+                }));
+            }
+            
+            const savedEvaluations = localStorage.getItem('mba_tracker_evaluations');
+            if (savedEvaluations) {
+                programEvaluations = JSON.parse(savedEvaluations);
+            } else {
+                programEvaluations = JSON.parse(JSON.stringify(evaluationData));
+            }
         }
 
         function calculateProgress(items) {
@@ -904,19 +983,56 @@
         }
 
         function getBlockProgress(block) {
-            const topics = block.modules.flatMap(module => module.topics);
-            return calculateProgress(topics);
+            // Calculate progress based on all topics within its modules
+            const allTopicsInBlock = block.modules.flatMap(module => module.topics);
+            return calculateProgress(allTopicsInBlock);
         }
 
         function getModuleProgress(module) {
             return calculateProgress(module.topics);
         }
 
+        function getEvaluationProgress(evaluations) {
+            const total = evaluations.length;
+            if (total === 0) return 0;
+            const completed = evaluations.filter(eval => eval.status !== 'À faire').length;
+            return Math.round((completed / total) * 100);
+        }
+
         function getTotalProgress() {
-            const allTopics = programProgress.flatMap(block =>
-                block.modules.flatMap(module => module.topics)
-            );
-            return calculateProgress(allTopics);
+            let allTopics = [];
+            programProgress.forEach(block => {
+                if (!block.specialization || block.specialization === selectedSpecialization) {
+                    allTopics = allTopics.concat(block.modules.flatMap(module => module.topics));
+                }
+            });
+            const completedTopics = allTopics.filter(item => item.isCompleted).length;
+            const totalTopics = allTopics.length;
+
+            let allEvaluations = [];
+            
+            const trainingEvals = evaluationData.training ? evaluationData.training.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const qcmEvals = evaluationData.qcm ? evaluationData.qcm.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const finalEvals = evaluationData.final ? evaluationData.final.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const rattrapageEvals = evaluationData.rattrapage ? evaluationData.rattrapage.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+
+            allEvaluations = allEvaluations.concat(trainingEvals, qcmEvals, finalEvals, rattrapageEvals);
+
+            const completedEvaluations = allEvaluations.filter(eval => eval.status !== 'À faire').length;
+            const totalEvaluations = allEvaluations.length;
+
+            const totalItems = totalTopics + totalEvaluations;
+            const completedItems = completedTopics + completedEvaluations;
+
+            if (totalItems === 0) {
+                totalProgressText.textContent = `0%`;
+                totalProgressBar.style.width = `0%`;
+                return;
+            }
+
+            const totalProgress = Math.round((completedItems / totalItems) * 100);
+            totalProgressText.textContent = `${totalProgress}%`;
+            totalProgressBar.style.width = `${totalProgress}%`;
         }
 
         function renderProgressBar(progress, accentColor) {
@@ -991,7 +1107,9 @@
                                             ${module.code} : ${module.title}
                                         </h3>
                                     </div>
-                                    <span class="text-sm font-medium text-gray-300">${moduleProgress}%</span>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-sm font-medium text-gray-300">${moduleProgress}%</span>
+                                    </div>
                                 </div>
                         `;
 
@@ -1005,7 +1123,7 @@
                                         <input
                                             type="checkbox"
                                             class="form-checkbox h-4 w-4 text-pink-500 rounded border-gray-600 focus:ring-pink-500 bg-gray-800 transition-colors duration-200 cursor-pointer topic-checkbox"
-                                            data-block-index="${blockIndex}"
+                                            data-block-code="${block.code}"
                                             data-module-index="${moduleIndex}"
                                             data-topic-index="${topicIndex}"
                                             ${topic.isCompleted ? 'checked' : ''}
@@ -1026,32 +1144,22 @@
 
                     // Critères d'évaluation
                     let criteriaHtml = '';
-                    if (sharedData.criteria) {
-                        Object.entries(sharedData.criteria).forEach(([compCode, criteriaList]) => {
-                            criteriaHtml += `
-                                <div class="mb-4">
-                                    <h5 class="text-md font-semibold text-gray-300 mb-2">${compCode}</h5>
-                                    <ul class="list-none pl-0 space-y-1 text-gray-400">
-                                        ${criteriaList.map(crit => `
-                                            <li class="flex items-start">
-                                                <span class="${criteriaBulletColor} mr-2 flex-shrink-0 mt-1">⭐</span>
-                                                <p class="text-sm text-gray-400 text-justify">${crit}</p>
-                                            </li>
-                                        `).join('')}
-                                    </ul>
-                                </div>
-                            `;
-                        });
-                    }
+                    const allCriteria = { ...sharedData.criteria, ...(specificData ? specificData.criteria : {}) };
 
-                    if (specificData && specificData.criteria) {
+                    for (const compCode in allCriteria) {
+                        const isCriterionExpanded = !!expandedCriteria[compCode];
+                        const criteriaList = allCriteria[compCode];
                         criteriaHtml += `
-                            <h5 class="text-md font-semibold ${specialTitleColor} mb-2 mt-4">Critères spécifiques au ${selectedSpecialization} :</h5>
-                        `;
-                        Object.entries(specificData.criteria).forEach(([compCode, criteriaList]) => {
-                            criteriaHtml += `
-                                <div class="mb-4">
-                                    <h5 class="text-md font-semibold text-gray-300 mb-2">${compCode}</h5>
+                            <div class="p-4 bg-gray-700 rounded-lg mt-4">
+                                <div class="flex justify-between items-center cursor-pointer criterion-header" data-criterion-code="${compCode}">
+                                    <div class="flex items-center">
+                                        <span class="w-5 h-5 mr-2 text-gray-300 transition-transform duration-300 ${isCriterionExpanded ? 'rotate-90' : ''}">
+                                            ${ChevronRightIcon}
+                                        </span>
+                                        <h5 class="text-md font-semibold text-gray-200">${compCode}</h5>
+                                    </div>
+                                </div>
+                                <div class="mt-2 ${isCriterionExpanded ? '' : 'hidden'}">
                                     <ul class="list-none pl-0 space-y-1 text-gray-400">
                                         ${criteriaList.map(crit => `
                                             <li class="flex items-start">
@@ -1061,8 +1169,8 @@
                                         `).join('')}
                                     </ul>
                                 </div>
-                            `;
-                        });
+                            </div>
+                        `;
                     }
 
                     if (criteriaHtml) {
@@ -1088,11 +1196,167 @@
             addEventListeners();
         }
 
+        function renderEvaluations() {
+            evaluationsContainer.innerHTML = '';
+            
+            const categories = {
+                training: { title: "Évaluations d'entraînement", color: 'text-green-400', progressColor: 'bg-green-600' },
+                qcm: { title: 'Certifications Studi (QCM)', color: 'text-yellow-400', progressColor: 'bg-yellow-600' },
+                final: { title: 'Certifications finales', color: 'text-blue-400', progressColor: 'bg-blue-600' },
+                rattrapage: { title: 'Rattrapages ⚠️', color: 'text-red-400', progressColor: 'bg-red-600' },
+            };
+            
+
+            for (const category in categories) {
+                const isExpanded = !!expandedEvaluations[category];
+                const filteredEvals = evaluationData[category].filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization);
+                const progress = getEvaluationProgress(filteredEvals);
+
+                let categoryHtml = `
+                    <div class="bg-gray-700 rounded-xl p-4 shadow-md">
+                        <div class="flex justify-between items-center cursor-pointer evaluation-category-header" data-category="${category}">
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 mr-2 text-white transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}">
+                                    ${ChevronRightIcon}
+                                </span>
+                                <h3 class="text-xl font-bold ${categories[category].color}">${categories[category].title}</h3>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-semibold text-white">${progress}%</span>
+                                ${renderProgressBar(progress, categories[category].progressColor)}
+                            </div>
+                        </div>
+                `;
+                
+                if (isExpanded) {
+                    categoryHtml += `<div class="grid gap-4 mt-4" id="evaluation-list-${category}">`;
+                    
+                    filteredEvals.forEach((evaluation, index) => {
+                        categoryHtml += renderEvaluationItem(evaluation, category, index);
+                    });
+
+                    if (filteredEvals.length === 0) {
+                        categoryHtml += `<p class="text-gray-400 text-sm italic">Aucune évaluation dans cette catégorie pour la spécialisation sélectionnée.</p>`;
+                    }
+                    
+                    categoryHtml += `</div>`;
+                }
+                
+                categoryHtml += `</div>`;
+                evaluationsContainer.innerHTML += categoryHtml;
+            }
+            addEvaluationEventListeners();
+        }
+
+        function renderEvaluationItem(evaluation, category, index) {
+            let statusColor = 'text-gray-400';
+            let statusText = evaluation.status;
+            let statusIcon = InfoIcon;
+
+            if (evaluation.status === 'validé') {
+                statusColor = 'text-green-400';
+                statusIcon = CheckCircleIcon;
+            } else if (evaluation.status === 'non validé' || evaluation.status === 'manqué') {
+                statusColor = 'text-red-400';
+                statusIcon = DangerousIcon;
+                statusText = evaluation.status === 'manqué' ? 'Manqué' : 'Non validé';
+            } else if (evaluation.status === 'en attente') {
+                statusColor = 'text-yellow-400';
+                statusText = 'En attente';
+            } else {
+                statusText = 'À faire';
+            }
+
+            const isRattrapageNotValidated = category === 'rattrapage' && evaluation.status === 'non validé';
+            
+            // Adjust name based on specialization if applicable
+            let evaluationName = evaluation.name;
+            if (evaluation.specialization && evaluation.specialization !== 'both') {
+                evaluationName += ` (${evaluation.specialization})`;
+            }
+
+            // Add a specific message for non-validated rattrapage
+            const rattrapageMessage = isRattrapageNotValidated 
+                ? '<div class="p-3 bg-red-900 bg-opacity-30 rounded-lg flex items-center space-x-2 mt-4"><span class="text-red-400 text-sm font-medium">Pour changer de session, veuillez contacter l\'équipe pédagogique.</span></div>'
+                : '';
+
+            return `
+                <div class="bg-gray-800 p-4 rounded-lg flex flex-col space-y-4">
+                    <h4 class="text-sm font-semibold text-gray-200">${evaluationName}</h4>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-gray-400 text-sm">Date de dépôt:</span>
+                            <input
+                                type="date"
+                                class="bg-gray-900 border border-gray-600 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:border-blue-500 date-input"
+                                data-category="${category}"
+                                data-index="${index}"
+                                value="${evaluation.date}"
+                            />
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-gray-400 text-sm">Note:</span>
+                            <input
+                                type="text"
+                                class="bg-gray-900 border border-gray-600 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:border-blue-500 grade-input w-20"
+                                data-category="${category}"
+                                data-index="${index}"
+                                value="${evaluation.grade}"
+                                placeholder="Note"
+                            />
+                        </div>
+                        <div class="flex items-center space-x-2 flex-grow justify-end">
+                            <div class="w-5 h-5 ${statusColor}">${statusIcon}</div>
+                            <span class="text-sm font-medium ${statusText}"></span>
+                        </div>
+                    </div>
+                    ${rattrapageMessage}
+                    <div class="mt-2 text-sm text-gray-500 flex justify-end">
+                      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 set-status-btn" data-category="${category}" data-index="${index}" data-status="validé">Marquer comme Validé</button>
+                      <button class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors duration-200 set-status-btn ml-2" data-category="${category}" data-index="${index}" data-status="en attente">Marquer En attente</button>
+                      <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 set-status-btn ml-2" data-category="${category}" data-index="${index}" data-status="non validé">Marquer Non Validé</button>
+                    </div>
+                </div>
+            `;
+        }
+
+
         function updateTotalProgress() {
-            const totalProgress = getTotalProgress();
+            let allTopics = [];
+            programProgress.forEach(block => {
+                if (!block.specialization || block.specialization === selectedSpecialization) {
+                    allTopics = allTopics.concat(block.modules.flatMap(module => module.topics));
+                }
+            });
+            const completedTopics = allTopics.filter(item => item.isCompleted).length;
+            const totalTopics = allTopics.length;
+
+            let allEvaluations = [];
+            
+            const trainingEvals = evaluationData.training ? evaluationData.training.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const qcmEvals = evaluationData.qcm ? evaluationData.qcm.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const finalEvals = evaluationData.final ? evaluationData.final.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+            const rattrapageEvals = evaluationData.rattrapage ? evaluationData.rattrapage.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
+
+            allEvaluations = allEvaluations.concat(trainingEvals, qcmEvals, finalEvals, rattrapageEvals);
+
+            const completedEvaluations = allEvaluations.filter(eval => eval.status !== 'À faire').length;
+            const totalEvaluations = allEvaluations.length;
+
+            const totalItems = totalTopics + totalEvaluations;
+            const completedItems = completedTopics + completedEvaluations;
+
+            if (totalItems === 0) {
+                totalProgressText.textContent = `0%`;
+                totalProgressBar.style.width = `0%`;
+                return;
+            }
+
+            const totalProgress = Math.round((completedItems / totalItems) * 100);
             totalProgressText.textContent = `${totalProgress}%`;
             totalProgressBar.style.width = `${totalProgress}%`;
         }
+
 
         function addEventListeners() {
             document.querySelectorAll('.block-header').forEach(header => {
@@ -1113,17 +1377,73 @@
 
             document.querySelectorAll('.topic-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', (e) => {
-                    const blockIndex = parseInt(e.target.dataset.blockIndex);
+                    const blockCode = e.target.closest('[data-block-code]').dataset.blockCode; // Get blockCode from closest parent
+                    const blockIndex = programProgress.findIndex(block => block.code === blockCode);
                     const moduleIndex = parseInt(e.target.dataset.moduleIndex);
                     const topicIndex = parseInt(e.target.dataset.topicIndex);
                     programProgress[blockIndex].modules[moduleIndex].topics[topicIndex].isCompleted = e.target.checked;
-                    saveProgress();
+                    saveAllData();
                     renderProgram();
+                });
+            });
+
+            // New event listener for criterion headers
+            document.querySelectorAll('.criterion-header').forEach(header => {
+                header.addEventListener('click', (e) => {
+                    const criterionCode = e.currentTarget.dataset.criterionCode;
+                    expandedCriteria[criterionCode] = !expandedCriteria[criterionCode];
+                    renderProgram(); // Re-render to update chevron and visibility
+                });
+            });
+        }
+
+        function addEvaluationEventListeners() {
+            document.querySelectorAll('.evaluation-category-header').forEach(header => {
+                header.addEventListener('click', (e) => {
+                    const category = e.currentTarget.dataset.category;
+                    expandedEvaluations[category] = !expandedEvaluations[category];
+                    renderEvaluations();
+                });
+            });
+
+            document.querySelectorAll('.date-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const category = e.target.dataset.category;
+                    const index = parseInt(e.target.dataset.index);
+                    const evalList = evaluationData[category];
+                    evalList[index].date = e.target.value;
+                    saveAllData();
+                    renderEvaluations(); 
+                });
+            });
+
+            document.querySelectorAll('.grade-input').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const category = e.target.dataset.category;
+                    const index = parseInt(e.target.dataset.index);
+                    const evalList = evaluationData[category];
+                    evalList[index].grade = e.target.value;
+                    saveAllData();
+                    renderEvaluations();
+                });
+            });
+
+            document.querySelectorAll('.set-status-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const category = e.target.dataset.category;
+                    const index = parseInt(e.target.dataset.index);
+                    const status = e.target.dataset.status;
+                    const evalList = evaluationData[category];
+                    evalList[index].status = status;
+                    saveAllData();
+                    renderEvaluations();
+                    updateTotalProgress();
                 });
             });
         }
 
         function formatDate(dateString) {
+            if (!dateString) return '';
             const [year, month, day] = dateString.split('-');
             return `${day}/${month}/${year}`;
         }
@@ -1208,40 +1528,11 @@
             motivationalText.textContent = randomPhrase.text;
         }
 
-        // Event Listeners
-        btnCdo.addEventListener('click', () => {
-            selectedSpecialization = 'CDO';
-            btnCdo.classList.add('bg-orange-600', 'text-white', 'shadow-lg');
-            btnCdo.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-orange-800');
-            btnSd.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-fuchsia-800');
-            btnSd.classList.remove('bg-fuchsia-600', 'text-white', 'shadow-lg');
-            renderProgram();
-        });
-
-        btnSd.addEventListener('click', () => {
-            selectedSpecialization = 'SD';
-            btnSd.classList.add('bg-fuchsia-600', 'text-white', 'shadow-lg');
-            btnSd.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-fuchsia-800');
-            btnCdo.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-orange-800');
-            btnCdo.classList.remove('bg-orange-600', 'text-white', 'shadow-lg');
-            renderProgram();
-        });
-
-        sessionSelect.addEventListener('change', (e) => {
-            selectedSessionIndex = parseInt(e.target.value);
-            startCountdown();
-        });
-        
-        calendarHeader.addEventListener('click', () => {
-            isCalendarTableExpanded = !isCalendarTableExpanded;
-            calendarTableContainer.classList.toggle('hidden', !isCalendarTableExpanded);
-            calendarChevron.classList.toggle('rotate-90', isCalendarTableExpanded);
-        });
-
         // Initialization
         function initialize() {
-            programProgress = loadProgress();
+            loadAllData();
             renderProgram();
+            renderEvaluations();
             updateMotivationalPhrase();
 
             // Populate session select
