@@ -61,48 +61,12 @@
 </head>
 <body class="min-h-screen bg-gray-900 text-gray-100 p-8">
 
-    <!-- Welcome Modal -->
-    <div id="welcome-modal" class="modal hidden">
+    <!-- Custom Alert Modal (replaces window.alert) -->
+    <div id="custom-alert-modal" class="modal hidden">
         <div class="modal-content">
-            <h2 class="text-3xl font-bold mb-4 text-yellow-400">Bienvenue sur MBA Tracker ! 👋</h2>
-            <p class="mb-6 text-gray-300">Pour commencer, dites-nous qui vous êtes et configurez votre parcours :</p>
-            
-            <div class="mb-4">
-                <label for="user-firstname" class="block text-sm font-medium text-gray-400 mb-1">Prénom :</label>
-                <input type="text" id="user-firstname" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500" placeholder="Votre prénom">
-            </div>
-            <div class="mb-6">
-                <label for="user-lastname" class="block text-sm font-medium text-gray-400 mb-1">Nom :</label>
-                <input type="text" id="user-lastname" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500" placeholder="Votre nom">
-            </div>
-
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-400 mb-2">Votre spécialisation :</label>
-                <div class="flex space-x-4">
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="specialization-choice" value="CDO" class="form-radio text-orange-500" checked>
-                        <span class="ml-2 text-white">CDO</span>
-                    </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="specialization-choice" value="SD" class="form-radio text-fuchsia-500">
-                        <span class="ml-2 text-white">SD</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <label for="modal-session-select" class="block text-sm font-medium text-gray-400 mb-1">Votre promo et session :</label>
-                <select id="modal-session-select" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500"></select>
-            </div>
-
-            <div class="mb-6">
-                <label for="modal-personal-start-date" class="block text-sm font-medium text-gray-400 mb-1">Ma date de début de formation :</label>
-                <input type="date" id="modal-personal-start-date" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500">
-            </div>
-
-            <button id="start-app-btn" class="w-full bg-pink-600 text-white py-2 rounded-full font-semibold hover:bg-pink-700 transition-colors duration-200">
-                Commencer l'aventure ! ✨
-            </button>
+            <h2 class="text-2xl font-bold mb-4 text-red-400">Erreur de saisie</h2>
+            <p id="custom-alert-message" class="mb-6 text-gray-300"></p>
+            <button class="w-full bg-red-600 text-white py-2 rounded-full font-semibold hover:bg-red-700 transition-colors duration-200" onclick="document.getElementById('custom-alert-modal').classList.add('hidden')">Fermer</button>
         </div>
     </div>
 
@@ -115,15 +79,45 @@
         </p>
         <p id="welcome-message" class="text-gray-300 text-lg mt-4 hidden">Bonjour !</p>
 
+        <!-- User Settings Section -->
+        <section id="user-settings" class="mt-8 p-6 bg-gray-800 rounded-xl shadow-lg max-w-2xl mx-auto">
+            <h2 class="text-xl font-semibold text-white mb-4">Vos informations et préférences</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="user-firstname" class="block text-sm font-medium text-gray-400 mb-1">Prénom :</label>
+                    <input type="text" id="user-firstname" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500" placeholder="Votre prénom">
+                </div>
+                <div>
+                    <label for="user-lastname" class="block text-sm font-medium text-gray-400 mb-1">Nom :</label>
+                    <input type="text" id="user-lastname" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500" placeholder="Votre nom">
+                </div>
+            </div>
 
-        <div class="mt-8 flex justify-center space-x-4">
-            <button id="btn-cdo" class="px-6 py-2 rounded-full font-semibold transition-all duration-300 bg-orange-600 text-white shadow-lg">
-                CDO
-            </button>
-            <button id="btn-sd" class="px-6 py-2 rounded-full font-semibold transition-all duration-300 bg-gray-700 text-gray-300 hover:bg-fuchsia-800">
-                SD
-            </button>
-        </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-400 mb-2">Votre spécialisation :</label>
+                <div class="flex space-x-4 justify-center">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="specialization-choice" value="CDO" class="form-radio text-orange-500" checked>
+                        <span class="ml-2 text-white">CDO</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="specialization-choice" value="SD" class="form-radio text-fuchsia-500">
+                        <span class="ml-2 text-white">SD</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="session-select" class="block text-sm font-medium text-gray-400 mb-1">Votre promo et session :</label>
+                    <select id="session-select" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500"></select>
+                </div>
+                <div>
+                    <label for="personal-start-date-input" class="block text-sm font-medium text-gray-400 mb-1">Ma date de début de formation :</label>
+                    <input type="date" id="personal-start-date-input" class="w-full px-3 py-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+        </section>
     </header>
 
     <section class="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
@@ -676,7 +670,7 @@
                 { name: 'Examen Certifiant - Animer un processus de problématisation... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
                 { name: 'Examen Certifiant - Concevoir un projet de transformation... (écrit) - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
                 { name: 'Examen Certifiant - Concevoir et mettre en œuvre une stratégie de communication... - Rattrapage', date: '', grade: '', status: 'both' },
-                { name: 'Examen Certifiant - Piloter un projet d’innovation... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
+                { name: 'Examen Certifiant - Piloter un projet d’innovation... - Rattrapage', date: '', grade: '', status: 'both' },
                 { name: 'Examen Certifiant - Management d’une équipe projet... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'both' },
                 { name: 'Examen Certifiant - Garantir la performance d’un projet... - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'CDO' },
                 { name: 'Examen Certifiant - Concevoir et mettre en œuvre de la stratégie de communication - Rattrapage', date: '', grade: '', status: 'À faire', specialization: 'SD' },
@@ -957,64 +951,44 @@
         
         const CheckCircleIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>`;
         const DangerousIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z" /></svg>`;
-        const InfoIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" /></svg>`;
+        const InfoIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" /></svg`;
         const ChevronRightIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>`;
         const ChevronDownIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" /></svg>`;
 
-        // State-like variables
+        // State-like variables (declared with let for assignment within initialize)
         let selectedSpecialization = 'CDO';
         let programProgress = [];
         let programEvaluations = {};
-        let sessions = sessionsData;
+        let sessions = sessionsData; // Initial sessions data
         let customStartDates = {}; // Stores custom start dates by session index
         let expandedBlocks = {};
-        let expandedModules = {}; // Still needed for internal module expansion
+        let expandedModules = {};
         let expandedEvaluations = {
             training: false,
             qcm: false,
             final: false,
             rattrapage: false
         };
-        let expandedCriteria = {}; // New state for collapsible criteria
+        let expandedCriteria = {};
         let isCalendarTableExpanded = false;
         let selectedSessionIndex = 0;
         let countdownInterval;
-        // Removed quizState and quizQuestions as quiz functionality is removed.
 
-        // DOM elements
-        const btnCdo = document.getElementById('btn-cdo');
-        const btnSd = document.getElementById('btn-sd');
-        const programContainer = document.getElementById('program-container');
-        const evaluationsContainer = document.getElementById('evaluations-container');
-        const totalProgressBar = document.getElementById('total-progress-bar');
-        const totalProgressText = document.getElementById('total-progress-text');
-        // Removed sessionSelect and customStartDateInput from main UI
-        const displaySelectedSession = document.getElementById('display-selected-session'); // New element to display selected session
-        const deadlineDate = document.getElementById('deadline-date');
-        const countdownDays = document.getElementById('countdown-days');
-        const countdownHours = document.getElementById('countdown-hours');
-        const countdownMinutes = document.getElementById('countdown-minutes');
-        const countdownSeconds = document.getElementById('countdown-seconds');
-        const calendarHeader = document.getElementById('calendar-header');
-        const calendarChevron = document.getElementById('calendar-chevron');
-        const calendarTableContainer = document.getElementById('calendar-table-container');
-        const calendarTableBody = document.getElementById('calendar-table-body');
-        const motivationalTitle = document.getElementById('motivational-title');
-        const motivationalText = document.getElementById('motivational-text');
-        const countdownTitle = document.getElementById('countdown-title'); // New DOM element
-
-        // Welcome Modal elements
-        const welcomeModal = document.getElementById('welcome-modal');
-        const userFirstnameInput = document.getElementById('user-firstname');
-        const userLastnameInput = document.getElementById('user-lastname');
-        const specializationChoiceRadios = document.querySelectorAll('input[name="specialization-choice"]');
-        const modalSessionSelect = document.getElementById('modal-session-select');
-        const modalPersonalStartDateInput = document.getElementById('modal-personal-start-date'); // New DOM element for modal input
-        const startAppBtn = document.getElementById('start-app-btn');
-        const welcomeMessageDisplay = document.getElementById('welcome-message');
+        // DOM elements (declared globally with let, assigned in initialize)
+        let btnCdo, btnSd, programContainer, evaluationsContainer, totalProgressBar, totalProgressText;
+        let userFirstnameInput, userLastnameInput, specializationChoiceRadios, sessionSelect, personalStartDateInput;
+        let displaySelectedSession, deadlineDate, countdownDays, countdownHours, countdownMinutes, countdownSeconds;
+        let calendarHeader, calendarChevron, calendarTableContainer, calendarTableBody;
+        let motivationalTitle, motivationalText, countdownTitle;
+        let customAlertModal, customAlertMessage, welcomeMessageDisplay; // welcomeMessageDisplay added here
 
 
         // Functions
+        function showAlert(message) {
+            customAlertMessage.textContent = message;
+            customAlertModal.classList.remove('hidden');
+        }
+
         function saveAllData() {
             localStorage.setItem('mba_tracker_progress', JSON.stringify(programProgress));
             localStorage.setItem('mba_tracker_evaluations', JSON.stringify(programEvaluations));
@@ -1026,6 +1000,7 @@
             localStorage.setItem('selected_specialization', selectedSpecialization);
             localStorage.setItem('selected_session_index', selectedSessionIndex);
             localStorage.setItem('custom_start_dates', JSON.stringify(customStartDates)); // Save custom start dates
+            localStorage.setItem('sessions_data_modified', JSON.stringify(sessions)); // Save modified sessions data
         }
 
         function loadAllData() {
@@ -1033,7 +1008,6 @@
             if (savedProgress) {
                 programProgress = JSON.parse(savedProgress);
             } else {
-                // Initialize program data with modules, but topics within modules are strings
                 programProgress = initialProgramData.map(block => ({
                     ...block,
                     modules: block.modules.map(module => ({
@@ -1057,26 +1031,15 @@
             const savedUserName = localStorage.getItem('user_name');
             if (savedUserName) {
                 const userName = JSON.parse(savedUserName);
+                // Assign values to inputs directly
                 userFirstnameInput.value = userName.firstName;
                 userLastnameInput.value = userName.lastName;
-                updateWelcomeMessage();
+                // updateWelcomeMessage() will be called after all DOM elements are assigned
             }
 
             const savedSpecialization = localStorage.getItem('selected_specialization');
             if (savedSpecialization) {
                 selectedSpecialization = savedSpecialization;
-                // Update buttons to reflect loaded specialization
-                if (selectedSpecialization === 'CDO') {
-                    btnCdo.classList.add('bg-orange-600', 'text-white', 'shadow-lg');
-                    btnCdo.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-fuchsia-800');
-                    btnSd.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-fuchsia-800');
-                    btnSd.classList.remove('bg-fuchsia-600', 'text-white', 'shadow-lg');
-                } else {
-                    btnSd.classList.add('bg-fuchsia-600', 'text-white', 'shadow-lg');
-                    btnSd.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-orange-800');
-                    btnCdo.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-orange-800');
-                    btnCdo.classList.remove('bg-orange-600', 'text-white', 'shadow-lg');
-                }
             }
 
             const savedSessionIndex = localStorage.getItem('selected_session_index');
@@ -1088,43 +1051,24 @@
             if (savedCustomStartDates) {
                 customStartDates = JSON.parse(savedCustomStartDates);
             }
-        }
 
-        function updateWelcomeMessage() {
-            const firstName = userFirstnameInput.value;
-            if (firstName) {
-                welcomeMessageDisplay.textContent = `Bonjour, ${firstName} ! 👋`;
-                welcomeMessageDisplay.classList.remove('hidden');
-            } else {
-                welcomeMessageDisplay.classList.add('hidden');
+            const savedSessionsData = localStorage.getItem('sessions_data_modified');
+            if (savedSessionsData) {
+                sessions = JSON.parse(savedSessionsData);
             }
         }
 
-        function showWelcomeModal() {
-            welcomeModal.classList.remove('hidden');
-            // Populate modal session select
-            modalSessionSelect.innerHTML = '';
-            sessions.forEach((session, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = `${session.promo} - ${session.session}`;
-                modalSessionSelect.appendChild(option);
-            });
-            modalSessionSelect.value = selectedSessionIndex; // Pre-select current session
-
-            // Pre-fill modal personal start date if exists
-            modalPersonalStartDateInput.value = customStartDates[selectedSessionIndex] || '';
-
-            // Add event listener for modal session select
-            modalSessionSelect.addEventListener('change', () => {
-                selectedSessionIndex = parseInt(modalSessionSelect.value);
-                // Update the personal start date input in the modal based on the newly selected session
-                modalPersonalStartDateInput.value = customStartDates[selectedSessionIndex] || '';
-            });
-        }
-
-        function hideWelcomeModal() {
-            welcomeModal.classList.add('hidden');
+        function updateWelcomeMessage() {
+            // Ensure welcomeMessageDisplay is not null before using it
+            if (welcomeMessageDisplay) {
+                const firstName = userFirstnameInput.value;
+                if (firstName) {
+                    welcomeMessageDisplay.textContent = `Bonjour, ${firstName} ! 👋`;
+                    welcomeMessageDisplay.classList.remove('hidden');
+                } else {
+                    welcomeMessageDisplay.classList.add('hidden');
+                }
+            }
         }
 
         function calculateProgress(items) {
@@ -1135,7 +1079,6 @@
         }
 
         function getBlockProgress(block) {
-            // Calculate progress based on all topics within its modules
             const allTopicsInBlock = block.modules.flatMap(module => module.topics);
             return calculateProgress(allTopicsInBlock);
         }
@@ -1558,13 +1501,12 @@
                 });
             });
 
-            // Corrected: Use programEvaluations instead of evaluationData constant
             document.querySelectorAll('.date-input').forEach(input => {
                 input.addEventListener('change', (e) => {
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
-                    const evalList = programEvaluations[category]; // Corrected
-                    if (evalList && evalList[index]) { // Added safety check
+                    const evalList = programEvaluations[category]; 
+                    if (evalList && evalList[index]) { 
                         evalList[index].date = e.target.value;
                         saveAllData();
                         renderEvaluations();
@@ -1572,13 +1514,12 @@
                 });
             });
 
-            // Corrected: Use programEvaluations instead of evaluationData constant
             document.querySelectorAll('.grade-input').forEach(input => {
                 input.addEventListener('input', (e) => {
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
-                    const evalList = programEvaluations[category]; // Corrected
-                    if (evalList && evalList[index]) { // Added safety check
+                    const evalList = programEvaluations[category]; 
+                    if (evalList && evalList[index]) { 
                         evalList[index].grade = e.target.value;
                         saveAllData();
                         renderEvaluations();
@@ -1586,14 +1527,13 @@
                 });
             });
 
-            // Corrected: Use programEvaluations instead of evaluationData constant
             document.querySelectorAll('.set-status-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
                     const status = e.target.dataset.status;
-                    const evalList = programEvaluations[category]; // Corrected
-                    if (evalList && evalList[index]) { // Added safety check
+                    const evalList = programEvaluations[category]; 
+                    if (evalList && evalList[index]) { 
                         evalList[index].status = status;
                         saveAllData();
                         renderEvaluations();
@@ -1615,7 +1555,12 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${session.promo}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${session.session}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                        ${formatDate(session.endDate)}
+                        <input
+                            type="date"
+                            value="${session.endDate}"
+                            data-index="${index}"
+                            class="bg-gray-900 border border-gray-600 rounded-md px-2 py-1 text-sm text-white focus:outline-none focus:border-blue-500 calendar-end-date-input"
+                        />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                         <div class="flex items-center space-x-2">
@@ -1625,7 +1570,16 @@
                     </td>
                 </tr>
             `).join('');
-            // No date input listeners needed here as the start date is now handled in the modal
+
+            // Add event listener for date inputs in the calendar table
+            document.querySelectorAll('#calendar-table-body .calendar-end-date-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const index = parseInt(e.target.dataset.index);
+                    sessions[index].endDate = e.target.value;
+                    saveAllData(); // Save modified sessions data
+                    startCountdown(); // Restart countdown if the end date of the selected session changed
+                });
+            });
         }
 
         function updateDisplaySelectedSession() {
@@ -1755,110 +1709,130 @@
 
         // Initialization
         function initialize() {
-            loadAllData();
+            // Assign DOM elements first to ensure they are available
+            btnCdo = document.getElementById('btn-cdo');
+            btnSd = document.getElementById('btn-sd');
+            programContainer = document.getElementById('program-container');
+            evaluationsContainer = document.getElementById('evaluations-container');
+            totalProgressBar = document.getElementById('total-progress-bar');
+            totalProgressText = document.getElementById('total-progress-text');
             
-            // Check if user data exists to decide whether to show modal
-            const savedUserName = localStorage.getItem('user_name');
-            if (!savedUserName) {
-                showWelcomeModal();
-            } else {
-                // If data exists, directly render the program and evaluations
-                renderProgram();
-                renderEvaluations();
-                updateMotivationalPhrase();
-                // No need to populate sessionSelect or customStartDateInput here anymore
-                updateDisplaySelectedSession(); // Display the selected session
-                renderCalendarTable();
+            userFirstnameInput = document.getElementById('user-firstname');
+            userLastnameInput = document.getElementById('user-lastname');
+            specializationChoiceRadios = document.querySelectorAll('input[name="specialization-choice"]');
+            sessionSelect = document.getElementById('session-select');
+            personalStartDateInput = document.getElementById('personal-start-date-input');
+
+            displaySelectedSession = document.getElementById('display-selected-session');
+            deadlineDate = document.getElementById('deadline-date');
+            countdownDays = document.getElementById('countdown-days');
+            countdownHours = document.getElementById('countdown-hours');
+            countdownMinutes = document.getElementById('countdown-minutes');
+            countdownSeconds = document.getElementById('countdown-seconds');
+            calendarHeader = document.getElementById('calendar-header');
+            calendarChevron = document.getElementById('calendar-chevron');
+            calendarTableContainer = document.getElementById('calendar-table-container');
+            calendarTableBody = document.getElementById('calendar-table-body');
+            motivationalTitle = document.getElementById('motivational-title');
+            motivationalText = document.getElementById('motivational-text');
+            countdownTitle = document.getElementById('countdown-title');
+
+            customAlertModal = document.getElementById('custom-alert-modal');
+            customAlertMessage = document.getElementById('custom-alert-message');
+            welcomeMessageDisplay = document.getElementById('welcome-message');
+
+
+            loadAllData(); // Now safe to load data, as DOM elements are assigned
+            
+            // Populate session select (main UI)
+            sessionSelect.innerHTML = '';
+            sessions.forEach((session, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${session.promo} - ${session.session}`;
+                sessionSelect.appendChild(option);
+            });
+            sessionSelect.value = selectedSessionIndex; // Set the loaded session
+
+            // Set initial values for user settings inputs
+            // userFirstnameInput and userLastnameInput are already set by loadAllData
+            // Set specialization radio button
+            document.querySelector(`input[name="specialization-choice"][value="${selectedSpecialization}"]`).checked = true;
+            // Set personal start date input
+            personalStartDateInput.value = customStartDates[selectedSessionIndex] || '';
+
+            // Initial render and countdown
+            updateWelcomeMessage();
+            renderProgram();
+            renderEvaluations();
+            updateMotivationalPhrase();
+            updateDisplaySelectedSession();
+            renderCalendarTable();
+            startCountdown();
+
+            // Add event listeners for user settings inputs
+            userFirstnameInput.addEventListener('input', () => { saveAllData(); updateWelcomeMessage(); });
+            userLastnameInput.addEventListener('input', () => { saveAllData(); updateWelcomeMessage(); });
+
+            specializationChoiceRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    selectedSpecialization = e.target.value;
+                    saveAllData();
+                    renderProgram();
+                    renderEvaluations();
+                    // Update button styles
+                    if (selectedSpecialization === 'CDO') {
+                        btnCdo.classList.replace('bg-gray-700', 'bg-orange-600');
+                        btnCdo.classList.replace('text-gray-300', 'text-white');
+                        btnCdo.classList.remove('hover:bg-fuchsia-800');
+                        btnCdo.classList.add('shadow-lg');
+                        btnSd.classList.replace('bg-fuchsia-600', 'bg-gray-700');
+                        btnSd.classList.replace('text-white', 'text-gray-300');
+                        btnSd.classList.add('hover:bg-fuchsia-800');
+                        btnSd.classList.remove('shadow-lg');
+                    } else {
+                        btnSd.classList.replace('bg-gray-700', 'bg-fuchsia-600');
+                        btnSd.classList.replace('text-white', 'text-gray-300');
+                        btnSd.classList.remove('hover:bg-orange-800');
+                        btnSd.classList.add('shadow-lg');
+                        btnCdo.classList.replace('bg-orange-600', 'bg-gray-700');
+                        btnCdo.classList.replace('text-white', 'text-gray-300');
+                        btnCdo.classList.add('hover:bg-orange-800');
+                        btnCdo.classList.remove('shadow-lg');
+                    }
+                });
+            });
+
+            sessionSelect.addEventListener('change', (e) => {
+                selectedSessionIndex = parseInt(e.target.value);
+                saveAllData();
+                personalStartDateInput.value = customStartDates[selectedSessionIndex] || ''; // Update personal start date input
+                updateDisplaySelectedSession();
                 startCountdown();
-            }
+            });
+
+            personalStartDateInput.addEventListener('change', (e) => {
+                customStartDates[selectedSessionIndex] = e.target.value;
+                saveAllData();
+                startCountdown();
+            });
 
             // Event listener for calendar header to toggle visibility
             calendarHeader.addEventListener('click', () => {
                 isCalendarTableExpanded = !isCalendarTableExpanded;
                 if (isCalendarTableExpanded) {
                     calendarTableContainer.style.maxHeight = calendarTableContainer.scrollHeight + 'px';
-                    calendarChevron.innerHTML = ChevronDownIcon; // Change to down arrow
+                    calendarChevron.innerHTML = ChevronDownIcon;
                     calendarChevron.classList.remove('rotate-0');
                     calendarChevron.classList.add('rotate-90');
                 } else {
                     calendarTableContainer.style.maxHeight = '0';
-                    calendarChevron.innerHTML = ChevronRightIcon; // Change to right arrow
+                    calendarChevron.innerHTML = ChevronRightIcon;
                     calendarChevron.classList.remove('rotate-90');
                     calendarChevron.classList.add('rotate-0');
                 }
             });
-
-            // Event listeners for specialization buttons
-            btnCdo.addEventListener('click', () => {
-                selectedSpecialization = 'CDO';
-                saveAllData();
-                renderProgram();
-                renderEvaluations();
-                btnCdo.classList.replace('bg-gray-700', 'bg-orange-600');
-                btnCdo.classList.replace('text-gray-300', 'text-white');
-                btnCdo.classList.remove('hover:bg-fuchsia-800'); // Remove SD hover
-                btnCdo.classList.add('shadow-lg');
-                btnSd.classList.replace('bg-fuchsia-600', 'bg-gray-700');
-                btnSd.classList.replace('text-white', 'text-gray-300');
-                btnSd.classList.add('hover:bg-fuchsia-800'); // Add SD hover
-                btnSd.classList.remove('shadow-lg');
-            });
-
-            btnSd.addEventListener('click', () => {
-                selectedSpecialization = 'SD';
-                saveAllData();
-                renderProgram();
-                renderEvaluations();
-                btnSd.classList.replace('bg-gray-700', 'bg-fuchsia-600');
-                btnSd.classList.replace('text-white', 'text-gray-300');
-                btnSd.classList.remove('hover:bg-orange-800'); // Remove CDO hover
-                btnSd.classList.add('shadow-lg');
-                btnCdo.classList.replace('bg-orange-600', 'bg-gray-700');
-                btnCdo.classList.replace('text-white', 'text-gray-300');
-                btnCdo.classList.add('hover:bg-orange-800'); // Add CDO hover
-                btnCdo.classList.remove('shadow-lg');
-            });
         }
-
-        // Event listeners for welcome modal
-        startAppBtn.addEventListener('click', () => {
-            const firstName = userFirstnameInput.value;
-            const lastName = userLastnameInput.value;
-            const specialization = document.querySelector('input[name="specialization-choice"]:checked').value;
-            const sessionIndex = parseInt(modalSessionSelect.value);
-            const personalStartDate = modalPersonalStartDateInput.value; // Get personal start date from modal
-
-            if (!firstName || !lastName || !personalStartDate) { // Added personalStartDate check
-                // Using a custom modal for alerts instead of window.alert
-                const alertModal = document.createElement('div');
-                alertModal.className = 'modal';
-                alertModal.innerHTML = `
-                    <div class="modal-content">
-                        <h2 class="text-2xl font-bold mb-4 text-red-400">Erreur de saisie</h2>
-                        <p class="mb-6 text-gray-300">Veuillez entrer votre prénom, votre nom et votre date de début de formation pour commencer.</p>
-                        <button class="w-full bg-red-600 text-white py-2 rounded-full font-semibold hover:bg-red-700 transition-colors duration-200" onclick="this.closest('.modal').remove()">Fermer</button>
-                    </div>
-                `;
-                document.body.appendChild(alertModal);
-                return;
-            }
-
-            selectedSpecialization = specialization;
-            selectedSessionIndex = sessionIndex;
-            customStartDates[selectedSessionIndex] = personalStartDate; // Store personal start date
-            saveAllData(); // Save initial user data
-
-            hideWelcomeModal();
-            updateWelcomeMessage();
-            renderProgram();
-            renderEvaluations();
-            updateMotivationalPhrase();
-            // Update display for selected session in main UI
-            updateDisplaySelectedSession(); 
-            renderCalendarTable();
-            startCountdown();
-        });
-
 
         document.addEventListener('DOMContentLoaded', initialize);
     </script>
