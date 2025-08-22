@@ -11,30 +11,30 @@
             font-family: 'Poppins', sans-serif;
         }
         .form-checkbox {
-          appearance: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          height: 16px;
-          width: 16px;
-          border-radius: 4px;
-          border: 1px solid #4a5568;
-          background-color: #1f2937;
-          cursor: pointer;
-          position: relative;
-          transition: background-color 0.2s, border-color 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 4px;
+            border: 1px solid #4a5568;
+            background-color: #1f2937;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s, border-color 0.2s;
         }
         .form-checkbox:checked {
-          background-color: #ec4899;
-          border-color: #ec4899;
+            background-color: #ec4899;
+            border-color: #ec4899;
         }
         .form-checkbox:checked::after {
-          content: '✔';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          font-size: 10px;
-          color: white;
+            content: '✔';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            color: white;
         }
         .modal {
             position: fixed;
@@ -56,6 +56,43 @@
             width: 90%;
             max-width: 500px;
             color: #f3f4f6;
+        }
+        /* Style for inactive tab buttons */
+        .main-tab-button {
+            color: #9ca3af; /* gray-400 */
+            background-color: transparent;
+            border-bottom: 2px solid transparent;
+        }
+        .main-tab-button:hover {
+            color: #f9fafb; /* white */
+            background-color: #374151; /* gray-700 */
+        }
+        /* Style for active tab button */
+        .main-tab-button.active {
+            color: #f3f4f6; /* white */
+            background-color: #db2777; /* pink-600 */
+            border-color: #db2777;
+        }
+        /* Hide scrollbar for tab navigation, but allow scrolling */
+        .scrollbar-hidden::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hidden {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        /* Ensure iframe fills its container */
+        .iframe-container {
+            width: 100%;
+            height: 80vh; /* Adjust height as needed */
+            background-color: #1f2937; /* Dark background for consistency */
+            border-radius: 0.75rem;
+            overflow: hidden; /* Hide scrollbars if iframe has its own */
+        }
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
@@ -169,13 +206,29 @@
         </div>
     </section>
 
-    <main id="program-container" class="grid gap-8"></main>
+    <!-- Main Tab Navigation -->
+    <div class="flex flex-wrap border-b border-gray-700 mb-6 -mx-8 px-8 scrollbar-hidden">
+        <button class="main-tab-button py-3 px-4 md:px-6 text-base md:text-lg font-medium rounded-t-lg transition-colors duration-200 focus:outline-none" data-main-tab="program">Suivi du programme</button>
+        <button class="main-tab-button py-3 px-4 md:px-6 text-base md:text-lg font-medium rounded-t-lg transition-colors duration-200 focus:outline-none" data-main-tab="training">Évaluations d'entraînement</button>
+        <button class="main-tab-button py-3 px-4 md:px-6 text-base md:text-lg font-medium rounded-t-lg transition-colors duration-200 focus:outline-none" data-main-tab="qcm">Certifications Studi (QCM)</button>
+        <button class="main-tab-button py-3 px-4 md:px-6 text-base md:text-lg font-medium rounded-t-lg transition-colors duration-200 focus:outline-none" data-main-tab="final">Certifications finales</button>
+        <button class="main-tab-button py-3 px-4 md:px-6 text-base md:text-lg font-medium rounded-t-lg transition-colors duration-200 focus:outline-none" data-main-tab="rattrapage">Rattrapages <span class="text-red-400">⚠️</span></button>
+        <button class="main-tab-button py-3 px-4 md:px-6 text-base md:text-lg font-medium rounded-t-lg transition-colors duration-200 focus:outline-none" data-main-tab="lives">Lives de chef de projet</button>
+    </div>
 
-    <section class="mb-12 p-6 bg-gray-800 rounded-xl shadow-lg">
-        <h2 class="text-2xl font-semibold text-white mb-2">Suivi des certifications et évaluations 📝</h2>
-
-        <div id="evaluations-container" class="grid gap-4 mt-4"></div>
-    </section>
+    <!-- Main Tab Content Wrapper -->
+    <div id="main-tab-content-wrapper">
+        <section id="tab-content-program" class="tab-content grid gap-8"></section>
+        <section id="tab-content-training" class="tab-content grid gap-4 mt-4 hidden"></section>
+        <section id="tab-content-qcm" class="tab-content grid gap-4 mt-4 hidden"></section>
+        <section id="tab-content-final" class="tab-content grid gap-4 mt-4 hidden"></section>
+        <section id="tab-content-rattrapage" class="tab-content grid gap-4 mt-4 hidden"></section>
+        <section id="tab-content-lives" class="tab-content mt-4 hidden">
+            <div class="iframe-container rounded-xl shadow-lg">
+                <iframe src="https://mmpa1974.github.io/Planning-des-Lives-chef-de-projet/" title="Planning des Lives chef de projet"></iframe>
+            </div>
+        </section>
+    </div>
     
     <div id="confetti-container" class="confetti-container"></div>
 
@@ -400,10 +453,11 @@
                         code: 'B4_M1',
                         title: 'Réaliser le prototypage des différentes pistes créatives',
                         topics: [
-                            'La phase d’idéation',
-                            'Le prototypage de la solution',
-                            'La réalisation de maquettes avec des prototypes UX',
-                            'Introduction au parcours interactif et au prototypage',
+                            'Prise en compte des informations qualitatives et quantitatives lors des recherches exploratoires pour la création des représentations de produits, de services, d\'espace et d\'identité.',
+                            'Qualité et pertinence des représentations produites.',
+                            'Pertinence des différents choix techniques, matériaux, données, ergonomie.',
+                            'Créativité et choix esthétiques.',
+                            'Pertinence des solutions proposées au regard du brief et de la démarche mise en œuvre.'
                         ],
                     },
                     {
@@ -936,7 +990,7 @@
         
         const CheckCircleIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>`;
         const DangerousIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z" /></svg>`;
-        const InfoIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" /></svg`;
+        const InfoIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" /></svg>`;
         const ChevronRightIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>`;
         const ChevronDownIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" /></svg>`;
 
@@ -949,24 +1003,19 @@
         let customEndDates = {}; // Stores custom end dates by session index
         let expandedBlocks = {};
         let expandedModules = {};
-        let expandedEvaluations = {
-            training: false,
-            qcm: false,
-            final: false,
-            rattrapage: false
-        };
         let expandedCriteria = {};
-        let isCalendarTableExpanded = false;
         let selectedSessionIndex = 0;
         let countdownInterval;
+        let selectedMainTab = localStorage.getItem('selected_main_tab') || 'program'; // New: default selected main tab
 
         // DOM elements (declared globally with let, assigned in initialize)
-        let btnCdo, btnSd, programContainer, evaluationsContainer, totalProgressBar, totalProgressText;
+        let programContainer, totalProgressBar, totalProgressText;
         let userFirstnameInput, userLastnameInput, specializationChoiceRadios, sessionSelect, personalStartDateInput, personalEndDateInput;
         let displaySelectedSession, deadlineDate, countdownDays, countdownHours, countdownMinutes, countdownSeconds;
-        let calendarHeader, calendarChevron, calendarTableContainer, calendarTableBody;
         let motivationalTitle, motivationalText, countdownTitle;
         let customAlertModal, customAlertMessage, welcomeMessageDisplay;
+        let mainTabButtons; // New: for main tab navigation
+        let tabContentProgram, tabContentTraining, tabContentQCM, tabContentFinal, tabContentRattrapage, tabContentLives;
 
 
         // Functions
@@ -988,6 +1037,7 @@
             localStorage.setItem('custom_start_dates', JSON.stringify(customStartDates)); // Save custom start dates
             localStorage.setItem('custom_end_dates', JSON.stringify(customEndDates)); // Save custom end dates
             localStorage.setItem('sessions_data_modified', JSON.stringify(sessions)); // Save modified sessions data (for end dates in table)
+            localStorage.setItem('selected_main_tab', selectedMainTab); // New: Save selected main tab
         }
 
         function loadAllData() {
@@ -1045,6 +1095,11 @@
             if (savedSessionsData) {
                 sessions = JSON.parse(savedSessionsData);
             }
+
+            const savedSelectedMainTab = localStorage.getItem('selected_main_tab');
+            if (savedSelectedMainTab) {
+                selectedMainTab = savedSelectedMainTab;
+            }
         }
 
         function updateWelcomeMessage() {
@@ -1082,7 +1137,7 @@
             return Math.round((completed / total) * 100);
         }
 
-        function getTotalProgress() {
+        function updateTotalProgress() {
             let allTopics = [];
             programProgress.forEach(block => {
                 if (!block.specialization || block.specialization === selectedSpecialization) {
@@ -1129,8 +1184,8 @@
             `;
         }
 
-        function renderProgram() {
-            programContainer.innerHTML = '';
+        function renderProgramContent() {
+            tabContentProgram.innerHTML = ''; // Clear previous content
             programProgress.forEach((block, blockIndex) => {
                 const isSpecializationBlock = block.specialization && block.specialization !== selectedSpecialization;
                 if (isSpecializationBlock) return;
@@ -1153,10 +1208,16 @@
 
                 const criteriaTitleColor = block.specialization === 'SD' ? 'text-fuchsia-400' : 'text-orange-400';
                 const criteriaBulletColor = block.specialization === 'SD' ? 'text-pink-500' : 'text-yellow-400';
-                const specialTitleColor = block.specialization === 'SD' ? 'text-fuchsia-400' : 'text-orange-400';
+
+                // Dynamic border color for the block container
+                const dynamicBorderColor = block.code === 'B6' && selectedSpecialization === 'CDO'
+                    ? '#ea580c' // Tailwind orange-600
+                    : block.code === 'B7' && selectedSpecialization === 'SD'
+                    ? '#c026d3' // Tailwind fuchsia-600
+                    : '#2563eb'; // Tailwind blue-600
 
                 let blockHtml = `
-                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border-l-4 border-l-gray-700">
+                    <div class="bg-gray-800 rounded-xl p-6 shadow-lg border-2 transition-all duration-300 ease-in-out hover:shadow-xl hover:border-pink-500" style="border-color: ${dynamicBorderColor};">
                         <div class="flex justify-between items-center cursor-pointer block-header" data-block-code="${block.code}">
                             <div class="flex items-center">
                                 <span class="w-6 h-6 mr-2 text-white transition-transform duration-300 ${isBlockExpanded ? 'rotate-90' : ''}">
@@ -1273,62 +1334,38 @@
                 blockHtml += `
                     </div>
                 `;
-                programContainer.innerHTML += blockHtml;
+                tabContentProgram.innerHTML += blockHtml;
             });
             updateTotalProgress();
-            addEventListeners();
+            addEventListeners(); // Re-attach listeners for dynamically added content
         }
 
-        function renderEvaluations() {
-            evaluationsContainer.innerHTML = '';
+        function renderEvaluationsContent(category) {
+            let targetContentDiv;
+            if (category === 'training') targetContentDiv = tabContentTraining;
+            else if (category === 'qcm') targetContentDiv = tabContentQCM;
+            else if (category === 'final') targetContentDiv = tabContentFinal;
+            else if (category === 'rattrapage') targetContentDiv = tabContentRattrapage;
+            else return; // Should not happen with valid categories
+
+            targetContentDiv.innerHTML = ''; // Clear previous content
             
-            const categories = {
-                training: { title: "Évaluations d'entraînement", color: 'text-green-400', progressColor: 'bg-green-600' },
-                qcm: { title: 'Certifications Studi (QCM)', color: 'text-yellow-400', progressColor: 'bg-yellow-600' },
-                final: { title: 'Certifications finales', color: 'text-blue-400', progressColor: 'bg-blue-600' },
-                rattrapage: { title: 'Rattrapages ⚠️', color: 'text-red-400', progressColor: 'bg-red-600' },
-            };
+            const filteredEvals = programEvaluations[category].filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization);
+
+            let categoryHtml = '';
             
-
-            for (const category in categories) {
-                const isExpanded = !!expandedEvaluations[category];
-                const filteredEvals = programEvaluations[category].filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization);
-                const progress = getEvaluationProgress(filteredEvals);
-
-                let categoryHtml = `
-                    <div class="bg-gray-700 rounded-xl p-4 shadow-md">
-                        <div class="flex justify-between items-center cursor-pointer evaluation-category-header" data-category="${category}">
-                            <div class="flex items-center">
-                                <span class="w-6 h-6 mr-2 text-white transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}">
-                                    ${ChevronRightIcon}
-                                </span>
-                                <h3 class="text-xl font-bold ${categories[category].color}">${categories[category].title}</h3>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="text-lg font-semibold text-white">${progress}%</span>
-                                ${renderProgressBar(progress, categories[category].progressColor)}
-                            </div>
-                        </div>
-                `;
-                
-                if (isExpanded) {
-                    categoryHtml += `<div class="grid gap-4 mt-4" id="evaluation-list-${category}">`;
-                    
-                    filteredEvals.forEach((evaluation, index) => {
-                        categoryHtml += renderEvaluationItem(evaluation, category, index);
-                    });
-
-                    if (filteredEvals.length === 0) {
-                        categoryHtml += `<p class="text-gray-400 text-sm italic">Aucune évaluation dans cette catégorie pour la spécialisation sélectionnée.</p>`;
-                    }
-                    
-                    categoryHtml += `</div>`;
-                }
-                
-                categoryHtml += `</div>`;
-                evaluationsContainer.innerHTML += categoryHtml;
+            if (filteredEvals.length === 0) {
+                categoryHtml += `<p class="text-gray-400 text-sm italic">Aucune évaluation dans cette catégorie pour la spécialisation sélectionnée.</p>`;
+            } else {
+                filteredEvals.forEach((evaluation, index) => {
+                    categoryHtml += renderEvaluationItem(evaluation, category, index);
+                });
             }
-            addEvaluationEventListeners();
+            
+            targetContentDiv.innerHTML = categoryHtml;
+            
+            addEvaluationEventListeners(); // Re-attach listeners for dynamically added content
+            updateTotalProgress();
         }
 
         function renderEvaluationItem(evaluation, category, index) {
@@ -1345,6 +1382,7 @@
                 statusText = evaluation.status === 'manqué' ? 'Manqué' : 'Non validé';
             } else if (evaluation.status === 'en attente') {
                 statusColor = 'text-yellow-400';
+                statusIcon = InfoIcon; // Using InfoIcon for 'en attente'
                 statusText = 'En attente';
             } else {
                 statusText = 'À faire';
@@ -1395,58 +1433,60 @@
                     </div>
                     ${rattrapageMessage}
                     <div class="mt-2 text-sm text-gray-500 flex justify-end">
-                      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 set-status-btn" data-category="${category}" data-index="${index}" data-status="validé">Marquer comme Validé</button>
-                      <button class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors duration-200 set-status-btn ml-2" data-category="${category}" data-index="${index}" data-status="en attente">Marquer En attente</button>
-                      <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 set-status-btn ml-2" data-category="${category}" data-index="${index}" data-status="non validé">Marquer Non Validé</button>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 set-status-btn" data-category="${category}" data-index="${index}" data-status="validé">Marquer comme Validé</button>
+                        <button class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors duration-200 set-status-btn ml-2" data-category="${category}" data-index="${index}" data-status="en attente">Marquer En attente</button>
+                        <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 set-status-btn ml-2" data-category="${category}" data-index="${index}" data-status="non validé">Marquer Non Validé</button>
                     </div>
                 </div>
             `;
         }
 
-
-        function updateTotalProgress() {
-            let allTopics = [];
-            programProgress.forEach(block => {
-                if (!block.specialization || block.specialization === selectedSpecialization) {
-                    allTopics = allTopics.concat(block.modules.flatMap(module => module.topics));
-                }
-            });
-            const completedTopics = allTopics.filter(item => item.isCompleted).length;
-            const totalTopics = allTopics.length;
-
-            let allEvaluations = [];
-            
-            const trainingEvals = programEvaluations.training ? programEvaluations.training.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const qcmEvals = programEvaluations.qcm ? programEvaluations.qcm.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const finalEvals = programEvaluations.final ? programEvaluations.final.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-            const rattrapageEvals = programEvaluations.rattrapage ? programEvaluations.rattrapage.filter(e => e.specialization === 'both' || e.specialization === selectedSpecialization) : [];
-
-            allEvaluations = allEvaluations.concat(trainingEvals, qcmEvals, finalEvals, rattrapageEvals);
-
-            const completedEvaluations = allEvaluations.filter(eval => eval.status !== 'À faire').length;
-            const totalEvaluations = allEvaluations.length;
-
-            const totalItems = totalTopics + totalEvaluations;
-            const completedItems = completedTopics + completedEvaluations;
-
-            if (totalItems === 0) {
-                totalProgressText.textContent = `0%`;
-                totalProgressBar.style.width = `0%`;
-                return;
-            }
-
-            const totalProgress = Math.round((completedItems / totalItems) * 100);
-            totalProgressText.textContent = `${totalProgress}%`;
-            totalProgressBar.style.width = `${totalProgress}%`;
+        function renderLivesContent() {
+            // The iframe is already in the HTML, we just need to ensure the section is visible.
+            // No dynamic content generation needed for this tab, as the iframe handles it.
         }
 
+        function renderAppContent() {
+            // Hide all main tab content sections
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            // Deactivate all main tab buttons
+            document.querySelectorAll('.main-tab-button').forEach(button => {
+                button.classList.remove('active', 'bg-pink-600', 'text-white');
+                button.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-gray-700');
+            });
+
+            // Show active tab content and activate its button
+            const activeTabButton = document.querySelector(`.main-tab-button[data-main-tab="${selectedMainTab}"]`);
+            if (activeTabButton) {
+                activeTabButton.classList.add('active', 'bg-pink-600', 'text-white');
+                activeTabButton.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-gray-700');
+            }
+
+            if (selectedMainTab === 'program') {
+                tabContentProgram.classList.remove('hidden');
+                renderProgramContent();
+            } else if (selectedMainTab === 'lives') {
+                tabContentLives.classList.remove('hidden');
+                renderLivesContent(); // Call the new render function for lives
+            }
+            else {
+                // For other evaluation tabs
+                const evaluationContentDiv = document.getElementById(`tab-content-${selectedMainTab}`);
+                if (evaluationContentDiv) {
+                    evaluationContentDiv.classList.remove('hidden');
+                    renderEvaluationsContent(selectedMainTab);
+                }
+            }
+        }
 
         function addEventListeners() {
             document.querySelectorAll('.block-header').forEach(header => {
                 header.addEventListener('click', (e) => {
                     const blockCode = e.currentTarget.dataset.blockCode;
                     expandedBlocks[blockCode] = !expandedBlocks[blockCode];
-                    renderProgram();
+                    renderProgramContent(); // Re-render only program content
                 });
             });
 
@@ -1454,7 +1494,7 @@
                 header.addEventListener('click', (e) => {
                     const moduleCode = e.currentTarget.dataset.moduleCode;
                     expandedModules[moduleCode] = !expandedModules[moduleCode];
-                    renderProgram();
+                    renderProgramContent(); // Re-render only program content
                 });
             });
 
@@ -1466,38 +1506,32 @@
                     const topicIndex = parseInt(e.target.dataset.topicIndex);
                     programProgress[blockIndex].modules[moduleIndex].topics[topicIndex].isCompleted = e.target.checked;
                     saveAllData();
-                    renderProgram();
+                    renderProgramContent(); // Re-render only program content
                 });
             });
 
-            // New event listener for criterion headers
+            // Event listener for criterion headers (within program content)
             document.querySelectorAll('.criterion-header').forEach(header => {
                 header.addEventListener('click', (e) => {
                     const criterionCode = e.currentTarget.dataset.criterionCode;
                     expandedCriteria[criterionCode] = !expandedCriteria[criterionCode];
-                    renderProgram(); // Re-render to update chevron and visibility
+                    renderProgramContent(); // Re-render to update chevron and visibility
                 });
             });
         }
 
         function addEvaluationEventListeners() {
-            document.querySelectorAll('.evaluation-category-header').forEach(header => {
-                header.addEventListener('click', (e) => {
-                    const category = e.currentTarget.dataset.category;
-                    expandedEvaluations[category] = !expandedEvaluations[category];
-                    renderEvaluations();
-                });
-            });
-
+            // These event listeners should be attached to elements within the currently active tab content.
+            // Since elements are re-rendered, it's safe to query the entire document.
             document.querySelectorAll('.date-input').forEach(input => {
                 input.addEventListener('change', (e) => {
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
-                    const evalList = programEvaluations[category]; 
-                    if (evalList && evalList[index]) { 
+                    const evalList = programEvaluations[category];  
+                    if (evalList && evalList[index]) {  
                         evalList[index].date = e.target.value;
                         saveAllData();
-                        renderEvaluations();
+                        renderEvaluationsContent(category); // Re-render the specific evaluation tab
                     }
                 });
             });
@@ -1506,11 +1540,11 @@
                 input.addEventListener('input', (e) => {
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
-                    const evalList = programEvaluations[category]; 
-                    if (evalList && evalList[index]) { 
+                    const evalList = programEvaluations[category];  
+                    if (evalList && evalList[index]) {  
                         evalList[index].grade = e.target.value;
                         saveAllData();
-                        renderEvaluations();
+                        // No need to re-render here for every input, only when status changes or date
                     }
                 });
             });
@@ -1520,11 +1554,11 @@
                     const category = e.target.dataset.category;
                     const index = parseInt(e.target.dataset.index);
                     const status = e.target.dataset.status;
-                    const evalList = programEvaluations[category]; 
-                    if (evalList && evalList[index]) { 
+                    const evalList = programEvaluations[category];  
+                    if (evalList && evalList[index]) {  
                         evalList[index].status = status;
                         saveAllData();
-                        renderEvaluations();
+                        renderEvaluationsContent(category); // Re-render the specific evaluation tab
                         updateTotalProgress();
                     }
                 });
@@ -1537,11 +1571,8 @@
             return `${day}/${month}/${year}`;
         }
 
-        // Removed renderCalendarTable as the table is removed from HTML
-        // The sessions data is still used for the dropdown, but not for a visual table.
-
         function updateDisplaySelectedSession() {
-            const session = sessions[selectedSessionIndex];
+            const session = sessions[selectedSessionIndex]; // Get selected session for context (promo/session name)
             if (session) {
                 displaySelectedSession.textContent = `${session.promo} - ${session.session}`;
             } else {
@@ -1658,10 +1689,7 @@
         // Initialization
         function initialize() {
             // Assign DOM elements first to ensure they are available
-            btnCdo = document.getElementById('btn-cdo');
-            btnSd = document.getElementById('btn-sd');
-            programContainer = document.getElementById('program-container');
-            evaluationsContainer = document.getElementById('evaluations-container');
+            programContainer = document.getElementById('program-container'); // This ID is no longer directly used as a top-level container
             totalProgressBar = document.getElementById('total-progress-bar');
             totalProgressText = document.getElementById('total-progress-text');
             
@@ -1670,7 +1698,7 @@
             specializationChoiceRadios = document.querySelectorAll('input[name="specialization-choice"]');
             sessionSelect = document.getElementById('session-select');
             personalStartDateInput = document.getElementById('personal-start-date-input');
-            personalEndDateInput = document.getElementById('personal-end-date-input'); // New DOM element
+            personalEndDateInput = document.getElementById('personal-end-date-input');
 
             displaySelectedSession = document.getElementById('display-selected-session');
             deadlineDate = document.getElementById('deadline-date');
@@ -1678,7 +1706,6 @@
             countdownHours = document.getElementById('countdown-hours');
             countdownMinutes = document.getElementById('countdown-minutes');
             countdownSeconds = document.getElementById('countdown-seconds');
-            // Removed calendarHeader, calendarChevron, calendarTableContainer, calendarTableBody as calendar table is removed
             motivationalTitle = document.getElementById('motivational-title');
             motivationalText = document.getElementById('motivational-text');
             countdownTitle = document.getElementById('countdown-title');
@@ -1686,6 +1713,15 @@
             customAlertModal = document.getElementById('custom-alert-modal');
             customAlertMessage = document.getElementById('custom-alert-message');
             welcomeMessageDisplay = document.getElementById('welcome-message');
+            mainTabButtons = document.querySelectorAll('.main-tab-button'); // New: assign main tab buttons
+
+            // New: Assign specific tab content divs
+            tabContentProgram = document.getElementById('tab-content-program');
+            tabContentTraining = document.getElementById('tab-content-training');
+            tabContentQCM = document.getElementById('tab-content-qcm');
+            tabContentFinal = document.getElementById('tab-content-final');
+            tabContentRattrapage = document.getElementById('tab-content-rattrapage');
+            tabContentLives = document.getElementById('tab-content-lives'); // New: assign the lives tab content
 
 
             loadAllData(); // Now safe to load data, as DOM elements are assigned
@@ -1717,11 +1753,9 @@
 
             // Initial render and countdown
             updateWelcomeMessage();
-            renderProgram();
-            renderEvaluations();
+            renderAppContent(); // This now renders the selected main tab
             updateMotivationalPhrase();
             updateDisplaySelectedSession();
-            // Removed renderCalendarTable() as the table is removed
             startCountdown();
 
             // Add event listeners for user settings inputs
@@ -1732,28 +1766,7 @@
                 radio.addEventListener('change', (e) => {
                     selectedSpecialization = e.target.value;
                     saveAllData();
-                    renderProgram();
-                    renderEvaluations();
-                    // Update button styles
-                    if (selectedSpecialization === 'CDO') {
-                        btnCdo.classList.replace('bg-gray-700', 'bg-orange-600');
-                        btnCdo.classList.replace('text-gray-300', 'text-white');
-                        btnCdo.classList.remove('hover:bg-fuchsia-800');
-                        btnCdo.classList.add('shadow-lg');
-                        btnSd.classList.replace('bg-fuchsia-600', 'bg-gray-700');
-                        btnSd.classList.replace('text-white', 'text-gray-300');
-                        btnSd.classList.add('hover:bg-fuchsia-800');
-                        btnSd.classList.remove('shadow-lg');
-                    } else {
-                        btnSd.classList.replace('bg-gray-700', 'bg-fuchsia-600');
-                        btnSd.classList.replace('text-white', 'text-gray-300');
-                        btnSd.classList.remove('hover:bg-orange-800');
-                        btnSd.classList.add('shadow-lg');
-                        btnCdo.classList.replace('bg-orange-600', 'bg-gray-700');
-                        btnCdo.classList.replace('text-white', 'text-gray-300');
-                        btnCdo.classList.add('hover:bg-orange-800');
-                        btnCdo.classList.remove('shadow-lg');
-                    }
+                    renderAppContent(); // Re-render the active tab content to filter by specialization
                 });
             });
 
@@ -1779,7 +1792,14 @@
                 startCountdown();
             });
 
-            // Removed calendarHeader event listener as the table is removed
+            // New: Event listeners for main tab buttons
+            mainTabButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    selectedMainTab = e.target.dataset.mainTab;
+                    saveAllData(); // Save the selected tab
+                    renderAppContent(); // Re-render to show content of the new tab
+                });
+            });
         }
 
         document.addEventListener('DOMContentLoaded', initialize);
